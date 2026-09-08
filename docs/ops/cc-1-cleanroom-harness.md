@@ -95,7 +95,7 @@ The CivicCore freeze release is:
 - tag: `v1.2.1`,
 - package asset: `civiccore-1.2.1-py3-none-any.whl`,
 - Sigstore identity:
-  `https://github.com/CivicSuite/civiccore/.github/workflows/release.yml@refs/tags/v1.2.1`,
+  `https://github.com/townlight/core/.github/workflows/release.yml@refs/tags/v1.2.1`,
 - OIDC issuer: `https://token.actions.githubusercontent.com`.
 
 The package version is `1.2.1`; the trust anchor is the freeze tag and its

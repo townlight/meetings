@@ -7,7 +7,7 @@ RUN_LABEL="${CLEANROOM_RUN_LABEL:-cleanroom}"
 CIVICCORE_FREEZE_TAG="${CIVICCORE_FREEZE_TAG:-v1.2.1}"
 CIVICCORE_PACKAGE_VERSION="${CIVICCORE_PACKAGE_VERSION:-1.2.1}"
 CIVICCLERK_DOCKER_HOST_ADDRESS="${CIVICCLERK_DOCKER_HOST_ADDRESS:-host.docker.internal}"
-CIVICCORE_RELEASE_BASE_URL="https://github.com/CivicSuite/civiccore/releases/download/${CIVICCORE_FREEZE_TAG}"
+CIVICCORE_RELEASE_BASE_URL="https://github.com/townlight/core/releases/download/${CIVICCORE_FREEZE_TAG}"
 OIDC_ISSUER="https://token.actions.githubusercontent.com"
 WORKFLOW_IDENTITY="https://github.com/CivicSuite/civiccore/.github/workflows/release.yml@refs/tags/${CIVICCORE_FREEZE_TAG}"
 
@@ -204,7 +204,7 @@ manifest = {
         "repo_url": os.environ.get("CIVICCORE_REPO_URL", ""),
         "freeze_tag": os.environ["CIVICCORE_FREEZE_TAG"],
         "package_version": os.environ["CIVICCORE_PACKAGE_VERSION"],
-        "release_url": f"https://github.com/CivicSuite/civiccore/releases/tag/{os.environ['CIVICCORE_FREEZE_TAG']}",
+        "release_url": f"https://github.com/townlight/core/releases/tag/{os.environ['CIVICCORE_FREEZE_TAG']}",
         "workflow_identity": f"https://github.com/CivicSuite/civiccore/.github/workflows/release.yml@refs/tags/{os.environ['CIVICCORE_FREEZE_TAG']}",
         "oidc_issuer": "https://token.actions.githubusercontent.com",
         "assets": release_assets,
@@ -227,9 +227,10 @@ manifest = {
     },
     "network": {
         "allowed_during_provisioning_and_verification": [
-            "https://github.com/CivicSuite/civicclerk.git",
-            "https://github.com/CivicSuite/civiccore.git",
-            "https://github.com/CivicSuite/civiccore/releases/download/v1.2.1/*",
+            "https://github.com/townlight/meetings.git",
+            "https://github.com/townlight/core.git",
+            "https://github.com/townlight/core/releases/download/v1.2.1/*",
+            "https://api.github.com/repos/townlight/core/*",
             "https://api.github.com/repos/CivicSuite/civiccore/*",
             "https://github.com/sigstore/cosign/releases/download/v3.0.6/cosign-linux-amd64",
             "https://pypi.org/*",

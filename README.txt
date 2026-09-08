@@ -6,7 +6,7 @@
 
 Status: CivicMeetings v1.0.4 runtime foundation label is provisional during the CivicSuite release recovery.
 Current version: `1.0.4`
-Repository: <https://github.com/CivicSuite/civicclerk>  
+Repository: <https://github.com/townlight/meetings>  
 Depends on: published, Sigstore-attested `civiccore` 1.2.1 wheel from the `v1.2.1` release asset
 
 ## Release Recovery Notice
