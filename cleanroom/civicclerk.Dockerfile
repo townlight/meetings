@@ -2,9 +2,9 @@
 
 FROM --platform=linux/amd64 node:24-bookworm-slim@sha256:03eae3ef7e88a9de535496fb488d67e02b9d96a063a8967bae657744ecd513f2
 
-ARG CIVICCLERK_REPO_URL=https://github.com/CivicSuite/civicclerk.git
+ARG CIVICCLERK_REPO_URL=https://github.com/townlight/meetings.git
 ARG CIVICCLERK_COMMIT
-ARG CIVICCORE_REPO_URL=https://github.com/CivicSuite/civiccore.git
+ARG CIVICCORE_REPO_URL=https://github.com/townlight/core.git
 ARG CIVICCORE_FREEZE_REF=v1.2.1
 ARG COSIGN_VERSION=v3.0.6
 ARG COSIGN_SHA256=c956e5dfcac53d52bcf058360d579472f0c1d2d9b69f55209e256fe7783f4c74

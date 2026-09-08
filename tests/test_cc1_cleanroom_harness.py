@@ -6,7 +6,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 FREEZE_WHEEL_URL = (
-    "https://github.com/CivicSuite/civiccore/releases/download/"
+    "https://github.com/townlight/core/releases/download/"
     "v1.2.1/civiccore-1.2.1-py3-none-any.whl"
 )
 FREEZE_WHEEL_DEPENDENCY = (
