@@ -443,8 +443,8 @@ def test_alembic_command_upgrades_real_pgvector_database(
         monkeypatch.setenv("DATABASE_URL", db_url)
         cfg = Config(str(ROOT / "civicclerk" / "migrations" / "alembic.ini"))
 
-        command.upgrade(cfg, "head")
-        command.upgrade(cfg, "head")
+        command.upgrade(cfg, "civicclerk_0016_archive_indexes")
+        command.upgrade(cfg, "civicclerk_0016_archive_indexes")
 
         with engine.connect() as connection:
             civiccore_revision = connection.execute(
@@ -542,8 +542,17 @@ def test_alembic_command_upgrades_real_pgvector_database(
                     )
                 ).scalars()
             )
-        assert reupgraded_revision == "civicclerk_0016_archive_indexes"
+        assert reupgraded_revision == "civicclerk_0021_sources"
         assert {"agenda_item_ids", "snapshot_hash", "actor"} <= reupgraded_packet_columns
+
+        with pytest.raises(RuntimeError, match="recover forward"):
+            command.downgrade(cfg, "civicclerk_0010_vendor_cursor")
+
+        with engine.connect() as conn:
+            post_refusal_revision = conn.execute(
+                text("SELECT version_num FROM alembic_version_civicclerk")
+            ).scalar_one()
+        assert post_refusal_revision == "civicclerk_0021_sources"
     finally:
         subprocess.run(["docker", "rm", "-f", name], check=False, capture_output=True, text=True)
 

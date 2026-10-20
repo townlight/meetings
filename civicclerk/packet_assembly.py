@@ -38,6 +38,9 @@ packet_assembly_records = sa.Table(
     sa.Column("finalized_by", sa.String(255), nullable=True),
     sa.Column("finalized_at", sa.DateTime(timezone=True), nullable=True),
     sa.Column("last_audit_hash", sa.String(128), nullable=False),
+    sa.Column("snapshot_content", sa.JSON(), nullable=False, server_default=sa.text("'[]'")),
+    sa.Column("delivery_history", sa.JSON(), nullable=False, server_default=sa.text("'[]'")),
+    sa.Column("audit_entries", sa.JSON(), nullable=False, server_default=sa.text("'[]'")),
     sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
     sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
     schema="civicclerk",
@@ -63,6 +66,9 @@ class PacketAssemblyRecord:
     last_audit_hash: str
     created_at: datetime
     updated_at: datetime
+    snapshot_content: list[dict]
+    delivery_history: list[dict]
+    audit_entries: list[dict]
 
     def public_dict(self) -> dict:
         return {
@@ -81,6 +87,9 @@ class PacketAssemblyRecord:
             "last_audit_hash": self.last_audit_hash,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
+            "snapshot_content": self.snapshot_content,
+            "delivery_history": self.delivery_history,
+            "audit_entries": self.audit_entries,
         }
 
 
@@ -109,6 +118,7 @@ class PacketAssemblyRepository:
         agenda_item_ids: list[str],
         source_references: list[dict],
         citations: list[dict],
+        snapshot_content: list[dict] | None = None,
     ) -> PacketAssemblyRecord:
         now = datetime.now(UTC)
         record_id = str(uuid4())
@@ -141,7 +151,16 @@ class PacketAssemblyRepository:
             "last_audit_hash": event.current_hash or "",
             "created_at": now,
             "updated_at": now,
+            "snapshot_content": snapshot_content or [],
+            "delivery_history": [],
+            "audit_entries": [],
         }
+        from civicclerk.meeting_lifecycle import _build_persisted_audit_entry, ZERO_HASH
+        entry = _build_persisted_audit_entry(previous_hash=ZERO_HASH,actor=actor,
+            action="packet_assembly.created",details={"actor":actor,"packet_id":record_id,
+            "meeting_id":meeting_id,"packet_version":packet_version})
+        values["audit_entries"] = [entry]
+        values["last_audit_hash"] = entry["entry_hash"]
         with self.engine.begin() as connection:
             connection.execute(packet_assembly_records.insert().values(**values))
         return self.get(record_id) or _row_to_record(values)
@@ -174,6 +193,22 @@ class PacketAssemblyRepository:
         with self.engine.begin() as connection:
             rows = connection.execute(statement).mappings().all()
         return [_row_to_record(row) for row in rows]
+
+    def record_delivery(self, *, record_id: str, actor: str, receipt: dict) -> PacketAssemblyRecord | None:
+        from civicclerk.meeting_lifecycle import _build_persisted_audit_entry, ZERO_HASH
+        with self.engine.begin() as connection:
+            row = connection.execute(sa.select(packet_assembly_records).where(
+                packet_assembly_records.c.id == record_id).with_for_update()).mappings().first()
+            if row is None:
+                return None
+            history = list(row["audit_entries"] or [])
+            entry = _build_persisted_audit_entry(previous_hash=history[-1]["entry_hash"] if history else ZERO_HASH,
+                actor=actor,action="packet.delivered",details={"actor":actor,"packet_id":record_id,
+                "receipt":receipt,"prior_audit_hash":row["last_audit_hash"]})
+            connection.execute(packet_assembly_records.update().where(packet_assembly_records.c.id == record_id).values(
+                delivery_history=[*(row["delivery_history"] or []),receipt],audit_entries=[*history,entry],
+                last_audit_hash=entry["entry_hash"],updated_at=datetime.now(UTC)))
+        return self.get(record_id)
 
     def finalize(self, *, record_id: str, actor: str) -> PacketAssemblyRecord | None:
         existing = self.get(record_id)
@@ -224,6 +259,9 @@ def _row_to_record(row) -> PacketAssemblyRecord:
         last_audit_hash=data["last_audit_hash"],
         created_at=data["created_at"],
         updated_at=data["updated_at"],
+        snapshot_content=list(data.get("snapshot_content") or []),
+        delivery_history=list(data.get("delivery_history") or []),
+        audit_entries=list(data.get("audit_entries") or []),
     )
 
 

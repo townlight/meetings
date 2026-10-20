@@ -75,34 +75,13 @@ def _simulate_process_restart() -> None:
     main_module._meeting_db_url = None
 
 
-def _seed_archive_meeting_referent(db_url: str, meeting_id: str) -> None:
-    """Insert the civicclerk.meetings parent row publish() pre-checks.
-
-    The live meeting lifecycle persists to ``meeting_records`` while the
-    public archive FK (migration 0014) references canonical
-    ``civicclerk.meetings``; until those tables are unified, archive
-    deployments mirror the meeting id — the same pattern demo_seed and the
-    archive persistence tests use.
-    """
-
-    engine = sa.create_engine(db_url, future=True)
-    if engine.dialect.name == "sqlite":
-        engine = engine.execution_options(schema_translate_map={"civicclerk": None})
-    public_archive_module.metadata.create_all(engine)
-    with engine.begin() as connection:
-        connection.execute(
-            public_archive_module.meetings_table.insert().values(id=meeting_id)
-        )
-    engine.dispose()
-
-
 async def test_legal_record_survives_api_restart_when_db_env_vars_set(
     monkeypatch, tmp_path
 ) -> None:
     archive_db_url = f"sqlite:///{tmp_path / 'archive.db'}"
-    monkeypatch.setenv("CIVICCLERK_MEETING_DB_URL", f"sqlite:///{tmp_path / 'meetings.db'}")
-    monkeypatch.setenv("CIVICCLERK_MOTION_VOTE_DB_URL", f"sqlite:///{tmp_path / 'motions.db'}")
-    monkeypatch.setenv("CIVICCLERK_MINUTES_DB_URL", f"sqlite:///{tmp_path / 'minutes.db'}")
+    monkeypatch.setenv("CIVICCLERK_MEETING_DB_URL", archive_db_url)
+    monkeypatch.setenv("CIVICCLERK_MOTION_VOTE_DB_URL", archive_db_url)
+    monkeypatch.setenv("CIVICCLERK_MINUTES_DB_URL", archive_db_url)
     monkeypatch.setenv("CIVICCLERK_PUBLIC_ARCHIVE_DB_URL", archive_db_url)
     _simulate_process_restart()
 
@@ -164,7 +143,6 @@ async def test_legal_record_survives_api_restart_when_db_env_vars_set(
                 ],
             },
         )
-        _seed_archive_meeting_referent(archive_db_url, meeting_id)
         record = await client.post(
             f"/meetings/{meeting_id}/public-record",
             json={

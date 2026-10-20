@@ -92,6 +92,9 @@ def test_minutes_drafts_persist_across_repository_instances(tmp_path) -> None:
         },
         "adopted": False,
         "posted": False,
+        "signed_by": None,
+        "decision_history": [],
+        "publication_label": "Draft minutes — not adopted",
     }
     assert second.get_draft(draft.id) is not None
     assert second.get_draft("not-a-uuid") is None

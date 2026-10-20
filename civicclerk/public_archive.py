@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import threading
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
@@ -40,6 +40,7 @@ class PublicMeetingRecord:
     minutes_adopted_at: str | None = None
     minutes_signed_by: str | None = None
     closed_session_notes: str | None = None
+    audit_entries: list[dict] = field(default_factory=list)
 
     def public_dict(self, *, include_closed: bool = False) -> dict[str, str | bool | None]:
         payload = {
@@ -60,6 +61,7 @@ class PublicMeetingRecord:
         if include_closed:
             payload["visibility"] = self.visibility
             payload["closed_session_notes"] = self.closed_session_notes
+            payload["audit_entries"] = self.audit_entries
         return payload
 
 
@@ -104,6 +106,7 @@ public_meeting_records_table = sa.Table(
     sa.Column("minutes_signed_by", sa.String(255), nullable=True),
     sa.Column("closed_session_notes", sa.Text(), nullable=True),
     sa.Column("capture_seq", sa.BigInteger(), nullable=False),
+    sa.Column("audit_entries",sa.JSON(),nullable=False,server_default=sa.text("'[]'")),
     sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
     sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
     schema="civicclerk",
@@ -290,6 +293,8 @@ class PublicArchiveRepository:
         minutes_adopted_at: str | None = None,
         minutes_signed_by: str | None = None,
         closed_session_notes: str | None = None,
+        actor: str = "civicclerk",
+        source_references: dict | None = None,
     ) -> PublicMeetingRecord | None:
         parsed_meeting_id = self._meeting_exists(meeting_id)
         if parsed_meeting_id is None:
@@ -303,7 +308,7 @@ class PublicArchiveRepository:
         with self._chain_lock:
             event = record_event(
                 self.audit_chain.events,
-                actor=AuditActor(actor_id="civicclerk", actor_type="system"),
+                actor=AuditActor(actor_id=actor, actor_type="staff"),
                 action="public_archive.record_published",
                 subject=AuditSubject(subject_id=record_id, subject_type="public_meeting_record"),
                 source_module="civicclerk",
@@ -331,6 +336,11 @@ class PublicArchiveRepository:
                 "created_at": now,
                 "updated_at": now,
             }
+            from civicclerk.meeting_lifecycle import _build_persisted_audit_entry, ZERO_HASH
+            values["audit_entries"]=[_build_persisted_audit_entry(previous_hash=ZERO_HASH,actor=actor,
+                action="public_archive.record_published",details={"actor":actor,"record_id":record_id,
+                "meeting_id":parsed_meeting_id,"visibility":normalize_visibility(visibility),
+                "source_references":source_references or {}})]
             with self.engine.begin() as connection:
                 values["capture_seq"] = _archive_next_capture_seq(
                     connection, public_meeting_records_table
@@ -617,6 +627,7 @@ def _public_record_row_to_record(row) -> PublicMeetingRecord:
         minutes_adopted_at=data.get("minutes_adopted_at"),
         minutes_signed_by=data.get("minutes_signed_by"),
         closed_session_notes=data.get("closed_session_notes"),
+        audit_entries=list(data.get("audit_entries") or []),
     )
 
 
