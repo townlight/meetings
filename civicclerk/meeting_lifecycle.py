@@ -52,12 +52,12 @@ AUDIT_META_FIELDS = {"timestamp", "action", "previous_hash", "entry_hash"}
 metadata = sa.MetaData()
 
 meeting_records = sa.Table(
-    "meeting_records",
+    "meetings",
     metadata,
-    sa.Column("id", sa.String(64), primary_key=True),
+    sa.Column("id", sa.Uuid(as_uuid=False), primary_key=True),
     sa.Column("title", sa.String(255), nullable=False),
     sa.Column("meeting_type", sa.String(80), nullable=False),
-    sa.Column("meeting_body_id", sa.String(64), nullable=True),
+    sa.Column("meeting_body_id", sa.Uuid(as_uuid=False).with_variant(sa.String(64), "sqlite"), nullable=True),
     sa.Column("scheduled_start", sa.DateTime(timezone=True), nullable=True),
     sa.Column("location", sa.String(255), nullable=True),
     sa.Column("status", sa.String(80), nullable=False),
@@ -130,6 +130,7 @@ class MeetingStore:
         scheduled_start: datetime | None = None,
         meeting_body_id: str | None = None,
         location: str | None = None,
+        actor: str | None = None,
     ) -> MeetingRecord:
         meeting = MeetingRecord(
             id=str(uuid4()),
@@ -139,6 +140,11 @@ class MeetingStore:
             meeting_body_id=_normalize_optional_text(meeting_body_id),
             location=_normalize_optional_text(location),
         )
+        if actor is not None:
+            meeting.audit_entries.append(_build_persisted_audit_entry(
+                previous_hash=ZERO_HASH, actor=actor, action="meeting.created",
+                details={"actor": actor, "meeting_id": meeting.id},
+            ))
         if self.engine is not None:
             now = datetime.now(UTC)
             with self.engine.begin() as connection:
@@ -269,6 +275,32 @@ class MeetingStore:
                 meeting.title,
             ),
         )
+
+    def record_human_stage(self, *, meeting_id: str, to_status: str, actor: str,
+                           statutory_basis: str | None = None) -> MeetingRecord | None:
+        """Record the human's chosen stage without fabricating intervening acts."""
+        if to_status not in KNOWN_STATUSES:
+            raise ValueError("Unknown meeting stage.")
+        if self.engine is None:
+            raise ValueError("Human stage recording requires durable storage.")
+        with self.engine.begin() as connection:
+            row = connection.execute(sa.select(meeting_records).where(
+                meeting_records.c.id == meeting_id).with_for_update()).mappings().first()
+            if row is None:
+                return None
+            meeting = _row_to_meeting(row)
+            result = validate_meeting_transition(meeting_id=meeting_id,
+                from_status=meeting.status,to_status=to_status,actor=actor,
+                meeting_type=meeting.meeting_type,statutory_basis=statutory_basis,
+                previous_audit_hash=_last_entry_hash(meeting.audit_entries))
+            entry = _build_persisted_audit_entry(previous_hash=_last_entry_hash(meeting.audit_entries),
+                actor=actor,action="meeting.human_stage",details={"actor":actor,
+                "meeting_id":meeting_id,"from_status":meeting.status,"to_status":to_status,
+                "statutory_basis":statutory_basis,"human_decision":True,
+                "workflow_warning":result.message if not result.allowed else None})
+            connection.execute(meeting_records.update().where(meeting_records.c.id == meeting_id).values(
+                status=to_status,audit_entries=[*meeting.audit_entries,entry],updated_at=datetime.now(UTC)))
+        return self.get(meeting_id)
 
     def transition(
         self,

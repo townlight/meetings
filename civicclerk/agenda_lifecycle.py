@@ -51,6 +51,7 @@ class AgendaItemRecord:
     department_name: str
     status: str = "DRAFTED"
     audit_entries: list[dict[str, object]] = field(default_factory=list)
+    meeting_id: str | None = None
 
     def public_dict(self) -> dict[str, str]:
         return {
@@ -58,6 +59,7 @@ class AgendaItemRecord:
             "title": self.title,
             "department_name": self.department_name,
             "status": self.status,
+            **({"meeting_id": self.meeting_id} if self.meeting_id else {}),
         }
 
 
@@ -67,12 +69,17 @@ class AgendaItemStore:
     def __init__(self) -> None:
         self._items: dict[str, AgendaItemRecord] = {}
 
-    def create(self, *, title: str, department_name: str) -> AgendaItemRecord:
+    def create(self, *, title: str, department_name: str, actor: str | None = None) -> AgendaItemRecord:
         item = AgendaItemRecord(
             id=str(uuid4()),
             title=title,
             department_name=department_name,
         )
+        if actor is not None:
+            item.audit_entries.append(_build_persisted_audit_entry(
+                previous_hash=ZERO_HASH, actor=actor, action="agenda_item.created",
+                details={"actor": actor, "agenda_item_id": item.id},
+            ))
         self._items[item.id] = item
         return item
 
@@ -99,9 +106,10 @@ class AgendaItemStore:
 metadata = sa.MetaData()
 
 agenda_item_lifecycle_records = sa.Table(
-    "agenda_item_lifecycle_records",
+    "agenda_items",
     metadata,
-    sa.Column("id", sa.String(64), primary_key=True),
+    sa.Column("id", sa.Uuid(as_uuid=False), primary_key=True),
+    sa.Column("meeting_id", sa.Uuid(as_uuid=False), nullable=True),
     sa.Column("title", sa.String(500), nullable=False),
     sa.Column("department_name", sa.String(255), nullable=False),
     sa.Column("status", sa.String(80), nullable=False),
@@ -129,9 +137,14 @@ class AgendaItemRepository:
                 connection.execute(sa.text("CREATE SCHEMA IF NOT EXISTS civicclerk"))
         metadata.create_all(self.engine)
 
-    def create(self, *, title: str, department_name: str) -> AgendaItemRecord:
+    def create(self, *, title: str, department_name: str, actor: str | None = None) -> AgendaItemRecord:
         now = datetime.now(UTC)
         item = AgendaItemRecord(id=str(uuid4()), title=title, department_name=department_name)
+        if actor is not None:
+            item.audit_entries.append(_build_persisted_audit_entry(
+                previous_hash=ZERO_HASH, actor=actor, action="agenda_item.created",
+                details={"actor": actor, "agenda_item_id": item.id},
+            ))
         with self.engine.begin() as connection:
             connection.execute(
                 agenda_item_lifecycle_records.insert().values(
@@ -154,6 +167,54 @@ class AgendaItemRepository:
                 )
             ).mappings().first()
         return _row_to_item(row) if row is not None else None
+
+    def assign_meeting(self, *, item_id: str, meeting_id: str, actor: str) -> AgendaItemRecord | None:
+        """Record a human placement/reassignment, retaining prior state and warnings."""
+        from civicclerk.meeting_lifecycle import meeting_records
+        with self.engine.begin() as connection:
+            parent = connection.execute(sa.select(meeting_records.c.id).where(meeting_records.c.id == meeting_id)).first()
+            row = connection.execute(sa.select(agenda_item_lifecycle_records).where(
+                agenda_item_lifecycle_records.c.id == item_id).with_for_update()).mappings().first()
+            if parent is None or row is None:
+                return None
+            item = _row_to_item(row)
+            result = validate_agenda_item_transition(agenda_item_id=item_id, from_status=item.status,
+                to_status="ON_AGENDA", actor=actor, previous_audit_hash=_last_entry_hash(item.audit_entries))
+            # Include the durable parent in the existing audit hash contract.
+            entry = _build_persisted_audit_entry(previous_hash=_last_entry_hash(item.audit_entries),
+                actor=actor, action="agenda_item.assigned", details={"actor":actor,
+                "agenda_item_id":item_id,"meeting_id":meeting_id,"previous_meeting_id":item.meeting_id,
+                "from_status":item.status,"to_status":"ON_AGENDA","human_decision":True,
+                "workflow_warning":result.message if not result.allowed else None})
+            connection.execute(agenda_item_lifecycle_records.update().where(
+                agenda_item_lifecycle_records.c.id == item_id).values(meeting_id=meeting_id,
+                status="ON_AGENDA",audit_entries=[*item.audit_entries,entry],updated_at=datetime.now(UTC)))
+        return self.get(item_id)
+
+    def record_human_stage(self, *, item_id: str, to_status: str, actor: str) -> AgendaItemRecord | None:
+        """An authorized human can depart from the suggested sequence.
+
+        This is distinct from automated transition validation. Do not invent
+        intervening approvals, erase history, or describe a warning as denial.
+        """
+        if to_status not in AGENDA_ITEM_LIFECYCLE:
+            raise ValueError("Unknown agenda stage.")
+        with self.engine.begin() as connection:
+            row = connection.execute(sa.select(agenda_item_lifecycle_records).where(
+                agenda_item_lifecycle_records.c.id == item_id).with_for_update()).mappings().first()
+            if row is None:
+                return None
+            item = _row_to_item(row)
+            result = validate_agenda_item_transition(agenda_item_id=item_id, from_status=item.status,
+                to_status=to_status, actor=actor, previous_audit_hash=_last_entry_hash(item.audit_entries))
+            entry = _build_persisted_audit_entry(previous_hash=_last_entry_hash(item.audit_entries),
+                actor=actor, action="agenda_item.human_stage", details={"actor":actor,
+                "agenda_item_id":item_id,"from_status":item.status,"to_status":to_status,
+                "human_decision":True,"workflow_warning":result.message if not result.allowed else None})
+            connection.execute(agenda_item_lifecycle_records.update().where(
+                agenda_item_lifecycle_records.c.id == item_id).values(status=to_status,
+                audit_entries=[*item.audit_entries,entry],updated_at=datetime.now(UTC)))
+        return self.get(item_id)
 
     def transition(self, *, item_id: str, to_status: str, actor: str) -> TransitionResult | None:
         item = self.get(item_id)
@@ -345,6 +406,7 @@ def _row_to_item(row) -> AgendaItemRecord:
         department_name=data["department_name"],
         status=data["status"],
         audit_entries=list(data["audit_entries"]),
+        meeting_id=str(data["meeting_id"]) if data.get("meeting_id") else None,
     )
 
 

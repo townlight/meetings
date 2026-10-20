@@ -39,6 +39,7 @@ notice_checklist_records = sa.Table(
     sa.Column("approved_by", sa.String(255), nullable=True),
     sa.Column("posting_proof", sa.JSON(), nullable=True),
     sa.Column("last_audit_hash", sa.String(128), nullable=False),
+    sa.Column("audit_entries", sa.JSON(), nullable=False, server_default=sa.text("'[]'")),
     sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
     sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
     schema="civicclerk",
@@ -65,8 +66,11 @@ class NoticeChecklistRecord:
     last_audit_hash: str
     created_at: datetime
     updated_at: datetime
+    audit_entries: list[dict]
 
     def public_dict(self) -> dict:
+        latest_document=next((entry for entry in reversed(self.audit_entries)
+            if entry["action"]=="notice.document_delivered"),None)
         return {
             "id": self.id,
             "meeting_id": self.meeting_id,
@@ -84,6 +88,12 @@ class NoticeChecklistRecord:
             "last_audit_hash": self.last_audit_hash,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
+            "audit_entries": self.audit_entries,
+            "notice_text": next((entry["text"] for entry in reversed(self.audit_entries)
+                                if entry["action"]=="notice.document_delivered"),None),
+            "current_document": latest_document["receipt"] if latest_document else None,
+            "current_document_has_linked_proof": bool(latest_document and self.posting_proof and
+                self.posting_proof.get("document_delivery_id")==latest_document["receipt"]["delivery_id"]),
         }
 
 
@@ -148,6 +158,12 @@ class NoticeChecklistRepository:
             "created_at": now,
             "updated_at": now,
         }
+        from civicclerk.meeting_lifecycle import _build_persisted_audit_entry, ZERO_HASH
+        entry = _build_persisted_audit_entry(previous_hash=ZERO_HASH,actor=actor,
+            action="notice_checklist.checked",details={"actor":actor,"notice_id":record_id,
+            "meeting_id":meeting_id,"compliant":compliant,"warnings":warnings})
+        values["audit_entries"] = [entry]
+        values["last_audit_hash"] = entry["entry_hash"]
         with self.engine.begin() as connection:
             connection.execute(notice_checklist_records.insert().values(**values))
         return self.get(record_id) or _row_to_record(values)
@@ -181,6 +197,22 @@ class NoticeChecklistRepository:
             rows = connection.execute(statement).mappings().all()
         return [_row_to_record(row) for row in rows]
 
+    def record_document(self, *, record_id: str, actor: str, text: str, receipt: dict) -> NoticeChecklistRecord | None:
+        from civicclerk.meeting_lifecycle import _build_persisted_audit_entry, ZERO_HASH
+        with self.engine.begin() as connection:
+            row=connection.execute(sa.select(notice_checklist_records).where(
+                notice_checklist_records.c.id==record_id).with_for_update()).mappings().first()
+            if row is None:
+                return None
+            history=list(row["audit_entries"] or [])
+            entry=_build_persisted_audit_entry(previous_hash=history[-1]["entry_hash"] if history else ZERO_HASH,
+                actor=actor,action="notice.document_delivered",details={"actor":actor,"notice_id":record_id,
+                "text":text,"receipt":receipt,"prior_audit_hash":row["last_audit_hash"]})
+            connection.execute(notice_checklist_records.update().where(
+                notice_checklist_records.c.id==record_id).values(audit_entries=[*history,entry],
+                last_audit_hash=entry["entry_hash"],updated_at=datetime.now(UTC)))
+        return self.get(record_id)
+
     def attach_posting_proof(
         self,
         *,
@@ -188,30 +220,31 @@ class NoticeChecklistRepository:
         actor: str,
         posting_proof: dict,
     ) -> NoticeChecklistRecord | None:
-        existing = self.get(record_id)
-        if existing is None:
-            return None
-        now = datetime.now(UTC)
-        event = self.audit_chain.record_event(
-            actor=AuditActor(actor_id=actor, actor_type="staff"),
-            action="notice_checklist.proof_attached",
-            subject=AuditSubject(subject_id=record_id, subject_type="notice_checklist_record"),
-            source_module="civicclerk",
-            metadata={
-                "meeting_id": existing.meeting_id,
-                "notice_type": existing.notice_type,
-                "proof_keys": sorted(posting_proof),
-            },
-        )
+        from civicclerk.meeting_lifecycle import _build_persisted_audit_entry, ZERO_HASH
         with self.engine.begin() as connection:
+            row = connection.execute(sa.select(notice_checklist_records).where(
+                notice_checklist_records.c.id == record_id).with_for_update()).mappings().first()
+            if row is None:
+                return None
+            history = list(row["audit_entries"] or [])
+            delivery_id=posting_proof.get("document_delivery_id")
+            if delivery_id and not any(entry.get("receipt",{}).get("delivery_id")==delivery_id
+                    for entry in history if entry["action"]=="notice.document_delivered"):
+                raise ValueError("Referenced notice document not found in this notice history.")
+            entry = _build_persisted_audit_entry(previous_hash=history[-1]["entry_hash"] if history else ZERO_HASH,
+                actor=actor,action="notice_checklist.proof_attached",details={"actor":actor,
+                "notice_id":record_id,"human_decision":True,"posting_proof":posting_proof,
+                "previous_posting_proof":row["posting_proof"],"prior_audit_hash":row["last_audit_hash"],
+                "warnings":row["warnings"]})
             connection.execute(
                 notice_checklist_records.update()
                 .where(notice_checklist_records.c.id == record_id)
                 .values(
                     status=NoticeChecklistStatus.POSTED.value,
                     posting_proof=posting_proof,
-                    updated_at=now,
-                    last_audit_hash=event.current_hash or "",
+                    updated_at=datetime.now(UTC),
+                    last_audit_hash=entry["entry_hash"],
+                    audit_entries=[*history,entry],
                 )
             )
         return self.get(record_id)
@@ -236,6 +269,7 @@ def _row_to_record(row) -> NoticeChecklistRecord:
         last_audit_hash=data["last_audit_hash"],
         created_at=data["created_at"],
         updated_at=data["updated_at"],
+        audit_entries=list(data.get("audit_entries") or []),
     )
 
 

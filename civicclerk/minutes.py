@@ -48,6 +48,8 @@ class MinutesDraft:
     provenance: MinutesProvenance
     adopted: bool = False
     posted: bool = False
+    signed_by: str | None = None
+    decision_history: tuple[dict, ...] = ()
 
     def public_dict(self) -> dict:
         return {
@@ -59,6 +61,9 @@ class MinutesDraft:
             "provenance": self.provenance.public_dict(),
             "adopted": self.adopted,
             "posted": self.posted,
+            "signed_by": self.signed_by,
+            "decision_history": list(self.decision_history),
+            "publication_label": "Adopted minutes" if self.adopted else "Draft minutes — not adopted",
         }
 
 
@@ -85,6 +90,7 @@ minutes_table = sa.Table(
     sa.Column("adopted_at", sa.DateTime(timezone=True), nullable=True),
     sa.Column("posted_at", sa.DateTime(timezone=True), nullable=True),
     sa.Column("signed_by", sa.String(255), nullable=True),
+    sa.Column("decision_history", sa.JSON(), nullable=False, server_default=sa.text("'[]'")),
     sa.Column("document_ref", sa.Text(), nullable=True),
     sa.Column("capture_seq", sa.BigInteger(), nullable=False),
     sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
@@ -160,9 +166,8 @@ class MinutesDraftRepository:
     posted_at being non-NULL. The NOT NULL body column stores the joined
     sentence text so the canonical schema contract stays satisfied.
 
-    Intentional gap: adopted_at / posted_at currently have no writer. Phase 1
-    targets restart-survival parity with the in-memory store; the adoption and
-    posting write paths (mark_adopted / mark_posted) are deferred to Phase 1b.
+    Human posting, adoption and signing decisions are recorded separately;
+    suggested sequencing warns but never invents or blocks a human decision.
     """
 
     def __init__(self, *, db_url: str | None = None, engine: Engine | None = None) -> None:
@@ -189,13 +194,21 @@ class MinutesDraftRepository:
         human_approver: str,
         source_materials: list[SourceMaterial],
         sentences: list[MinutesSentence],
+        human_authored: bool = False,
     ) -> MinutesDraft | MinutesValidationError:
         validation_error = _validate_create_inputs(prompt_version, source_materials, sentences)
-        if validation_error is not None:
+        if validation_error is not None and not human_authored:
             return validation_error
 
         now = datetime.now(UTC)
         draft_id = str(uuid4())
+        from civicclerk.meeting_lifecycle import _build_persisted_audit_entry, ZERO_HASH
+        creation_history = [_build_persisted_audit_entry(
+            previous_hash=ZERO_HASH, actor=human_approver, action="minutes.human_draft",
+            details={"actor":human_approver,"minutes_id":draft_id,"human_decision":True,
+                     "warnings":[validation_error.message] if validation_error else [],
+                     "note":"Staff-authored draft; creation is not adoption, posting or approval."}
+        )] if human_authored else []
         with self._chain_lock:
             event = record_event(
                 self.audit_chain.events,
@@ -221,6 +234,7 @@ class MinutesDraftRepository:
                 "adopted_at": None,
                 "posted_at": None,
                 "signed_by": None,
+                "decision_history": creation_history,
                 "document_ref": None,
                 "created_at": now,
                 "updated_at": now,
@@ -242,6 +256,48 @@ class MinutesDraftRepository:
                 sa.select(minutes_table).where(minutes_table.c.id == parsed)
             ).mappings().first()
         return _minutes_row_to_draft(row) if row is not None else None
+
+    def record_decision(self, *, draft_id: str, action: str, actor: str,
+                        note: str = "") -> MinutesDraft | None:
+        """Record the selected human act only; retain all earlier decisions.
+
+        Signing does not silently adopt or post. Posting does not adopt. An
+        unusual order generates an audit warning, never an approval barrier.
+        """
+        if action not in {"post", "adopt", "sign"}:
+            raise ValueError("Unknown minutes decision.")
+        from civicclerk.meeting_lifecycle import _build_persisted_audit_entry, ZERO_HASH
+        with self.engine.begin() as connection:
+            row = connection.execute(sa.select(minutes_table).where(
+                minutes_table.c.id == draft_id).with_for_update()).mappings().first()
+            if row is None:
+                return None
+            history = list(row["decision_history"] or [])
+            warnings = []
+            if action == "sign" and row["adopted_at"] is None:
+                warnings.append("Minutes are not adopted; this signature does not adopt them.")
+            if action == "adopt" and row["posted_at"] is None:
+                warnings.append("Minutes have not been posted; adoption does not post them.")
+            if action == "post" and row["adopted_at"] is None:
+                warnings.append("Published view must say Draft minutes — not adopted.")
+            now = datetime.now(UTC)
+            entry = _build_persisted_audit_entry(previous_hash=history[-1]["entry_hash"] if history else ZERO_HASH,
+                actor=actor, action=f"minutes.human_{action}", details={"actor":actor,
+                "minutes_id":draft_id,"human_decision":True,"note":note,
+                "prior_status":row["status"],"warnings":warnings})
+            values = {"decision_history":[*history,entry],"updated_at":now}
+            if action == "post":
+                values.update(posted_at=row["posted_at"] or now)
+                if row["adopted_at"] is None and not row["signed_by"]:
+                    values["status"] = "POSTED_DRAFT"
+            elif action == "adopt":
+                values.update(adopted_at=row["adopted_at"] or now)
+                if not row["signed_by"]:
+                    values["status"] = "ADOPTED"
+            else:
+                values.update(signed_by=actor,status="SIGNED")
+            connection.execute(minutes_table.update().where(minutes_table.c.id == draft_id).values(**values))
+        return self.get_draft(draft_id)
 
     def list_drafts(self, meeting_id: str) -> list[MinutesDraft]:
         parsed = _minutes_uuid_text_or_none(meeting_id)
@@ -368,6 +424,8 @@ def _minutes_row_to_draft(row) -> MinutesDraft:
         ),
         adopted=data.get("adopted_at") is not None,
         posted=data.get("posted_at") is not None,
+        signed_by=data.get("signed_by"),
+        decision_history=tuple(data.get("decision_history") or []),
     )
 
 

@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import json
+import hashlib
+import shutil
+import sqlalchemy as sa
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
@@ -17,6 +20,20 @@ from civiccore.provenance import ProvenanceBundle, SourceKind, SourceReference
 
 
 PUBLIC_BLOCKED_SENSITIVITY = {"closed_session", "staff_only", "restricted"}
+
+packet_metadata = sa.MetaData()
+packet_versions = sa.Table("packet_versions", packet_metadata,
+    sa.Column("id", sa.Uuid(as_uuid=False), primary_key=True),
+    sa.Column("meeting_id", sa.Uuid(as_uuid=False), nullable=False),
+    sa.Column("version", sa.Integer(), nullable=False),
+    sa.Column("snapshot_uri", sa.Text(), nullable=False),
+    sa.Column("agenda_item_ids", sa.JSON()),
+    sa.Column("snapshot_hash", sa.String(128)),
+    sa.Column("actor", sa.String(255)),
+    sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
+    sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
+    sa.UniqueConstraint("meeting_id","version",name="uq_packet_versions_meeting_version"),
+    schema="civicclerk")
 
 
 class PacketExportError(ValueError):
@@ -87,7 +104,7 @@ class PacketSnapshot:
             "version": self.version,
             "agenda_item_ids": list(self.agenda_item_ids),
             "actor": self.actor,
-            "created_at": self.created_at.isoformat(),
+            "created_at": self.created_at.astimezone(UTC).isoformat(),
         }
 
 
@@ -120,14 +137,20 @@ class PacketExportResult:
 class PacketStore:
     """Packet version and export-bundle store.
 
-    The store is still process-local in this slice, but export bundles are
+    A configured database persists snapshot identity/version metadata. Export bundles are
     written to disk with CivicCore v0.12.0 manifests, checksums, provenance, and
     hash-chained audit events so they can be validated without the server.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, *, db_url: str | None = None) -> None:
         self._snapshots: dict[str, list[PacketSnapshot]] = {}
         self.audit_chain = AuditHashChain()
+        self.engine = None
+        if db_url:
+            self.engine = sa.create_engine(db_url)
+            if self.engine.dialect.name == "sqlite":
+                self.engine = self.engine.execution_options(schema_translate_map={"civicclerk":None})
+            packet_metadata.create_all(self.engine)
 
     def create_snapshot(
         self,
@@ -136,6 +159,23 @@ class PacketStore:
         agenda_item_ids: list[str],
         actor: str,
     ) -> PacketSnapshot:
+        if self.engine is not None:
+            from civicclerk.meeting_lifecycle import meeting_records
+            with self.engine.begin() as connection:
+                parent = connection.execute(sa.select(meeting_records.c.id).where(
+                    meeting_records.c.id == meeting_id).with_for_update()).first()
+                if parent is None:
+                    raise ValueError("Meeting not found.")
+                version = (connection.scalar(sa.select(sa.func.max(packet_versions.c.version)).where(
+                    packet_versions.c.meeting_id == meeting_id)) or 0) + 1
+                snapshot = PacketSnapshot(id=str(uuid4()),meeting_id=meeting_id,version=version,
+                    agenda_item_ids=tuple(agenda_item_ids),actor=actor)
+                digest = hashlib.sha256(json.dumps(snapshot.public_dict(),sort_keys=True,separators=(",",":")).encode()).hexdigest()
+                connection.execute(packet_versions.insert().values(id=snapshot.id,meeting_id=meeting_id,
+                    version=version,snapshot_uri=f"urn:townlight:packet-snapshot:{snapshot.id}",
+                    agenda_item_ids=agenda_item_ids,snapshot_hash=digest,actor=actor,
+                    created_at=snapshot.created_at,updated_at=snapshot.created_at))
+            return snapshot
         existing = self._snapshots.setdefault(meeting_id, [])
         snapshot = PacketSnapshot(
             id=str(uuid4()),
@@ -159,6 +199,13 @@ class PacketStore:
         return snapshot
 
     def list_snapshots(self, meeting_id: str) -> list[PacketSnapshot]:
+        if self.engine is not None:
+            with self.engine.connect() as connection:
+                rows = connection.execute(sa.select(packet_versions).where(
+                    packet_versions.c.meeting_id == meeting_id).order_by(packet_versions.c.version)).mappings().all()
+            return [PacketSnapshot(id=str(r["id"]),meeting_id=str(r["meeting_id"]),version=r["version"],
+                agenda_item_ids=tuple(r["agenda_item_ids"] or []),actor=r["actor"],
+                created_at=r["created_at"].replace(tzinfo=UTC) if r["created_at"].tzinfo is None else r["created_at"]) for r in rows]
         return list(self._snapshots.get(meeting_id, []))
 
     def create_export_bundle(
@@ -171,15 +218,18 @@ class PacketStore:
         sources: list[PacketSource],
         notices: list[dict] | None = None,
         public_bundle: bool = True,
+        snapshot_id: str | None = None,
+        agenda_content: list[dict] | None = None,
+        source_files: dict[str, Path] | None = None,
     ) -> PacketExportResult:
-        snapshots = self._snapshots.get(meeting_id, [])
+        snapshots = self.list_snapshots(meeting_id)
         if not snapshots:
             raise PacketExportError(
                 code="packet_snapshot_required",
                 message="Packet export requires at least one packet snapshot.",
                 fix="Create a packet snapshot before exporting the records-ready bundle.",
             )
-        if not sources:
+        if not sources and agenda_content is None:
             raise PacketExportError(
                 code="source_provenance_required",
                 message="Packet export requires at least one source reference.",
@@ -202,7 +252,9 @@ class PacketStore:
 
         root = Path(bundle_path)
         root.mkdir(parents=True, exist_ok=True)
-        snapshot = snapshots[-1]
+        snapshot = next((item for item in snapshots if item.id == snapshot_id), None) if snapshot_id else snapshots[-1]
+        if snapshot is None:
+            raise ValueError("Packet version not found.")
         generated_at = datetime.now(UTC)
         provenance = ProvenanceBundle(
             bundle_id=f"civicclerk-{meeting_id}-packet-v{snapshot.version}",
@@ -234,6 +286,21 @@ class PacketStore:
             BundleFile.from_path(root, "provenance.json"),
             BundleFile.from_path(root, "notices.json"),
         ]
+        if agenda_content is not None:
+            _write_json(root / "agenda.json", agenda_content)
+            (root / "packet.md").write_text(
+                f"# {meeting_title}\n\nPacket version {snapshot.version}\n\n" +
+                "\n\n".join(f"{i+1}. {item.get('title','')}\n\n{item.get('department_name','')}"
+                    for i,item in enumerate(agenda_content)), encoding="utf-8")
+            files.extend([BundleFile.from_path(root,"agenda.json"),BundleFile.from_path(root,"packet.md")])
+        for relative, source in (source_files or {}).items():
+            target = root / relative
+            if Path(relative).is_absolute() or ".." in Path(relative).parts or not target.resolve().is_relative_to(root.resolve()):
+                raise ValueError("Invalid packet source destination.")
+            target.parent.mkdir(parents=True,exist_ok=True)
+            with source.open("rb") as incoming, target.open("xb") as outgoing:
+                shutil.copyfileobj(incoming,outgoing)
+            files.append(BundleFile.from_path(root,relative))
         bundle = ExportBundle(
             module_name="civicclerk",
             module_version=CIVICCLERK_VERSION,
