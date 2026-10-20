@@ -490,7 +490,7 @@ def test_alembic_command_upgrades_real_pgvector_database(
             )
 
         assert civiccore_revision == "civiccore_0003_local_task_queue"
-        assert civicclerk_revision == "civicclerk_0016_archive_indexes"
+        assert civicclerk_revision == "civicclerk_0021_sources"
         assert {"agenda_item_ids", "snapshot_hash", "actor"} <= packet_version_columns
         assert "uq_packet_versions_meeting_version" in packet_version_constraints
         assert civicclerk_tables == set(CANONICAL_TABLES) | {

@@ -1,5 +1,36 @@
 # CivicMeetings User Manual
 
+## Local Townlight Records–Meetings development candidate — October 19, 2026
+
+This is not a new public release. The unsigned M4 Windows installer offers
+**Townlight Records + Meetings** during setup. Choose that profile explicitly;
+the default Records profile does not add Meetings. Complete administrator
+setup and the displayed Records activation before using the connected system.
+
+Closing the application stops its supervised services. After reopening, use
+System Health → Start for the local workflow services if Records reports that
+the service is unavailable. Do not reload an old JSON copy. The M4 installed
+check verified this native-window restart, backup/restore, repair and ordinary
+uninstall. Ordinary Windows uninstall retains the profile; Prepare Uninstall
+is a different, explicitly reviewed data-removal operation.
+
+In Meetings & Notices, the mapped native workflow supports meeting/agenda
+records, packet files and local delivery, editable notice documents and posting
+evidence, transcript and vote corrections, action items, manual minutes, and
+local archives. Human-selected sequence is not blocked by advisory warnings.
+Posting unadopted minutes labels them as a draft; signing does not adopt them.
+Earlier decisions, documents and corrections remain in the history.
+
+In Records, use Search Meetings to find explicitly public archive text and
+attach a selected item to the request. The managed copy retains its source
+identity, citation and hash. Restricted archive material and raw staff files
+are not offered. Attachment or drafting does not approve a Records response.
+Local text delivery is not external website publication. Native AI minutes
+and transcription are not verified for this candidate. Code is not included.
+
+The release-recovery material below describes the historical web/release
+surface, not proof of feature parity or a public native Meetings release.
+
 Status: CivicMeetings v1.0.4 runtime foundation label is provisional during release recovery
 Version: `1.0.4`
 

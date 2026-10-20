@@ -1,5 +1,72 @@
 # CivicMeetings
 
+## Local Townlight Meetings integration candidate — October 19, 2026
+
+This section describes uncommitted M1–M4 development, not a new published release.
+The explicit desktop `meetings-beta` profile routes integrated operations through
+authenticated Python services and PostgreSQL; the default Records profile is unchanged.
+
+Migrations 0017/0018 reconcile legacy meeting and agenda lifecycle rows into the
+canonical `meetings`/`agenda_items` tables, retaining IDs and audit history.
+Conflicting existing rows abort migration instead of overwriting either record;
+legacy tables remain intact. Migration 0019 persists minutes decision history;
+0020 retains packet contents/delivery receipts and notice history; 0021 retains
+transcript text/corrections and archive actors. Fresh and upgrade migrations have
+both been exercised against task-owned PostgreSQL databases.
+Only the task-owned synthetic database has been migrated and exercised.
+
+Authorized human decisions are not blocked by suggested workflow sequencing.
+Agenda placement/reassignment, recorded review stages, meeting stage changes,
+and minutes posting/adoption/signature decisions preserve prior audit history and
+record warnings for unusual order. These actions do not fabricate intermediate
+approvals. Posting unadopted minutes retains the draft label; signing alone does
+not adopt or post. Staff-written drafts may omit citations; any validation
+warnings are advisory and are not a prerequisite for the human action.
+Existing automated/generated-text validation and access permissions remain intact.
+The legacy `human_approver` storage field identifies the authenticated author for
+manual drafts; saving a draft does not constitute formal adoption or approval.
+
+The mapped native manual M2 journey now includes:
+
+- meeting/agenda creation, placement and human-selected lifecycle stages;
+- versioned packet contents with staged source files, checked hashes and actual
+  local delivery bundles (Core manifest/checksums, readable packet and source files);
+- advisory notice timing, editable Notice templates, exported notice text and
+  append-only posting evidence; revisions keep earlier files and proof, and show
+  whether that proof actually references the latest document without blocking work;
+- transcript captures/corrections, motions/votes/corrections and action items;
+- staff-written cited or uncited minutes, separate post/adopt/sign decisions,
+  and a searchable local archive with selected-text downloads and draft labels.
+
+The actual native debug WebView completed the mapped journey through adopted,
+signed minutes and archive, with exact database readback after API restart.
+Earlier draft archives, source captures and posting evidence remain intact.
+Public archive routes exclude restricted records. This is local selected-text
+delivery, not external website hosting or public distribution of raw attachments.
+Recording a posting decision or meeting stage alone does not deliver a document.
+
+The October 19 M4 unsigned local MSI has now passed the mapped native workflow
+inside Windows Sandbox, including the connected Meetings-to-Records journey.
+This is not a signed candidate, public Meetings release, or completion of every
+historical Meetings feature. Optional legacy
+AI minutes/transcription are not integrated or inference-verified in this native
+candidate; no model was started. No new claim is made for those features.
+M3 now connects explicitly public archive **text snapshots** to Records search
+and attachment in the local candidate. Agenda, packet text and minutes retain
+their archive/version ID, meeting ID, source references and SHA-256. Restricted
+archive records, raw transcripts and staff-only attachments are not exposed.
+Selection is rechecked at attachment time; no caller-supplied content or path is
+trusted. Records preserves a separate exact evidence copy, citation, structured
+provenance and attributed audit entry. Repeating the same attachment does not
+duplicate it. This does not approve or release a Records response. Actual native
+search/attach/draft and restart readback passed using synthetic data.
+The identified M4 artifact and individual installation/recovery results are
+recorded in the workspace execution and check logs. Shared Rust handlers with
+remaining Code/city-core callers are retained, not claimed retired.
+Code handoffs remain in the subsequent connected-system work. Existing frontend
+and release-recovery notices below describe their own surfaces, not proof that
+all historical web features are present in the native candidate.
+
 > Formerly published as "CivicClerk"; renamed 2026-07 to avoid confusion with an unrelated commercial product of that name. Package and service identifiers are unchanged.
 
 **CivicMeetings is the CivicSuite module for municipal meetings, agendas, packets, minutes, votes, notices, and public meeting archives.**
