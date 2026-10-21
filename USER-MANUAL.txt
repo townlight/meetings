@@ -1,3 +1,5 @@
+<a id="civicmeetings-user-manual"></a>
+
 # Townlight Meetings User Manual
 
 ## Published connected desktop: 1.4.0-beta.1
@@ -61,6 +63,8 @@ regression evidence and does not claim that a city production deployment has
 occurred.
 
 ## Part 1: Non-Technical Overview
+
+<a id="what-civicmeetings-is"></a>
 
 ### What Townlight Meetings is
 

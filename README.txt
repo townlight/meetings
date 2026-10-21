@@ -1,3 +1,5 @@
+<a id="civicmeetings"></a>
+
 # Townlight Meetings
 
 ## Published connected desktop: 1.4.0-beta.1
@@ -132,6 +134,8 @@ its tag predates the attestation model and its public release assets do not
 include `release-attestation.json` or `release-attestation.json.bundle`. CO-4
 records the decision in `docs/ops/tier1-retrofit-ledger.md`: do not delete,
 recreate, mirror, or promote `v0.1.20` as an attested provenance baseline.
+
+<a id="what-civicmeetings-will-do"></a>
 
 ## What Townlight Meetings will do
 
@@ -600,6 +604,8 @@ For IT release handoff, `scripts/build_release_handoff_bundle.ps1` and `scripts/
 For connector import operations, `python scripts/check_connector_sync_readiness.py` verifies the supported Granicus, Legistar, PrimeGov, and NovusAGENDA local payload contracts without outbound network calls. It can also validate a proposed `--source-url` or `--odbc-connection-string` through the shared Townlight Core host guards before vendor-network live sync is designed. `python scripts/check_vendor_live_sync_readiness.py --connector legistar --source-url https://vendor.example.gov/api/meetings --auth-method bearer_token` checks the first live-sync source contract, rejects credentials in URLs, previews `healthy`/`degraded`/`circuit_open`, and simulates the circuit breaker without contacting the vendor. With `CIVICCLERK_VENDOR_SYNC_DB_URL` set, `POST /vendor-live-sync/sources` saves a validated source and `POST /vendor-live-sync/sources/{id}/run-log` records success, partial, or failed run outcomes into the durable no-network ledger; `GET /vendor-live-sync/sources` and `GET /vendor-live-sync/sources/{id}/run-log` expose the operator health state and actionable fix text. When IT has exported local JSON files, `python scripts/run_connector_import_sync.py --payload-dir path\to\exports --output connector-import-ledger.json` normalizes `<connector>.json` or `<connector>/*.json` payloads through the same import contract and writes a provenance ledger. In the Docker product path, IT can enable the same local-first normalization on a schedule with `CIVICCLERK_CONNECTOR_SYNC_ENABLED=true`, drop approved exports into `CIVICCLERK_CONNECTOR_SYNC_PAYLOAD_DIR_HOST`, and review the ledger at `CIVICCLERK_CONNECTOR_SYNC_LEDGER_PATH`. This scheduled local export-drop sync still does not contact vendors, and the vendor live-sync ledger does not contact vendors until a later adapter/scheduled-pull slice is built.
 
 For deployment hardening, `scripts/check_deployment_readiness.py` now prints a non-mutating readiness report that reuses the staff auth readiness contract, checks whether deployment database URL environment variables are present without printing secret values, warns when `CIVICCLERK_EXPORT_ROOT` is still using the local default, verifies release artifacts and required docs exist, and confirms the trusted-header nginx reference is available. Run it without flags for an operator report, with `--env-file path\to\deployment.env` to validate a copied profile from `docs/examples/deployment.env.example`, or with `--strict` when CI or IT handoff should fail unless the deployment posture is ready.
+
+<a id="civiccode-live-handoff-emitter"></a>
 
 ### Townlight Code live handoff emitter
 
