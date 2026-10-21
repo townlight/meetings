@@ -1,4 +1,4 @@
-"""Accessible resident-facing public portal shell for CivicMeetings."""
+"""Accessible resident-facing public portal shell for Townlight Meetings."""
 
 from __future__ import annotations
 

@@ -478,7 +478,7 @@ def test_local_trusted_header_proxy_helper_is_shipped() -> None:
 
     assert helper.exists()
     text = helper.read_text(encoding="utf-8")
-    assert "Loopback-only trusted-header proxy rehearsal helper for CivicMeetings." in text
+    assert "Loopback-only trusted-header proxy rehearsal helper for Townlight Meetings." in text
     assert "CIVICCLERK_LOCAL_PROXY_UPSTREAM" in text
     assert "X-Forwarded-For" not in text
 

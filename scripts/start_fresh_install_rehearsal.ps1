@@ -132,11 +132,11 @@ try {
     }
 
     if ($null -eq $health) {
-        throw "The installed CivicMeetings app did not answer $appUrl/health within 20 seconds. Check the app process output and whether port $AppPort is already in use."
+        throw "The installed Townlight Meetings app did not answer $appUrl/health within 20 seconds. Check the app process output and whether port $AppPort is already in use."
     }
 
     if ($health.status -ne "ok" -or $health.service -ne "civicclerk" -or $health.version -ne "1.0.4" -or $health.civiccore -ne "1.2.1") {
-        throw "Unexpected /health response: $($health | ConvertTo-Json -Compress). Expected CivicMeetings 1.0.4 with CivicCore 1.2.1."
+        throw "Unexpected /health response: $($health | ConvertTo-Json -Compress). Expected Townlight Meetings 1.0.4 with Townlight Core 1.2.1."
     }
 
     $readiness = Invoke-JsonGet -Url "$appUrl/staff/auth-readiness"
@@ -146,7 +146,7 @@ try {
 
     $staffResponse = Invoke-WebRequest -Uri "$appUrl/staff" -UseBasicParsing -TimeoutSec 10
     if ($staffResponse.StatusCode -ne 200 -or $staffResponse.Content -notmatch "CivicMeetings") {
-        throw "Unexpected /staff response. Expected HTTP 200 with the CivicMeetings staff workflow shell."
+        throw "Unexpected /staff response. Expected HTTP 200 with the Townlight Meetings staff workflow shell."
     }
 
     Write-Output "Fresh install smoke checks passed."

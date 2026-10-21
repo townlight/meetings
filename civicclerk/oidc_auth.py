@@ -1,4 +1,4 @@
-"""OIDC bearer-token validation for CivicMeetings staff routes."""
+"""OIDC bearer-token validation for Townlight Meetings staff routes."""
 
 from __future__ import annotations
 
@@ -123,7 +123,7 @@ def authorize_oidc_staff_token(
         raise HTTPException(
             status_code=503,
             detail={
-                "message": "CivicMeetings OIDC staff auth is not configured.",
+                "message": "Townlight Meetings OIDC staff auth is not configured.",
                 "fix": _missing_config_fix(missing, env_names),
             },
         )
@@ -166,7 +166,7 @@ def authorize_oidc_staff_token(
             detail={
                 "message": "OIDC token is not valid yet.",
                 "fix": (
-                    "Check clock synchronization between CivicMeetings and the municipal identity "
+                    "Check clock synchronization between Townlight Meetings and the municipal identity "
                     "provider, then refresh the access token before retrying."
                 ),
             },
@@ -195,7 +195,7 @@ def authorize_oidc_staff_token(
                 "message": "OIDC identity lacks an allowed staff role.",
                 "fix": (
                     "Map the identity provider app role or group claim to one of the "
-                    "CivicMeetings staff roles before retrying."
+                    "Townlight Meetings staff roles before retrying."
                 ),
                 "required_roles": sorted(normalized_allowed),
                 "principal_roles": sorted(principal_roles),
@@ -251,7 +251,7 @@ def authorize_oidc_staff_session_cookie(
     allowed_roles: Iterable[str],
     env_names: dict[str, str],
 ) -> AuthenticatedPrincipal:
-    """Validate a signed CivicMeetings browser session cookie for OIDC staff routes."""
+    """Validate a signed Townlight Meetings browser session cookie for OIDC staff routes."""
 
     if not session_cookie:
         raise HTTPException(
@@ -292,7 +292,7 @@ def authorize_oidc_staff_session_cookie(
             status_code=401,
             detail={
                 "message": "OIDC browser session could not be validated.",
-                "fix": "Clear the CivicMeetings staff session cookie, sign in again, and confirm the session secret has not changed.",
+                "fix": "Clear the Townlight Meetings staff session cookie, sign in again, and confirm the session secret has not changed.",
             },
             headers={"WWW-Authenticate": "Bearer"},
         ) from exc
@@ -305,7 +305,7 @@ def authorize_oidc_staff_session_cookie(
             status_code=403,
             detail={
                 "message": "OIDC browser session lacks an allowed staff role.",
-                "fix": "Ask IT to map the identity provider app role or group claim to a CivicMeetings staff role, then sign in again.",
+                "fix": "Ask IT to map the identity provider app role or group claim to a Townlight Meetings staff role, then sign in again.",
                 "required_roles": sorted(normalized_allowed),
                 "principal_roles": sorted(principal_roles),
             },
@@ -373,4 +373,4 @@ def _missing_config_fix(missing: Iterable[str], env_names: dict[str, str]) -> st
         "algorithms": env_names["algorithms"],
     }
     needed = ", ".join(labels[item] for item in missing)
-    return f"Set {needed} before exposing CivicMeetings staff routes in OIDC mode."
+    return f"Set {needed} before exposing Townlight Meetings staff routes in OIDC mode."

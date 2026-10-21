@@ -1,4 +1,4 @@
-"""Contract-backed integration readiness for CivicSuite dependency boundaries."""
+"""Contract-backed integration readiness for Townlight dependency boundaries."""
 
 from __future__ import annotations
 
@@ -96,7 +96,7 @@ def integration_contracts() -> list[IntegrationContract]:
             ),
             adversarial_scenarios=(
                 "closed-session result withheld from anonymous search",
-                "CivicRecords unavailable fallback preserves local public archive search",
+                "Townlight Records unavailable fallback preserves local public archive search",
                 "source citations are required before a result can enter minutes or packet work",
             ),
         ),
@@ -262,7 +262,7 @@ def integration_readiness_payload() -> dict[str, object]:
         "contracts": [contract.public_dict() for contract in contracts],
         "checks": [check.public_dict() for check in checks],
         "message": (
-            "CivicMeetings integration depth is framed as live-wire or in-process boundary validation; "
+            "Townlight Meetings integration depth is framed as live-wire or in-process boundary validation; "
             "mock adversarial checks remain regression coverage, not release-depth proof."
         ),
         "fix": (
@@ -279,7 +279,7 @@ def _check_civicrecords_closed_session_boundary() -> IntegrationCheck:
         contract_id="civicrecords-search",
         scenario="closed_session_result_withheld",
         ok=not leaked,
-        message="Anonymous CivicRecords mock search does not expose closed-session results.",
+        message="Anonymous Townlight Records mock search does not expose closed-session results.",
         fix="Keep closed-session result expansion behind archive_reader or city_attorney roles.",
     )
 
@@ -288,14 +288,14 @@ def _check_civicrecords_unavailable_fallback() -> IntegrationCheck:
     fallback = {
         "status": "degraded",
         "local_archive_available": True,
-        "fix": "Continue with CivicMeetings local archive search, then retry CivicRecords after IT restores the service.",
+        "fix": "Continue with Townlight Meetings local archive search, then retry Townlight Records after IT restores the service.",
     }
-    ok = fallback["local_archive_available"] and "retry CivicRecords" in fallback["fix"]
+    ok = fallback["local_archive_available"] and "retry Townlight Records" in fallback["fix"]
     return IntegrationCheck(
         contract_id="civicrecords-search",
         scenario="dependency_unavailable_fallback",
         ok=ok,
-        message="CivicRecords unavailable mock keeps CivicMeetings local archive search available with fix guidance.",
+        message="Townlight Records unavailable mock keeps Townlight Meetings local archive search available with fix guidance.",
         fix=str(fallback["fix"]),
     )
 
@@ -314,8 +314,8 @@ def _check_civiccode_handoff_idempotency() -> IntegrationCheck:
         contract_id="civiccode-handoff",
         scenario="idempotent_replay_key",
         ok=key_a == key_b,
-        message="CivicCode handoff mock generates stable idempotency keys for replayed adopted actions.",
-        fix="Reuse the idempotency key when replaying pending CivicCode handoff records.",
+        message="Townlight Code handoff mock generates stable idempotency keys for replayed adopted actions.",
+        fix="Reuse the idempotency key when replaying pending Townlight Code handoff records.",
     )
 
 

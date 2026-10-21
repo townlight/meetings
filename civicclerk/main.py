@@ -1,4 +1,4 @@
-"""FastAPI runtime foundation for CivicMeetings."""
+"""FastAPI runtime foundation for Townlight Meetings."""
 
 from __future__ import annotations
 
@@ -86,7 +86,7 @@ from civiccore import __version__ as CIVICCORE_VERSION
 app = FastAPI(
     title='Townlight Meetings',
     version=__version__,
-    summary="Runtime foundation for CivicMeetings municipal meeting workflows.",
+    summary="Runtime foundation for Townlight Meetings municipal meeting workflows.",
 )
 
 agenda_items = AgendaItemStore()
@@ -495,14 +495,14 @@ async def root() -> dict[str, str]:
         "name": "CivicMeetings",
         "status": f"v{__version__} runtime foundation release",
         "message": (
-            "CivicMeetings agenda item, meeting lifecycle, packet snapshot, and notice compliance "
+            "Townlight Meetings agenda item, meeting lifecycle, packet snapshot, and notice compliance "
             "enforcement are online with immutable motion, vote, action-item, and citation-gated "
             "minutes draft capture plus permission-aware public calendar and archive endpoints; "
             "prompt YAML and offline evaluation gates protect policy-bearing prompt changes; "
             "local-first Granicus, Legistar, PrimeGov, and NovusAGENDA imports now normalize "
-            f"source provenance; CivicCore v{CIVICCORE_VERSION} packet export bundles now include manifests, "
+            f"source provenance; Townlight Core v{CIVICCORE_VERSION} packet export bundles now include manifests, "
             "checksums, provenance, and hash-chained audit evidence; "
-            "CivicMeetings notice checks now reuse the shared CivicCore notice compliance helper while preserving "
+            "Townlight Meetings notice checks now reuse the shared Townlight Core notice compliance helper while preserving "
             "meeting-specific warning and posting flows; "
             "accessibility and browser QA "
             "gates now verify loading, success, empty, error, partial, keyboard, focus, contrast, "
@@ -531,7 +531,7 @@ async def root() -> dict[str, str]:
             "meeting records can now persist through the configured meeting database; "
             "meeting schedule fields now include body linkage and location, with pre-lock edits "
             "audited before meetings move in progress; "
-            f"CivicMeetings is versioned as v{__version__} with the production-depth service slices included; "
+            f"Townlight Meetings is versioned as v{__version__} with the production-depth service slices included; "
             "staff workflow APIs now support a local-open rehearsal mode, a bearer-protected bridge mode, "
             "and a trusted-header reverse-proxy mode with a required trusted-proxy CIDR allowlist, "
             "with the /staff screen showing the current access "
@@ -685,7 +685,7 @@ async def staff_session(request: Request) -> dict[str, object]:
             return response
         response["message"] = "OIDC staff identity accepted from the configured municipal provider."
         response["fix"] = (
-            "Keep the identity provider app roles or groups mapped to CivicMeetings staff roles."
+            "Keep the identity provider app roles or groups mapped to Townlight Meetings staff roles."
         )
         return response
 
@@ -694,7 +694,7 @@ async def staff_session(request: Request) -> dict[str, object]:
     response["fix"] = (
         f"Keep {trusted_header_config.provider_name} stripping client-supplied copies of "
         f"{trusted_header_config.principal_header_name} and {trusted_header_config.roles_header_name} "
-        "before CivicMeetings."
+        "before Townlight Meetings."
     )
     response["principal_header"] = trusted_header_config.principal_header_name
     response["roles_header"] = trusted_header_config.roles_header_name
@@ -788,7 +788,7 @@ async def staff_oidc_callback(request: Request) -> RedirectResponse:
             status_code=400,
             detail={
                 "message": "OIDC sign-in state did not match.",
-                "fix": "Restart sign-in from /staff/login. If this repeats, confirm cookies are allowed for the CivicMeetings host.",
+                "fix": "Restart sign-in from /staff/login. If this repeats, confirm cookies are allowed for the Townlight Meetings host.",
             },
         )
     code_verifier = request.cookies.get(STAFF_OIDC_PKCE_COOKIE_NAME)
@@ -797,7 +797,7 @@ async def staff_oidc_callback(request: Request) -> RedirectResponse:
             status_code=400,
             detail={
                 "message": "OIDC sign-in PKCE verifier is missing.",
-                "fix": "Restart sign-in from /staff/login. If this repeats, confirm cookies are allowed for the CivicMeetings host.",
+                "fix": "Restart sign-in from /staff/login. If this repeats, confirm cookies are allowed for the Townlight Meetings host.",
             },
         )
     code = request.query_params.get("code")
@@ -828,7 +828,7 @@ async def staff_oidc_callback(request: Request) -> RedirectResponse:
             status_code=502,
             detail={
                 "message": "OIDC token response did not include an ID token or access token.",
-                "fix": "Confirm the provider app registration issues an ID token or API access token for CivicMeetings.",
+                "fix": "Confirm the provider app registration issues an ID token or API access token for Townlight Meetings.",
             },
         )
     principal = authorize_oidc_staff_token(
@@ -859,7 +859,7 @@ async def staff_oidc_callback(request: Request) -> RedirectResponse:
 @app.get("/staff/logout")
 @app.post("/staff/logout")
 async def staff_logout(request: Request) -> RedirectResponse:
-    """Clear the local CivicMeetings staff browser session."""
+    """Clear the local Townlight Meetings staff browser session."""
 
     _revoke_suite_session_from_request(request)
     response = RedirectResponse("/staff", status_code=302)
@@ -1000,7 +1000,7 @@ async def admin_prompts() -> dict[str, object]:
     return {
         "consumer_app": "civicclerk",
         "prompts": prompts,
-        "message": "Prompt-library admin shows YAML prompts resolved through the CivicCore override path.",
+        "message": "Prompt-library admin shows YAML prompts resolved through the Townlight Core override path.",
         "fix": "For public-facing prompt changes, complete clerk-and-attorney approval before enabling the prompt.",
     }
 
@@ -1820,7 +1820,7 @@ async def list_action_items(meeting_id: str) -> dict[str, list[dict]]:
 
 
 class CivicCodeHandoffEmitError(Exception):
-    """CivicCode handoff emission failed with operator-facing detail."""
+    """Townlight Code handoff emission failed with operator-facing detail."""
 
     def __init__(self, message: str) -> None:
         self.message = message
@@ -1900,7 +1900,7 @@ async def _send_civiccode_handoff_payload(
         response = await client.post(intake_url, json=payload, headers=headers)
     if response.status_code >= 400:
         raise CivicCodeHandoffEmitError(
-            f"CivicCode intake returned HTTP {response.status_code}: {response.text[:300]}"
+            f"Townlight Code intake returned HTTP {response.status_code}: {response.text[:300]}"
         )
     return response.json()
 
@@ -1924,7 +1924,7 @@ async def _emit_civiccode_handoff(record: dict[str, object]) -> None:
         )
     except httpx.TimeoutException:
         record["civiccode_handoff_status"] = CIVICCODE_HANDOFF_FAILED
-        record["civiccode_handoff_last_error"] = "CivicCode intake timed out after the configured 10s connect / 30s read window."
+        record["civiccode_handoff_last_error"] = "Townlight Code intake timed out after the configured 10s connect / 30s read window."
         return
     except (httpx.HTTPError, CivicCodeHandoffEmitError) as exc:
         record["civiccode_handoff_status"] = CIVICCODE_HANDOFF_FAILED
@@ -1937,7 +1937,7 @@ async def _emit_civiccode_handoff(record: dict[str, object]) -> None:
 
 def _minutes_ai_unavailable_detail(reason: str) -> dict[str, str]:
     return {
-        "message": "AI assist unavailable; CivicMeetings core workflow is still available.",
+        "message": "AI assist unavailable; Townlight Meetings core workflow is still available.",
         "fix": (
             f"Start Ollama, confirm {CIVICCLERK_OLLAMA_BASE_URL_ENV_VAR}, and retry the minutes-AI assist. "
             "Manual cited minutes drafting remains available through /meetings/{meeting_id}/minutes/drafts."
@@ -2126,7 +2126,7 @@ async def retry_ordinance_resolution_handoff(
     meeting_id: str,
     payload: OrdinanceResolutionHandoffRetry | None = None,
 ) -> dict[str, object]:
-    """Retry CivicCode emission for failed or unconfigured ordinance handoffs."""
+    """Retry Townlight Code emission for failed or unconfigured ordinance handoffs."""
 
     _require_meeting_or_404(meeting_id)
     target_id = payload.handoff_id if payload is not None else None
@@ -2146,11 +2146,11 @@ async def retry_ordinance_resolution_handoff(
         "meeting_id": meeting_id,
         "retried": len(results),
         "handoffs": results,
-        "message": "CivicCode handoff retry completed for selected local handoff records.",
+        "message": "Townlight Code handoff retry completed for selected local handoff records.",
         "fix": (
             f"If a record still shows {CIVICCODE_HANDOFF_FAILED}, check "
             f"{CIVICCODE_INTAKE_URL_ENV_VAR}, {CIVICCODE_INTAKE_AUTH_ENV_VAR}, "
-            "and CivicCode health before retrying."
+            "and Townlight Code health before retrying."
         ),
     }
 
@@ -2389,7 +2389,7 @@ async def list_vendor_live_sync_sources() -> dict[str, object]:
     return {
         "network_calls": False,
         "sources": sources,
-        "message": "Vendor live-sync source health is loaded from CivicMeetings persistence.",
+        "message": "Vendor live-sync source health is loaded from Townlight Meetings persistence.",
         "fix": "If a source is degraded or circuit_open, review its run log before enabling scheduled pulls.",
     }
 
@@ -2476,7 +2476,7 @@ async def list_vendor_live_sync_runs(source_id: str) -> dict[str, object]:
         "network_calls": False,
         "source": source.public_dict(),
         "runs": runs,
-        "message": "Run history is loaded from CivicMeetings persistence; no vendor network call was attempted.",
+        "message": "Run history is loaded from Townlight Meetings persistence; no vendor network call was attempted.",
     }
 
 
@@ -2600,7 +2600,7 @@ def _resolve_archive_search_principal(
 ) -> AuthenticatedPrincipal | None:
     return resolve_optional_bearer_roles(
         credentials,
-        service_name="CivicMeetings",
+        service_name='Townlight Meetings',
         feature_name="archive search staff access",
         token_roles_env_var="CIVICCLERK_AUTH_TOKEN_ROLES",
         allowed_roles={"archive_reader", "clerk_admin", "city_attorney"},
@@ -2636,7 +2636,7 @@ def _authorize_staff_principal(request: Request) -> AuthenticatedPrincipal:
                 return suite_principal
         return authorize_bearer_roles(
             credentials,
-            service_name="CivicMeetings",
+            service_name='Townlight Meetings',
             feature_name="staff workflow access",
             token_roles_env_var=STAFF_AUTH_TOKEN_ROLES_ENV_VAR,
             allowed_roles=STAFF_ALLOWED_ROLES,
@@ -2645,14 +2645,14 @@ def _authorize_staff_principal(request: Request) -> AuthenticatedPrincipal:
         trusted_header_config = _get_staff_trusted_header_config()
         enforce_trusted_proxy_source(
             request.client.host if request.client is not None else None,
-            service_name="CivicMeetings",
+            service_name='Townlight Meetings',
             feature_name="staff workflow access",
             config=trusted_header_config,
             trusted_proxy_env_var=STAFF_AUTH_SSO_TRUSTED_PROXIES_ENV_VAR,
         )
         return authorize_trusted_header_roles(
             request.headers,
-            service_name="CivicMeetings",
+            service_name='Townlight Meetings',
             feature_name="staff workflow access",
             principal_header_name=trusted_header_config.principal_header_name,
             roles_header_name=trusted_header_config.roles_header_name,
@@ -2745,7 +2745,7 @@ def _get_staff_auth_mode() -> str:
     raise HTTPException(
         status_code=503,
         detail={
-            "message": "CivicMeetings staff auth mode is invalid.",
+            "message": "Townlight Meetings staff auth mode is invalid.",
             "fix": (
                 f"Set {STAFF_AUTH_MODE_ENV_VAR} to '{STAFF_PROTECTED_MODE}' to deny anonymous writes, "
                 f"'{STAFF_OPEN_MODE}' for local rehearsal, "
@@ -2819,13 +2819,13 @@ def _get_local_trusted_header_proxy_rehearsal(
             roles_header_name: LOCAL_TRUSTED_HEADER_PROXY_DEFAULT_ROLES,
         },
         "steps": [
-            "Start CivicMeetings on loopback with the app_env values shown here.",
+            "Start Townlight Meetings on loopback with the app_env values shown here.",
             "Run the helper command on the same workstation to inject placeholder trusted headers.",
             "Browse or call the helper listen_url instead of the upstream URL so the backend only trusts loopback proxy traffic.",
         ],
         "warnings": [
             "This helper is for localhost rehearsal only and does not terminate TLS or manage an identity provider.",
-            "The helper strips client-supplied trusted identity headers before forwarding to CivicMeetings.",
+            "The helper strips client-supplied trusted identity headers before forwarding to Townlight Meetings.",
         ],
     }
 
@@ -3031,7 +3031,7 @@ def _get_staff_oidc_auth_readiness() -> dict[str, object]:
         "checks": checks,
         "message": "OIDC staff auth is configured for municipal identity-provider access tokens.",
         "fix": (
-            "Use /staff/login for browser sign-in, or use an access token with a CivicMeetings staff "
+            "Use /staff/login for browser sign-in, or use an access token with a Townlight Meetings staff "
             "app role or group claim for API smoke checks."
             if not browser_missing
             else "Token validation is configured; finish the browser_login settings before clerk browser testing."
@@ -3072,9 +3072,9 @@ def _get_staff_trusted_header_readiness() -> dict[str, object]:
             trusted_header_config.roles_header_name: "<comma-separated mapped staff roles>",
         },
         "steps": [
-            "Authenticate the operator before CivicMeetings and map the trusted staff principal plus roles into proxy-controlled headers.",
+            "Authenticate the operator before Townlight Meetings and map the trusted staff principal plus roles into proxy-controlled headers.",
             "Strip any client-supplied copies of the trusted staff headers before setting the proxy-owned values shown here.",
-            f"Set {STAFF_AUTH_SSO_TRUSTED_PROXIES_ENV_VAR} to the proxy CIDRs that are allowed to forward those headers to CivicMeetings.",
+            f"Set {STAFF_AUTH_SSO_TRUSTED_PROXIES_ENV_VAR} to the proxy CIDRs that are allowed to forward those headers to Townlight Meetings.",
         ],
         "warnings": [
             "This reference config is a starting point; replace the placeholder TLS paths and authenticated identity variables with your real deployment values.",
@@ -3223,7 +3223,7 @@ def _oidc_browser_login_fix(missing: list[str]) -> str:
     readable = ", ".join(env_names[name] for name in missing if name in env_names)
     return (
         f"Set {readable} before clerk browser sign-in. The redirect URI must point to "
-        "/staff/oidc/callback on the same CivicMeetings host."
+        "/staff/oidc/callback on the same Townlight Meetings host."
     )
 
 

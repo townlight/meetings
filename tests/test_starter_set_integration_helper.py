@@ -86,8 +86,8 @@ def test_starter_set_integration_passes_with_umbrella_contract(tmp_path: Path) -
     assert "starter_set_ready=true" in result.stdout
     assert "release_evidence_ready=true" in result.stdout
     assert "[PASS] clerk-core profile order" in result.stdout
-    assert "[PASS] CivicMeetings module contract" in result.stdout
-    assert "[PASS] CivicRecords AI pairing" in result.stdout
+    assert "[PASS] Townlight Meetings module contract" in result.stdout
+    assert "[PASS] Townlight Records pairing" in result.stdout
     assert "[PASS] starter-set release contract" in result.stdout
     assert "[PASS] starter-set archives" in result.stdout
     assert "STARTER-SET-INTEGRATION: RELEASE-EVIDENCE-READY" in result.stdout
@@ -104,7 +104,7 @@ def test_starter_set_integration_print_only_documents_contract() -> None:
     )
 
     assert result.returncode == 0, result.stdout + result.stderr
-    assert "Umbrella clerk-core profile installs CivicCore" in result.stdout
+    assert "Umbrella clerk-core profile installs Townlight Core" in result.stdout
     assert "package workflow proof" in result.stdout
     assert "STARTER-SET-INTEGRATION: PLAN" in result.stdout
 

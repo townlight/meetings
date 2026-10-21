@@ -38,7 +38,7 @@ class Check:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Check CivicMeetings' CivicSuite starter-set installer contract."
+        description="Check Townlight Meetings' Townlight starter-set installer contract."
     )
     parser.add_argument(
         "--umbrella-root",
@@ -124,14 +124,14 @@ def build_checks(*, umbrella_root: Path, require_archives: bool) -> list[Check]:
         ):
             checks.append(
                 _pass(
-                    "CivicMeetings module contract",
+                    "Townlight Meetings module contract",
                     f"CivicMeetings is selectable at v{__version__} and depends on CivicCore {EXPECTED_CIVICCORE_RUNTIME}.",
                 )
             )
         else:
             checks.append(
                 _fail(
-                    "CivicMeetings module contract",
+                    "Townlight Meetings module contract",
                     "CivicMeetings manifest entry does not match its version, selectability, or CivicCore dependency.",
                     "Update the umbrella module manifest and rerun the starter-set installer verification.",
                 )
@@ -139,7 +139,7 @@ def build_checks(*, umbrella_root: Path, require_archives: bool) -> list[Check]:
     else:
         checks.append(
             _fail(
-                "CivicMeetings module contract",
+                "Townlight Meetings module contract",
                 "umbrella manifest has no civicclerk module entry.",
                 "Add CivicMeetings to civicsuite/installer/modules.json.",
             )
@@ -149,14 +149,14 @@ def build_checks(*, umbrella_root: Path, require_archives: bool) -> list[Check]:
     if isinstance(records, dict) and records.get("current_version") == EXPECTED_RECORDS_VERSION:
         checks.append(
             _pass(
-                "CivicRecords AI pairing",
+                "Townlight Records pairing",
                 f"starter set pairs CivicMeetings with CivicRecords AI {EXPECTED_RECORDS_VERSION}.",
             )
         )
     else:
         checks.append(
             _fail(
-                "CivicRecords AI pairing",
+                "Townlight Records pairing",
                 "starter set does not record the expected CivicRecords AI pairing.",
                 "Update the umbrella manifest or this checker before changing the starter-set pair.",
             )
@@ -248,7 +248,7 @@ def _payload(checks: list[Check], umbrella_root: Path) -> dict[str, object]:
 
 def _print_report(checks: list[Check], umbrella_root: Path) -> None:
     payload = _payload(checks, umbrella_root)
-    print("CivicMeetings starter-set integration")
+    print("Townlight Meetings starter-set integration")
     print(f"Version: {__version__}")
     print(f"Umbrella root: {umbrella_root}")
     print(f"starter_set_ready={str(payload['starter_set_ready']).lower()}")
@@ -265,11 +265,11 @@ def _print_report(checks: list[Check], umbrella_root: Path) -> None:
 
 
 def _print_plan() -> None:
-    print("CivicMeetings starter-set integration")
+    print("Townlight Meetings starter-set integration")
     print("Release evidence checks:")
-    print("  1. Umbrella clerk-core profile installs CivicCore, CivicRecords AI, then CivicMeetings.")
-    print("  2. CivicMeetings is selectable and records its CivicCore 1.2.1 runtime dependency.")
-    print("  3. CivicRecords AI is paired at v1.6.1.")
+    print("  1. Umbrella clerk-core profile installs Townlight Core, Townlight Records, then Townlight Meetings.")
+    print("  2. Townlight Meetings is selectable and records its Townlight Core 1.2.1 runtime dependency.")
+    print("  3. Townlight Records is paired at v1.6.1.")
     print("  4. Umbrella release contract requires package workflow proof.")
     print("  5. Linux and Windows starter-set archives exist when --require-archives is used.")
     print("STARTER-SET-INTEGRATION: PLAN")

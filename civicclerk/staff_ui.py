@@ -1,4 +1,4 @@
-"""Accessible staff workflow screens for CivicMeetings staff."""
+"""Accessible staff workflow screens for Townlight Meetings staff."""
 
 from __future__ import annotations
 

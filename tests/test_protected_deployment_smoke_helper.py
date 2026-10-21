@@ -181,7 +181,7 @@ def test_protected_deployment_smoke_print_only_documents_steps(tmp_path: Path) -
 
     assert result.returncode == 0, result.stdout + result.stderr
     for expected in [
-        "CivicMeetings protected deployment smoke",
+        "Townlight Meetings protected deployment smoke",
         "Run strict deployment readiness checks.",
         "GET /health.",
         "GET /staff/auth-readiness.",

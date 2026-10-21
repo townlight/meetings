@@ -20,12 +20,12 @@ def test_enterprise_installer_signing_print_only_explains_inputs() -> None:
     )
 
     assert result.returncode == 0, result.stdout + result.stderr
-    assert "CivicMeetings downstream installer signing readiness" in result.stdout
+    assert "Townlight Meetings downstream installer signing readiness" in result.stdout
     assert "CIVICCLERK_SIGNTOOL_PATH" in result.stdout
     assert "CIVICCLERK_SIGNING_CERT_SHA1" in result.stdout
     assert "CIVICCLERK_SIGNING_PFX_PASSWORD_ENV" in result.stdout
     assert "No secrets are printed" in result.stdout
-    assert "does not sign the public CivicSuite installer" in result.stdout
+    assert "does not sign the public Townlight installer" in result.stdout
 
 
 def test_enterprise_installer_signing_fails_actionably_without_cert_inputs(tmp_path: Path) -> None:

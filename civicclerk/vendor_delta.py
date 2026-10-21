@@ -1,4 +1,4 @@
-"""Compatibility exports for CivicCore vendor delta request planning."""
+"""Compatibility exports for Townlight Core vendor delta request planning."""
 
 from __future__ import annotations
 

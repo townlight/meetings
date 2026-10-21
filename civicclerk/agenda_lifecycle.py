@@ -1,4 +1,4 @@
-"""Agenda item lifecycle enforcement for CivicMeetings."""
+"""Agenda item lifecycle enforcement for Townlight Meetings."""
 
 from __future__ import annotations
 
@@ -325,7 +325,7 @@ def validate_agenda_item_transition(
 
 
 def verify_agenda_item_audit_entries(entries: list[dict[str, object]]) -> tuple[bool, int, str]:
-    """Verify agenda item lifecycle audit entries with CivicCore audit hashing."""
+    """Verify agenda item lifecycle audit entries with Townlight Core audit hashing."""
 
     persisted_entries: list[PersistedAuditLogEntry] = []
     for index, entry in enumerate(entries):

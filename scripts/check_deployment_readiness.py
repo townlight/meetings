@@ -55,7 +55,7 @@ class Check:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Print a non-mutating CivicMeetings deployment readiness report."
+        description="Print a non-mutating Townlight Meetings deployment readiness report."
     )
     parser.add_argument(
         "--strict",
@@ -97,7 +97,7 @@ def print_report(
 ) -> None:
     checks = list(checks)
     counts = {status: sum(1 for check in checks if check.status == status) for status in ("PASS", "WARN", "FAIL")}
-    print("CivicMeetings deployment readiness preflight")
+    print("Townlight Meetings deployment readiness preflight")
     print(f"Version: civicclerk {__version__}; civiccore {CIVICCORE_VERSION}")
     if loaded_env_file is not None:
         print(f"env_file={_display_path(loaded_env_file)}")

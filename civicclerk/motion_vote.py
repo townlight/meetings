@@ -1,4 +1,4 @@
-"""Motion, vote, and action-item capture helpers for CivicMeetings."""
+"""Motion, vote, and action-item capture helpers for Townlight Meetings."""
 
 from __future__ import annotations
 

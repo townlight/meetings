@@ -1,4 +1,4 @@
-"""Packet snapshot, export bundle, and notice compliance helpers for CivicMeetings."""
+"""Packet snapshot, export bundle, and notice compliance helpers for Townlight Meetings."""
 
 from __future__ import annotations
 
@@ -74,7 +74,7 @@ class PacketSource:
             raise PacketExportError(
                 code="unsupported_source_kind",
                 message=f"Packet source kind {self.kind!r} is not supported.",
-                fix="Use a CivicCore source kind such as document, record, meeting_packet, code_section, zoning_parcel, local_file, or url.",
+                fix="Use a Townlight Core source kind such as document, record, meeting_packet, code_section, zoning_parcel, local_file, or url.",
             ) from exc
         return SourceReference(
             source_id=self.source_id,
@@ -138,7 +138,7 @@ class PacketStore:
     """Packet version and export-bundle store.
 
     A configured database persists snapshot identity/version metadata. Export bundles are
-    written to disk with CivicCore v0.12.0 manifests, checksums, provenance, and
+    written to disk with Townlight Core v0.12.0 manifests, checksums, provenance, and
     hash-chained audit events so they can be validated without the server.
     """
 

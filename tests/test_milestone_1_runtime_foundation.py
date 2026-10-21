@@ -18,7 +18,7 @@ VERSION = "1.0.4"
 
 def load_pyproject() -> dict:
     pyproject = ROOT / "pyproject.toml"
-    assert pyproject.exists(), "pyproject.toml must exist for the CivicMeetings runtime foundation."
+    assert pyproject.exists(), "pyproject.toml must exist for the Townlight Meetings runtime foundation."
     return tomllib.loads(pyproject.read_text(encoding="utf-8"))
 
 
@@ -36,7 +36,7 @@ def test_pyproject_declares_runtime_package_and_version() -> None:
 
     assert data["project"]["name"] == "civicclerk"
     assert data["project"]["version"] == VERSION
-    assert "CivicMeetings" in data["project"]["description"]
+    assert "Townlight Meetings" in data["project"]["description"]
 
 
 def test_pyproject_targets_published_civiccore_freeze_release_wheel() -> None:
@@ -78,7 +78,7 @@ def test_runtime_package_layout_exists() -> None:
 def test_public_fastapi_app_import_path_exists() -> None:
     module = load_app_module()
     assert isinstance(module.app, FastAPI)
-    assert module.app.title == "CivicMeetings"
+    assert module.app.title == "Townlight Meetings"
 
 
 @pytest.mark.asyncio
@@ -103,7 +103,7 @@ async def test_root_endpoint_explains_current_user_experience() -> None:
     assert "prompt YAML" in payload["message"]
     assert "Granicus" in payload["message"]
     assert "keyboard" in payload["message"]
-    assert "shared CivicCore notice compliance helper" in payload["message"]
+    assert "shared Townlight Core notice compliance helper" in payload["message"]
     assert f"v{VERSION}" in payload["message"]
     assert "trusted-header reverse-proxy mode" in payload["message"]
     assert "trusted-proxy CIDR allowlist" in payload["message"]
