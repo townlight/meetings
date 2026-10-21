@@ -634,5 +634,5 @@ bash scripts/verify-release.sh
 
 ## License
 
-Code: AGPL-3.0-only, with the TownLight Public Institution Exception for qualifying deployments. See [LICENSE](LICENSE) and [LICENSE-EXCEPTION.md](LICENSE-EXCEPTION.md).
+Code: AGPL-3.0-only, with the TownLight Public Institution Exception for qualifying deployments. See [LICENSE](LICENSE) and [LICENSE-EXCEPTION.md](LICENSE-EXCEPTION.md).  
 Documentation: CC BY 4.0 unless otherwise stated; see `LICENSE-DOCS`.
