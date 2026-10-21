@@ -171,7 +171,7 @@ def build_checks(
 
 def _print_report(checks: list[Check]) -> int:
     ready = all(check.status == "PASS" for check in checks)
-    print("CivicMeetings connector sync readiness")
+    print("Townlight Meetings connector sync readiness")
     print(f"sync_ready={str(ready).lower()}")
     print("network_calls=false")
     for check in checks:
@@ -182,14 +182,14 @@ def _print_report(checks: list[Check]) -> int:
 
 
 def _print_plan(connectors: list[str], payload_dir: Path | None) -> None:
-    print("CivicMeetings connector sync readiness")
+    print("Townlight Meetings connector sync readiness")
     print("Network calls: disabled")
     print("Connectors: " + ", ".join(connectors))
     print(f"Payload source: {payload_dir if payload_dir else 'built-in sample payloads'}")
     print("Steps:")
     print("  1. Confirm connector names are on the supported allowlist.")
     print("  2. Normalize each local connector payload through the shared import contract.")
-    print("  3. Optionally validate future source URL or ODBC host strings with CivicCore guards.")
+    print("  3. Optionally validate future source URL or ODBC host strings with Townlight Core guards.")
     print("Fix path: export local JSON payloads first; do not wire scheduled live sync until this passes.")
     print("Not live sync: this is a no-network readiness check for future connector scheduling work.")
 

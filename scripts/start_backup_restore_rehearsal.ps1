@@ -22,7 +22,7 @@ if ($PrintOnly) {
     $ArgsList += "--print-only"
 }
 
-Write-Host "CivicMeetings backup/restore rehearsal profile"
+Write-Host "Townlight Meetings backup/restore rehearsal profile"
 Write-Host "Rehearsal root: $RehearsalRoot"
 Write-Host "Run id: $RunId"
 Write-Host "Python verifier: python scripts/check_backup_restore_rehearsal.py"

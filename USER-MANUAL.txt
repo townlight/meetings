@@ -1,6 +1,22 @@
-# CivicMeetings User Manual
+<a id="civicmeetings-user-manual"></a>
 
-## Local Townlight Records–Meetings development candidate — October 19, 2026
+# Townlight Meetings User Manual
+
+## Published connected desktop: 1.4.0-beta.1
+
+This module participates in the signed Townlight Records + Meetings + Code +
+Zoning desktop beta published October 21, 2026. Select zoning-beta for all four
+products; Records-only remains default and city-core excludes Zoning.
+[Download and release limits](https://github.com/townlight/townlight/releases/tag/townlight-records-meetings-code-zoning-v1.4.0-beta.1) ·
+[Current operator manual](https://github.com/townlight/townlight/blob/main/USER-MANUAL.md) ·
+[Signed acceptance](https://github.com/townlight/townlight/blob/main/docs/installer/townlight-zoning-beta1-signed-acceptance.md).
+
+This is a connected desktop release, not a new standalone package version.
+Package/import/API names remain compatibility identifiers. Historical development
+checkpoints below retain their original scope; they are superseded for current
+desktop publication status. No signed installer or historical evidence is changed.
+
+## Historical integration checkpoint — Local Townlight Records–Meetings development candidate — October 19, 2026
 
 This is not a new public release. The unsigned M4 Windows installer offers
 **Townlight Records + Meetings** during setup. Choose that profile explicitly;
@@ -31,12 +47,12 @@ and transcription are not verified for this candidate. Code is not included.
 The release-recovery material below describes the historical web/release
 surface, not proof of feature parity or a public native Meetings release.
 
-Status: CivicMeetings v1.0.4 runtime foundation label is provisional during release recovery
+Status: Townlight Meetings v1.0.4 runtime foundation label is provisional during release recovery
 Version: `1.0.4`
 
 ## Release Recovery Notice
 
-CivicMeetings is not product-ready for public promotion while the CivicSuite
+Townlight Meetings is not product-ready for public promotion while the Townlight
 release recovery is active. The current `v1.0.4` recovery patch is the supported release
 until the repo passes the recovery gates: full backend tests, frontend tests,
 tracked Playwright user-flow tests, WSL runtime install proof, consistency
@@ -48,9 +64,11 @@ occurred.
 
 ## Part 1: Non-Technical Overview
 
-### What CivicMeetings is
+<a id="what-civicmeetings-is"></a>
 
-CivicMeetings will help city clerks manage the legal record of public
+### What Townlight Meetings is
+
+Townlight Meetings will help city clerks manage the legal record of public
 meetings. It is planned to cover agendas, packets, notices, minutes,
 votes, motions, ordinances, resolutions, and public meeting archives.
 
@@ -81,7 +99,7 @@ draft language, but staff remain in control.
 
 ### Current status
 
-CivicMeetings currently contains a runtime foundation, canonical schema
+Townlight Meetings currently contains a runtime foundation, canonical schema
 metadata, Alembic migration scaffolding, agenda item lifecycle enforcement,
 meeting lifecycle enforcement, packet snapshot versioning, notice
 compliance enforcement, immutable motion capture, immutable vote capture,
@@ -95,8 +113,8 @@ minutes drafting, ordinance/resolution extraction, closed-session safe
 refusal, and public plain-language meeting explanation,
 local-first connector imports for Granicus, Legistar, PrimeGov, and
 NovusAGENDA, no-network vendor live-sync readiness plus durable source/run
-ledgering, accessibility/browser QA gates, provisional CivicMeetings v1.0.4 release
-artifacts, CivicCore 1.2.1 freeze-backed packet export bundles, a database-backed
+ledgering, accessibility/browser QA gates, provisional Townlight Meetings v1.0.4 release
+artifacts, Townlight Core 1.2.1 freeze-backed packet export bundles, a database-backed
 agenda intake queue with clerk readiness review, database-backed meeting
 records with lifecycle audit entries, database-backed packet assembly records
 with source/citation metadata, database-backed agenda item lifecycle records
@@ -138,7 +156,7 @@ with sentence-level citations and prompt-version provenance, verify public
 archive filtering, and run prompt evaluations with outbound network
 blocked. IT staff can also import local connector export payloads while
 preserving source provenance. IT staff can now generate records-ready packet
-export bundles with CivicCore manifests, checksums, provenance, and
+export bundles with Townlight Core manifests, checksums, provenance, and
 hash-chained audit evidence. Clerks can submit/list/review `/agenda-intake`
 items with readiness status stored in the configured intake database and persist
 agenda item lifecycle status/audit entries with `CIVICCLERK_AGENDA_ITEM_DB_URL`. The
@@ -169,7 +187,7 @@ check. OIDC mode uses `CIVICCLERK_STAFF_AUTH_MODE=oidc` plus
 `CIVICCLERK_STAFF_OIDC_REDIRECT_URI`, and
 `CIVICCLERK_STAFF_OIDC_SESSION_COOKIE_SECRET`; `/staff/login` redirects to the
 provider with authorization-code + PKCE parameters, `/staff/oidc/callback`
-validates the returned token, and CivicMeetings stores a signed HttpOnly staff
+validates the returned token, and Townlight Meetings stores a signed HttpOnly staff
 session cookie rather than the raw OIDC token.
 The React dashboard now makes that session state visible in a Staff Access
 panel. A clerk sees whether the browser is in protected default mode, local open mode, signed in with
@@ -197,7 +215,7 @@ The resident-facing `/public` portal now loads public calendar records,
 public-safe detail, and anonymous archive search from the live public APIs. It
 also explains empty public-record states and keeps closed-session material out
 of anonymous resident views. The React staff workspace now exists under
-`frontend/`. It translates the CivicSuite mockup into the real CivicMeetings
+`frontend/`. It translates the Townlight mockup into the real Townlight Meetings
 frontend direction: staff shell, meeting calendar, meeting detail
 lifecycle ribbon, audit/evidence drawer, and loading/success/empty/error/partial
 states with actionable copy. It now loads the live `/api/meetings` list for
@@ -250,16 +268,16 @@ approver, create a cited draft through the live minutes API, and see the public
 posting gate explain that AI-drafted minutes cannot bypass human adoption.
 
 The admin settings surface now includes integration-depth readiness from
-`/integrations/readiness`. It shows contracts for CivicRecords search,
-CivicCode adopted-action handoff, codification-system fallback export, city
-website CMS posting, and vendor live API adapters. CivicCode handoff now has a
+`/integrations/readiness`. It shows contracts for Townlight Records search,
+Townlight Code adopted-action handoff, codification-system fallback export, city
+website CMS posting, and vendor live API adapters. Townlight Code handoff now has a
 live emitter when `CIVICCODE_INTAKE_URL` and the suite bearer handoff value are
 configured; otherwise handoff records stay local and visibly show
 `EMIT_SKIPPED_UNCONFIGURED`. Failed emissions show `EMIT_FAILED`,
 `civiccode_handoff_last_error`, and `civiccode_handoff_last_attempt_at`, and can
 be retried with
 `POST /meetings/{meeting_id}/ordinance-resolution-handoff/retry` after the
-operator fixes the URL, shared value, or CivicCode health issue.
+operator fixes the URL, shared value, or Townlight Code health issue.
 The Vendor Sync React surface is now present: IT staff can open Vendor Sync
 from the React navigation, register an approved Granicus, Legistar, PrimeGov,
 or NovusAgenda source without making a vendor call, record run outcomes into
@@ -271,7 +289,7 @@ actionable fix guidance before scheduled vendor-network pulls are enabled.
 
 ### Deployment model
 
-CivicMeetings now has the first CivicSuite-style Docker Compose stack for local
+Townlight Meetings now has the first Townlight-style Docker Compose stack for local
 product rehearsal:
 
 - local Docker-based deployment
@@ -306,7 +324,7 @@ under `CIVICCLERK_CONNECTOR_SYNC_LEDGER_PATH`. This scheduled path still reads
 local files only; it does not contact Granicus, Legistar, PrimeGov, NovusAGENDA,
 or any vendor network.
 
-By default, Compose sets `CIVICCLERK_DEMO_SEED=1`. On API startup, CivicMeetings
+By default, Compose sets `CIVICCLERK_DEMO_SEED=1`. On API startup, Townlight Meetings
 creates a Brookfield rehearsal dataset with meeting bodies, meetings in multiple
 lifecycle states, one promoted agenda intake item, a finalized packet, a posted
 notice checklist with statutory basis and posting proof, captured motion/vote
@@ -330,12 +348,12 @@ Brookfield demo data instead of an empty shell.
 
 ### Prompt library and approval ceremony
 
-CivicMeetings ships nine versioned YAML prompts in `prompts/`: agenda item
+Townlight Meetings ships nine versioned YAML prompts in `prompts/`: agenda item
 summary, staff report normalizer, packet completeness reviewer, notice
 compliance reviewer, motion/vote summary, minutes drafter,
 ordinance/resolution extractor, closed-session safe summarizer/refuser, and
 public plain-language meeting explainer. Runtime prompt lookup registers those
-files as CivicCore code-level prompt overrides and resolves them through
+files as Townlight Core code-level prompt overrides and resolves them through
 `civiccore.llm.resolve_template` with `consumer_app="civicclerk"`; standalone
 YAML loading is kept as a compatibility/test helper, not the production
 resolver path.
@@ -366,13 +384,13 @@ bash installer/windows/build-installer.sh
 ```
 
 The resulting setup package installs Start and Install or Repair shortcuts.
-It is unsigned because CivicSuite is a small free open-source project and does
+It is unsigned because Townlight is a small free open-source project and does
 not ship a paid publisher-certificate-signed Windows installer. Windows
 SmartScreen may show "Unknown Publisher" or "Windows protected your PC" because
 Windows cannot verify a publisher certificate. That warning is expected. It is
 OK to choose "More info" and "Run anyway" only when the installer came from the
-official CivicSuite GitHub release source or your IT team built it from verified
-CivicSuite source. Do not bypass SmartScreen for installers from email
+official Townlight GitHub release source or your IT team built it from verified
+Townlight source. Do not bypass SmartScreen for installers from email
 attachments, chat links, mirrors, or any source you cannot verify.
 
 Uninstall stops the Compose stack and removes installed source files, but Docker volumes are preserved so meeting data is not
@@ -483,11 +501,11 @@ python scripts/check_connector_sync_readiness.py
 This check normalizes the supported Granicus, Legistar, PrimeGov, and
 NovusAGENDA sample payloads without outbound network calls. It can also validate
 a proposed `--source-url` or `--odbc-connection-string` with the shared
-CivicCore host guards. It is intentionally not vendor-network live sync; it
+Townlight Core host guards. It is intentionally not vendor-network live sync; it
 tells the team what must be fixed before scheduled vendor polling or database
 sync is designed.
 
-Before repeating this pattern for another CivicSuite module, run the reusable
+Before repeating this pattern for another Townlight module, run the reusable
 mock-city environment suite:
 
 ```bash
@@ -555,7 +573,7 @@ These endpoints validate and record source/run/failure state only. They return
 contact Granicus, Legistar, PrimeGov, NovusAGENDA, or any other vendor network.
 The cursor reset path clears or moves `last_success_cursor_at` locally so the
 next controlled pull can perform a full reconciliation or replay from an
-operator-selected point. CivicMeetings saves the operator reason as a
+operator-selected point. Townlight Meetings saves the operator reason as a
 `cursor_reset` run-log event and returns that `reset_event` in the API response;
 the reset itself never calls the vendor.
 
@@ -572,7 +590,7 @@ HTTP request, reads credentials from the named env var instead of the URL,
 normalizes returned JSON through the existing connector contract, writes an
 optional report without secrets, and records success or failure in the same
 circuit-breaker ledger. The report includes `delta_request_url`,
-`cursor_param`, `cursor_value`, and `cursor_advanced_at`. CivicMeetings advances
+`cursor_param`, `cursor_value`, and `cursor_advanced_at`. Townlight Meetings advances
 the persisted `last_success_cursor_at` only after every discovered payload
 normalizes successfully; failed and partial runs leave the cursor unchanged so
 the next pull can retry without skipping records.
@@ -689,7 +707,7 @@ without the print-only flag to execute the rehearsal under
 agenda intake, agenda item, meeting, packet assembly, and notice checklist
 records, copies the databases and export evidence into a backup directory,
 restores them to separate `restored-data` and `restored-exports` directories,
-then reopens the restored records through CivicMeetings repositories. If a check
+then reopens the restored records through Townlight Meetings repositories. If a check
 fails, keep the run directory, inspect the named file or record, fix the backup
 source or environment variable, and rerun with a new run id.
 
@@ -713,7 +731,7 @@ print-only flag. The helper creates `.docker-backup-restore-rehearsal`, runs
 `pg_restore`, verifies restored application tables, writes
 `backup/civicclerk-docker-backup-manifest.json`, and drops the temporary restore
 database unless `--keep-restore-database` is supplied. It does not drop, clean,
-or overwrite the source CivicMeetings database.
+or overwrite the source Townlight Meetings database.
 
 If staff access will stay local for a demo or rehearsal, keep
 `CIVICCLERK_STAFF_AUTH_MODE=protected`. If a local rehearsal must stay open, explicitly opt into `CIVICCLERK_STAFF_AUTH_MODE=open`; otherwise move to `oidc`, `bearer`, or `trusted_header` before user testing and use
@@ -728,7 +746,7 @@ If trusted-header testing is happening on one loopback workstation before a
 real reverse proxy is available, use the returned `local_proxy_rehearsal`
 contract, set `CIVICCLERK_STAFF_SSO_TRUSTED_PROXIES=127.0.0.1/32`, run
 `python scripts/local_trusted_header_proxy.py`, and send the browser through
-that helper so CivicMeetings only trusts loopback proxy traffic during rehearsal.
+that helper so Townlight Meetings only trusts loopback proxy traffic during rehearsal.
 If the deployment is moving to a real reverse proxy, use the returned
 `reverse_proxy_reference` block and start from
 `docs/examples/trusted-header-nginx.conf` before replacing the placeholder TLS
@@ -767,11 +785,11 @@ Runtime test gates now run in CI. Meeting-workflow tests are added in later mile
 Milestone 3 adds an agenda item lifecycle test matrix covering every pair
 of canonical states. Only direct forward transitions are accepted; invalid
 transitions return a 4xx response with a fix path and record a
-CivicCore-verifiable persisted audit hash.
+Townlight Core-verifiable persisted audit hash.
 Milestone 4 adds a meeting lifecycle test matrix from `SCHEDULED` through
 `ARCHIVED`, plus emergency/special notice preconditions, closed/executive
 session statutory-basis preconditions, cancellation handling, generated
-sequence coverage, and CivicCore-verifiable audit hashes for allowed and
+sequence coverage, and Townlight Core-verifiable audit hashes for allowed and
 rejected meeting transitions.
 Milestone 5 adds packet snapshot versioning and notice compliance tests for
 deadline warnings, statutory-basis requirements, and public-posting human
@@ -792,20 +810,20 @@ provenance and actionable errors, without requiring outbound runtime calls.
 Milestone 11 adds browser QA evidence and a CI gate for loading, success,
 empty, error, and partial states plus keyboard navigation, focus states,
 contrast, and console checks. Milestone 12 synchronizes version surfaces,
-builds release artifacts and checksums, and publishes CivicMeetings v1.0.4.
+builds release artifacts and checksums, and publishes Townlight Meetings v1.0.4.
 CC-7 extends browser QA to every named spec page through
 `node scripts/capture-cc7-browser-qa.mjs`; the verification script requires the
 resulting 200-case ledger before browser-visible changes can merge.
-The current production-depth branch pairs CivicMeetings with the published `civiccore` 1.2.1 wheel from the `v1.2.1` release asset
+The current production-depth branch pairs Townlight Meetings with the published `civiccore` 1.2.1 wheel from the `v1.2.1` release asset
 so packet exports, packet assembly records, notice checklist records, and the
-browser QA release-evidence gate can use shared CivicCore manifests,
+browser QA release-evidence gate can use shared Townlight Core manifests,
 provenance, checksums, audit primitives, and verification helpers.
 
 ## Part 3: Architecture Reference
 
 ### Planned module boundaries
 
-CivicMeetings owns meeting workflows. It should not become:
+Townlight Meetings owns meeting workflows. It should not become:
 
 - electronic voting software
 - livestream hosting
@@ -815,7 +833,7 @@ CivicMeetings owns meeting workflows. It should not become:
 ### Initial data model sketch
 
 Milestone 2 defines the canonical schema and Alembic migration foundation
-for these CivicMeetings tables. Milestone 3 adds agenda lifecycle enforcement
+for these Townlight Meetings tables. Milestone 3 adds agenda lifecycle enforcement
 for agenda items. Milestone 4 adds meeting lifecycle enforcement. Milestone
 5 adds packet snapshot versioning and notice compliance enforcement.
 Milestone 6 adds immutable motion capture, immutable vote capture, and
@@ -826,10 +844,10 @@ filtering for anonymous and under-privileged users. Milestone 9 moves
 policy-bearing prompt text into YAML and adds an evaluation harness.
 Milestone 10 adds source-provenanced connector import normalization for
 Granicus, Legistar, PrimeGov, and NovusAGENDA. Production-depth slices add
-records-ready packet export bundles using CivicCore 1.2.1 freeze provenance, export
+records-ready packet export bundles using Townlight Core 1.2.1 freeze provenance, export
 manifest, checksum, and audit primitives; database-backed agenda intake and
 clerk readiness review state; database-backed agenda item lifecycle records with
-durable CivicCore-verifiable transition audit hashes and ready-intake promotion linkage; database-backed meeting records with lifecycle
+durable Townlight Core-verifiable transition audit hashes and ready-intake promotion linkage; database-backed meeting records with lifecycle
 and schedule-edit audit hashes, meeting body ids, and locations; database-backed packet assembly records with source references,
 citations, and packet snapshot linkage; database-backed notice checklist
 records with posting-proof metadata; live staff form actions for minutes
@@ -857,7 +875,7 @@ CC-5 completes the canonical data model contract. The Alembic chain now ends at
 `civicclerk_0011_data_model`, which adds downstream-facing columns for packet
 version uniqueness, motion and vote correction metadata, public comments,
 closed-session ACLs, opaque document references, transcript sensitivity, and
-CivicCode ordinance handoff status. The migration is tested forward, backward to
+Townlight Code ordinance handoff status. The migration is tested forward, backward to
 the prior release head, and forward again against PostgreSQL.
 
 - `meeting_bodies`

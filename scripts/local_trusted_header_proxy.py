@@ -177,12 +177,12 @@ def _parse_upstream_url(url: str) -> str:
 
 def _read_cli_args() -> ProxyConfig:
     parser = argparse.ArgumentParser(
-        description="Loopback-only trusted-header proxy rehearsal helper for CivicMeetings."
+        description="Loopback-only trusted-header proxy rehearsal helper for Townlight Meetings."
     )
     parser.add_argument(
         "--upstream",
         default=os.environ.get(UPSTREAM_ENV_VAR, DEFAULT_UPSTREAM),
-        help="Loopback CivicMeetings upstream URL, for example http://127.0.0.1:8000",
+        help="Loopback Townlight Meetings upstream URL, for example http://127.0.0.1:8000",
     )
     parser.add_argument(
         "--listen-host",
@@ -208,12 +208,12 @@ def _read_cli_args() -> ProxyConfig:
     parser.add_argument(
         "--principal-header",
         default=os.environ.get(PRINCIPAL_HEADER_ENV_VAR, DEFAULT_PRINCIPAL_HEADER),
-        help="Trusted principal header name expected by CivicMeetings.",
+        help="Trusted principal header name expected by Townlight Meetings.",
     )
     parser.add_argument(
         "--roles-header",
         default=os.environ.get(ROLES_HEADER_ENV_VAR, DEFAULT_ROLES_HEADER),
-        help="Trusted roles header name expected by CivicMeetings.",
+        help="Trusted roles header name expected by Townlight Meetings.",
     )
     args = parser.parse_args()
 

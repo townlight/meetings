@@ -1,4 +1,4 @@
-"""CivicMeetings canonical schema metadata."""
+"""Townlight Meetings canonical schema metadata."""
 
 from __future__ import annotations
 

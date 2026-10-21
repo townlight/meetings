@@ -91,7 +91,7 @@ def test_release_workflow_and_docs_reference_v101_release() -> None:
     assert "gh release create" in workflow
     assert "dist/*" in workflow
     assert "townlight/core/releases/download/v1.2.1/civiccore-1.2.1-py3-none-any.whl" in workflow
-    assert "civicclerk v1.0.4" in docs
+    assert "townlight meetings v1.0.4" in docs
     assert "published `civiccore` 1.2.1 wheel from the `v1.2.1` release asset" in docs
 
 
@@ -320,7 +320,7 @@ def test_release_handoff_bundle_script_prints_expected_plan() -> None:
     assert result.returncode == 0, result.stdout + result.stderr
     output = result.stdout
     for expected in [
-        "CivicMeetings release handoff bundle",
+        "Townlight Meetings release handoff bundle",
         "Version: 1.0.4",
         "civicclerk-1.0.4-release-handoff.zip",
         "dist/civicclerk-1.0.4-py3-none-any.whl",
@@ -380,7 +380,7 @@ def test_release_handoff_bundle_bash_script_prints_expected_plan() -> None:
     assert result.returncode == 0, result.stdout + result.stderr
     output = result.stdout
     for expected in [
-        "CivicMeetings release handoff bundle",
+        "Townlight Meetings release handoff bundle",
         "Version: 1.0.4",
         "civicclerk-1.0.4-release-handoff.zip",
         "dist/civicclerk-1.0.4-py3-none-any.whl",

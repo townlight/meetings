@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-Write-Host "CivicMeetings prerequisite check"
+Write-Host "Townlight Meetings prerequisite check"
 
 if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
     throw "Docker was not found. Install Docker Desktop for Windows, start it, then rerun Install or Repair CivicMeetings."

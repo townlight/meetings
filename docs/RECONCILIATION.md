@@ -1,6 +1,8 @@
-# CivicClerk Milestone 0 Reconciliation
+<a id="civicclerk-milestone-0-reconciliation"></a>
 
-This report records disagreements between the current CivicClerk scaffold and the upstream CivicSuite unified spec / suite ADRs. "Current text" is quoted verbatim from the scaffold so each row can be grepped by a reviewer.
+# Townlight Meetings Milestone 0 Reconciliation
+
+This report records disagreements between the current Townlight Meetings scaffold and the upstream Townlight unified spec / suite ADRs. "Current text" is quoted verbatim from the scaffold so each row can be grepped by a reviewer.
 
 | File path | Current text (verbatim) | Required correction (verbatim) | Driver (spec § or ADR #) |
 |---|---|---|---|
@@ -28,17 +30,17 @@ This report records disagreements between the current CivicClerk scaffold and th
 
 ## Section 20 ADR Triage
 
-Queued for v0.1.0 scope because each question affects schema, user-facing behavior, source control layout, runtime dependency ordering, or release gates before CivicClerk v0.1.0:
+Queued for v0.1.0 scope because each question affects schema, user-facing behavior, source control layout, runtime dependency ordering, or release gates before Townlight Meetings v0.1.0:
 
-- CivicClerk v0.1.0 canonical table list / any reduction from the 14-table canonical set.
+- Townlight Meetings v0.1.0 canonical table list / any reduction from the 14-table canonical set.
 - Public comments in v0.1.0.
 - Transcription packaging in v0.1.0 vs v0.2.0.
 - Shared resident portal shell boundary.
-- CivicCore auth/RBAC extraction order.
-- CivicCore document/search extraction order.
+- Townlight Core auth/RBAC extraction order.
+- Townlight Core document/search extraction order.
 - Prompt-library repository strategy.
 - State statutory-rule data-release strategy.
 
 Excluded from v0.1.0 ADR queue:
 
-- CivicCode-before-CivicZone ordering. This affects later module sequencing, not CivicClerk v0.1.0 implementation.
+- Townlight Code-before-CivicZone ordering. This affects later module sequencing, not Townlight Meetings v0.1.0 implementation.

@@ -10,7 +10,7 @@ usage() {
   cat <<'EOF'
 Usage: bash scripts/start_backup_restore_rehearsal.sh [--rehearsal-root PATH] [--run-id ID] [--strict] [--print-only]
 
-Creates a local CivicMeetings backup/restore rehearsal using SQLite stores and
+Creates a local Townlight Meetings backup/restore rehearsal using SQLite stores and
 packet export files, then verifies restored records can be reopened.
 EOF
 }
@@ -56,7 +56,7 @@ done
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd -- "$script_dir/.." && pwd)"
 
-echo "CivicMeetings backup/restore rehearsal profile"
+echo "Townlight Meetings backup/restore rehearsal profile"
 echo "Rehearsal root: $rehearsal_root"
 echo "Run id: $run_id"
 echo "Python verifier: python scripts/check_backup_restore_rehearsal.py"

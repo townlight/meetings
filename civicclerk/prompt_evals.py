@@ -1,4 +1,4 @@
-"""Offline prompt evaluation harness for CivicMeetings prompt YAML files."""
+"""Offline prompt evaluation harness for Townlight Meetings prompt YAML files."""
 
 from __future__ import annotations
 

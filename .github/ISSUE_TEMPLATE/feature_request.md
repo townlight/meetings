@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest a CivicMeetings feature
+about: Suggest a Townlight Meetings feature
 title: "[Feature]: "
 labels: enhancement
 assignees: ""

@@ -21,7 +21,7 @@ function Read-EnvValue {
 
 Set-Location $AppRoot
 if (-not (Test-Path $EnvPath)) {
-    throw "CivicMeetings has not been installed yet. Run the 'Install or Repair CivicMeetings' shortcut first so .env and Docker volumes are prepared."
+    throw "Townlight Meetings has not been installed yet. Run the 'Install or Repair CivicMeetings' shortcut first so .env and Docker volumes are prepared."
 }
 
 docker compose up -d

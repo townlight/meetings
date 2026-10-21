@@ -48,7 +48,7 @@ def _write_report(path: str, payload: dict) -> None:
 
 
 def _print_plan(base_url: str, *, hostile_mode: bool) -> int:
-    print("CivicSuite mock city environment suite")
+    print("Townlight mock city environment suite")
     print(f"mock_city={MOCK_CITY_NAME}")
     print("network_calls=false")
     print(f"hostile_mode={str(hostile_mode).lower()}")
@@ -122,7 +122,7 @@ def main() -> int:
     if args.output:
         _write_report(args.output, payload)
 
-    print("CivicSuite mock city environment suite")
+    print("Townlight mock city environment suite")
     print(f"mock_city={MOCK_CITY_NAME}")
     print(f"ready={str(ready).lower()}")
     print("network_calls=false")

@@ -1494,8 +1494,8 @@
     }
   },
   "info": {
-    "summary": "Runtime foundation for CivicMeetings municipal meeting workflows.",
-    "title": "CivicMeetings",
+    "summary": "Runtime foundation for Townlight Meetings municipal meeting workflows.",
+    "title": "Townlight Meetings",
     "version": "1.0.4"
   },
   "openapi": "3.1.0",
@@ -3256,7 +3256,7 @@
     },
     "/meetings/{meeting_id}/ordinance-resolution-handoff/retry": {
       "post": {
-        "description": "Retry CivicCode emission for failed or unconfigured ordinance handoffs.",
+        "description": "Retry Townlight Code emission for failed or unconfigured ordinance handoffs.",
         "operationId": "retry_ordinance_resolution_handoff_meetings__meeting_id__ordinance_resolution_handoff_retry_post",
         "parameters": [
           {
@@ -4552,7 +4552,7 @@
     },
     "/staff/logout": {
       "get": {
-        "description": "Clear the local CivicMeetings staff browser session.",
+        "description": "Clear the local Townlight Meetings staff browser session.",
         "operationId": "staff_logout_staff_logout_get",
         "responses": {
           "200": {
@@ -4567,7 +4567,7 @@
         "summary": "Staff Logout"
       },
       "post": {
-        "description": "Clear the local CivicMeetings staff browser session.",
+        "description": "Clear the local Townlight Meetings staff browser session.",
         "operationId": "staff_logout_staff_logout_post",
         "responses": {
           "200": {

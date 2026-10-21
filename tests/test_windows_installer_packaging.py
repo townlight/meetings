@@ -102,9 +102,9 @@ def test_build_script_resolves_version_and_checks_required_sources() -> None:
 def test_enterprise_installer_signing_readiness_helper_documents_non_secret_contract() -> None:
     script = _read("scripts/check_enterprise_installer_signing.py")
 
-    assert "CivicMeetings downstream installer signing readiness" in script
+    assert "Townlight Meetings downstream installer signing readiness" in script
     assert "optional downstream" in script
-    assert "public CivicSuite installer" in script
+    assert "public Townlight installer" in script
     assert "CIVICCLERK_SIGNTOOL_PATH" in script
     assert "CIVICCLERK_SIGNING_CERT_SHA1" in script
     assert "CIVICCLERK_SIGNING_PFX" in script
@@ -129,7 +129,7 @@ def test_installer_docs_do_not_overclaim_production_auth_or_data_deletion() -> N
     assert "small free open-source project" in docs
     assert "More info" in docs
     assert "Run anyway" in docs
-    assert "official CivicSuite" in docs
+    assert "official Townlight" in docs
     assert "CIVICCLERK_STAFF_AUTH_MODE=protected" in docs
     assert "single-workstation rehearsal" in docs
     assert "bearer, OIDC, or trusted-header" in docs

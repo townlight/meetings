@@ -1,6 +1,8 @@
-# CivicMeetings Windows Installer
+<a id="civicmeetings-windows-installer"></a>
 
-This folder contains the unsigned Windows installer source package for CivicMeetings.
+# Townlight Meetings Windows Installer
+
+This folder contains the unsigned Windows installer source package for Townlight Meetings.
 It wraps the Docker Compose product stack and provides two daily-use shortcuts:
 
 - `Start CivicMeetings`: starts the existing Docker Compose stack and opens the staff app.
@@ -24,13 +26,13 @@ Set `CIVICCLERK_VERSION=1.0.1` to override the version read from `pyproject.toml
 
 ## Unsigned Installer Warning
 
-CivicMeetings is a small free open-source project. The Windows installer is unsigned, and that is the supported path for this project. Windows SmartScreen may show "Unknown Publisher" or "Windows protected your PC" because Windows cannot verify a paid publisher certificate.
+Townlight Meetings is a small free open-source project. The Windows installer is unsigned, and that is the supported path for this project. Windows SmartScreen may show "Unknown Publisher" or "Windows protected your PC" because Windows cannot verify a paid publisher certificate.
 
-That warning is expected. It is OK to choose "More info" and then "Run anyway" when the installer came from the official CivicSuite GitHub release source or your IT team built it from verified CivicSuite source. Do not bypass the warning for installers from email attachments, chat links, mirrors, or any source you cannot verify.
+That warning is expected. It is OK to choose "More info" and then "Run anyway" when the installer came from the official Townlight GitHub release source or your IT team built it from verified Townlight source. Do not bypass the warning for installers from email attachments, chat links, mirrors, or any source you cannot verify.
 
 ## Install Behavior
 
-The installer shows an in-wizard warning before interactive installs. Silent installs skip the dialog so IT can automate verified deployments, but the same rule applies: install only from official CivicSuite release artifacts or from source your organization verified and built.
+The installer shows an in-wizard warning before interactive installs. Silent installs skip the dialog so IT can automate verified deployments, but the same rule applies: install only from official Townlight release artifacts or from source your organization verified and built.
 
 The first install or repair creates `.env` from `docs/examples/docker.env.example`, generates a local PostgreSQL password, starts the Docker Compose stack, and keeps `CIVICCLERK_DEMO_SEED=1` unless an operator changes it. That seed creates Brookfield demo meetings, agenda intake, packets, notices, outcomes, minutes, and public archive data so a clerk can see a real workflow immediately.
 

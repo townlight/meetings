@@ -158,7 +158,7 @@ def build_checks(*, artifact: Path) -> list[Check]:
 
 def _print_report(checks: list[Check]) -> int:
     ready = all(check.status == "PASS" for check in checks)
-    print("CivicMeetings downstream installer signing readiness")
+    print("Townlight Meetings downstream installer signing readiness")
     print(f"signing_ready={str(ready).lower()}")
     for check in checks:
         print(f"[{check.status}] {check.name}: {check.message}")
@@ -168,14 +168,14 @@ def _print_report(checks: list[Check]) -> int:
 
 
 def _print_plan(artifact: Path) -> None:
-    print("CivicMeetings downstream installer signing readiness")
+    print("Townlight Meetings downstream installer signing readiness")
     print(f"Artifact: {_display(artifact)}")
     print("Required signing inputs:")
     print(f"  1. {SIGNTOOL_ENV_VARS[0]} or {SIGNTOOL_ENV_VARS[1]} pointing to Microsoft signtool.exe.")
     print(f"  2. {SHA1_ENV_VAR} for certificate-store signing, or {PFX_ENV_VAR} for a PFX file.")
     print(f"  3. If using PFX, set {PFX_PASSWORD_ENV_VAR} to the name of a populated password env var.")
     print(f"  4. {TIMESTAMP_ENV_VAR} with the organization-approved RFC 3161 timestamp URL.")
-    print("No secrets are printed. This optional downstream helper verifies readiness; it does not sign the public CivicSuite installer.")
+    print("No secrets are printed. This optional downstream helper verifies readiness; it does not sign the public Townlight installer.")
 
 
 def parse_args() -> argparse.Namespace:

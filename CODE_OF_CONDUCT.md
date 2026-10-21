@@ -1,6 +1,6 @@
 # Code of Conduct
 
-This project follows the CivicSuite community standard:
+This project follows the Townlight community standard:
 
 - Be respectful.
 - Assume good intent, but correct harmful behavior quickly.

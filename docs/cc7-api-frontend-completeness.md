@@ -19,7 +19,7 @@ New CC-7 coverage includes staff report normalization,
 meeting transcript capture, ordinance/resolution handoff, public comment review
 queue, admin config, and prompt-library admin endpoints. Protected non-public
 routes remain behind the staff auth middleware. Bearer, trusted-header, trusted
-proxy-source, and optional archive bearer checks use CivicCore auth helpers.
+proxy-source, and optional archive bearer checks use Townlight Core auth helpers.
 `/admin/config` reports category-level auth scope, including mixed public intake
 and protected staff-review queues.
 

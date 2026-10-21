@@ -24,9 +24,9 @@ async def test_public_portal_renders_accessible_resident_shell() -> None:
     html = response.text
 
     assert "<main" in html
-    assert 'aria-label="CivicMeetings public portal shell"' in html
+    assert 'aria-label="Townlight Meetings public portal shell"' in html
     assert "Skip to public meeting records" in html
-    assert "CivicMeetings Public Portal" in html
+    assert "Townlight Meetings Public Portal" in html
     assert f"v{VERSION} API-direct public portal fallback" in html
     assert "Docker/nginx product path" in html
     assert "/public/meetings" in html
@@ -63,7 +63,7 @@ async def test_public_portal_stays_public_when_staff_mode_is_protected(monkeypat
         calendar = await client.get("/public/meetings")
 
     assert portal.status_code == 200
-    assert "CivicMeetings Public Portal" in portal.text
+    assert "Townlight Meetings Public Portal" in portal.text
     assert calendar.status_code == 200
 
 
