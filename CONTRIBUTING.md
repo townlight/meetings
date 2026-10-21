@@ -1,6 +1,8 @@
-# Contributing to CivicMeetings
+<a id="contributing-to-civicmeetings"></a>
 
-CivicMeetings is a planned CivicSuite module. The first contribution
+# Contributing to Townlight Meetings
+
+Townlight Meetings is a planned Townlight module. The first contribution
 priority is disciplined MVP delivery: docs, tests, UX evidence, then
 code.
 

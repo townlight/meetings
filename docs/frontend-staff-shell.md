@@ -1,4 +1,6 @@
-# CivicMeetings React Staff Shell
+<a id="civicmeetings-react-staff-shell"></a>
+
+# Townlight Meetings React Staff Shell
 
 Status: Sprint 4 implementation slice with live agenda intake promotion,
 packet builder draft/finalize workflow, legally explicit notice checklist work,
@@ -9,15 +11,15 @@ staff access status that makes OIDC browser-session readiness visible to clerks
 and IT before sensitive meeting work begins.
 
 The `frontend/` package is the start of the production React app that will
-replace the HTML reference shell at `/staff`. It is adapted from the CivicSuite
+replace the HTML reference shell at `/staff`. It is adapted from the Townlight
 mockup direction, but implemented as typed React/Vite code rather than as the
 mockup's browser-global JSX bundle.
 
 ## What This Slice Includes
 
-- CivicSuite staff shell with Brookfield branding, left navigation, surface
+- Townlight staff shell with Brookfield branding, left navigation, surface
   switcher, search affordance, and partial-install disclosure.
-- CivicMeetings dashboard with priority work, meeting metrics, and clear clerk
+- Townlight Meetings dashboard with priority work, meeting metrics, and clear clerk
   next actions.
 - Staff access panel on the dashboard that reads `/staff/session`, shows local
   open mode, OIDC browser-session mode, bearer mode, or trusted-header mode,
@@ -141,7 +143,7 @@ npm run build
 ```
 
 The Vite dev proxy sends `/api/*` to `http://127.0.0.1:8776` by default so it
-matches the documented Windows-first CivicMeetings app command. Set
+matches the documented Windows-first Townlight Meetings app command. Set
 `CIVICCLERK_API_PROXY_TARGET=http://host:port` before `npm run dev` when the
 FastAPI app is listening somewhere else.
 

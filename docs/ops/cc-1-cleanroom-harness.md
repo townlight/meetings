@@ -1,6 +1,8 @@
-# CC-1 CivicMeetings Cleanroom Harness
+<a id="cc-1-civicmeetings-cleanroom-harness"></a>
 
-Status: active CivicMeetings productization gate.
+# CC-1 Townlight Meetings Cleanroom Harness
+
+Status: active Townlight Meetings productization gate.
 
 Date: 2026-05-05.
 
@@ -8,25 +10,25 @@ Sprint: CC-1.
 
 ## Purpose
 
-CC-1 proves CivicMeetings can be built and verified from a clean container while
-pinning the upstream platform to the CO-7 CivicCore freeze tag,
-`v1.2.1`, rather than moving CivicCore `main`.
+CC-1 proves Townlight Meetings can be built and verified from a clean container while
+pinning the upstream platform to the CO-7 Townlight Core freeze tag,
+`v1.2.1`, rather than moving Townlight Core `main`.
 
 The harness is intentionally stricter than a normal CI run:
 
 - the container base image is digest-pinned,
 - Docker builds use `--no-cache --pull`,
-- the target CivicMeetings commit is fetched by SHA,
-- CivicCore is installed from the `v1.2.1` release asset,
-- CivicCore freeze release assets are downloaded and checked with
+- the target Townlight Meetings commit is fetched by SHA,
+- Townlight Core is installed from the `v1.2.1` release asset,
+- Townlight Core freeze release assets are downloaded and checked with
   `sha256sum -c SHA256SUMS.txt`,
 - `release-attestation.json` is verified with cosign against the exact
-  CivicCore release workflow identity,
+  Townlight Core release workflow identity,
 - `scripts/verify-release-provenance.py v1.2.1 ...` verifies the
   release provenance contract,
 - `scripts/check-civiccore-placeholder-imports.py` rejects imports of
   `civiccore.catalog`, `civiccore.exemptions`, and `civiccore.scaffold`,
-- `bash scripts/verify-release.sh` runs the full CivicMeetings test apparatus, and
+- `bash scripts/verify-release.sh` runs the full Townlight Meetings test apparatus, and
 - the offline phase runs under `docker run --network none`.
 
 The online phase mounts the host Docker socket into the cleanroom container so
@@ -37,7 +39,7 @@ none` and without the socket.
 
 ## Commands
 
-Run from the CivicMeetings repository root:
+Run from the Townlight Meetings repository root:
 
 ```bash
 CLEANROOM_RUN_COUNT=2 bash scripts/run-civicclerk-cleanroom.sh
@@ -47,7 +49,7 @@ The host must expose a Docker socket at `/var/run/docker.sock`. If your Docker
 socket lives somewhere else, set `CLEANROOM_DOCKER_SOCKET` before running the
 harness.
 
-The live CivicCore provenance check uses GitHub's API through `gh api`. CI
+The live Townlight Core provenance check uses GitHub's API through `gh api`. CI
 passes `GITHUB_TOKEN` into the online cleanroom phase to avoid unauthenticated
 rate limits. Local runs can set `GITHUB_TOKEN` or `GH_TOKEN`; token values are
 not written to the evidence manifests.
@@ -83,14 +85,14 @@ are documented by each run's `timestamp-manifest.json`.
 ## CI
 
 `.github/workflows/cleanroom.yml` runs the same harness on pull requests that
-touch the CC-1 harness, the CivicCore pin, or the cleanroom documentation. The
+touch the CC-1 harness, the Townlight Core pin, or the cleanroom documentation. The
 workflow uploads the full evidence directory as a GitHub Actions artifact so an
 outside reviewer can inspect the logs and manifests without relying on local
 desktop state.
 
 ## Upstream Pin
 
-The CivicCore freeze release is:
+The Townlight Core freeze release is:
 
 - tag: `v1.2.1`,
 - package asset: `civiccore-1.2.1-py3-none-any.whl`,

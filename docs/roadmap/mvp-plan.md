@@ -1,9 +1,11 @@
-# CivicMeetings MVP Plan
+<a id="civicmeetings-mvp-plan"></a>
 
-The first CivicMeetings MVP is a vertical slice, not a full Granicus-style
+# Townlight Meetings MVP Plan
+
+The first Townlight Meetings MVP is a vertical slice, not a full Granicus-style
 replacement.
 
-Current status after CivicMeetings v0.1.19: all four MVP sprint goals below are
+Current status after Townlight Meetings v0.1.19: all four MVP sprint goals below are
 API-complete, tested, and represented by live-backed `/staff` cockpit panels.
 The runtime foundation, staff workflow HTML reference shell, prompt gates,
 release gates, connector import normalization, public archive filtering, the
@@ -12,14 +14,14 @@ OIDC staff-token validation, protected staff-auth rehearsal, deployment
 preflight, and fresh-install rehearsal helpers are present. The OIDC
 browser-session foundation is now shipped: `/staff/login` starts
 authorization-code + PKCE sign-in, `/staff/oidc/callback` accepts the provider
-callback, CivicMeetings issues a signed HttpOnly staff session cookie for
+callback, Townlight Meetings issues a signed HttpOnly staff session cookie for
 protected staff APIs, `/staff/session` reports the active identity and roles,
 and the React dashboard staff-access panel makes the current auth mode,
 provider, subject, roles, and sign-in/readiness actions visible to clerks and
 IT staff. The remaining production auth work is municipal IdP configuration,
 operational hardening, and protected-deployment proof; it is not an unbuilt
 OIDC browser-session feature. The first React app slice now exists under
-`frontend/`: it translates the CivicSuite mockup into a typed staff shell,
+`frontend/`: it translates the Townlight mockup into a typed staff shell,
 meeting calendar, meeting detail lifecycle ribbon, audit/evidence drawer, and
 explicit loading/success/empty/error/partial QA states, and the staff dashboard,
 calendar, and detail flow now load live meeting records through `/api/meetings`.
@@ -49,7 +51,7 @@ install/repair and daily-start launchers, with explicit SmartScreen/Unknown
 Publisher guidance for the supported unsigned public installer path. Remaining MVP work now centers on
 municipal IdP deployment proof, real vendor API deployment proof,
 city-approved retention/off-host backup proof, and deployment hardening. Signed
-installer publication is not planned for CivicSuite's public free open-source
+installer publication is not planned for Townlight's public free open-source
 release path. The Docker/PostgreSQL backup and restore
 rehearsal for the Compose product path is now present; real deployments still
 need an approved retention schedule and off-host storage target. The connector
@@ -57,7 +59,7 @@ path now has a local import-sync runner that produces normalized ledgers from
 exported agenda-system JSON, plus an optional Docker/Celery Beat schedule for
 approved local export-drop ingestion. The first vendor live-sync operational
 foundation is also present: proposed source URLs are validated through
-CivicCore guards, credentials in URLs are rejected, source/run/failure state
+Townlight Core guards, credentials in URLs are rejected, source/run/failure state
 persists in the vendor sync ledger, source health is computed as `healthy`,
 `degraded`, or `circuit_open`, and the circuit opens after five consecutive
 full-run failures or two post-unpause grace-period failures. The React staff
@@ -82,7 +84,7 @@ IT can clear or move the cursor without a vendor call when a full reconciliation
 or replay from an earlier point is required, and each reset reason is preserved
 as a `cursor_reset` run-log event.
 The reusable City of Brookfield mock-city environment suite is now being added
-as shared product infrastructure for the remaining CivicSuite modules:
+as shared product infrastructure for the remaining Townlight modules:
 `scripts/run_mock_city_environment_suite.py` verifies Legistar, Granicus,
 PrimeGov, and NovusAGENDA connector contracts without vendor network calls,
 labels public-reference versus vendor-gated interfaces honestly, and gives
@@ -97,7 +99,7 @@ support, and restore-manifest fields without contacting storage providers or
 printing secrets. Unsigned Windows install remains expected and supported;
 installer and docs warnings now name the "Unknown Publisher" / "Windows
 protected your PC" first-install experience directly and tell users it is OK to
-choose "More info" and "Run anyway" only for official CivicSuite artifacts or
+choose "More info" and "Run anyway" only for official Townlight artifacts or
 verified local builds. The pilot-readiness
 rollup now separates developer-owned readiness from external proofs for code
 signing, municipal IdP deployment, real vendor API access, and city

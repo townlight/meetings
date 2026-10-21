@@ -30,9 +30,9 @@ async def test_staff_ui_endpoint_renders_accessible_workflow_foundation() -> Non
     html = response.text
 
     assert "<main" in html
-    assert 'aria-label="CivicMeetings staff workflow screens"' in html
+    assert 'aria-label="Townlight Meetings staff workflow screens"' in html
     assert "Skip to workflow screens" in html
-    assert "CivicMeetings Staff Workflow Screens" in html
+    assert "Townlight Meetings Staff Workflow Screens" in html
     assert "Product cockpit" in html
     assert "Today's clerk desk" in html
     assert "This is the shift from foundation to product" in html

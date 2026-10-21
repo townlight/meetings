@@ -1,4 +1,6 @@
-# CivicMeetings Agent Instructions
+<a id="civicmeetings-agent-instructions"></a>
+
+# Townlight Meetings Agent Instructions
 
 ## Governing Workflow
 
@@ -11,9 +13,9 @@ before push or merge.
 
 ## Project Purpose
 
-CivicMeetings is the CivicSuite module for municipal meeting operations: agenda
+Townlight Meetings is the Townlight module for municipal meeting operations: agenda
 intake, packet assembly, statutory notice proof, meeting outcomes, minutes,
-public posting, public archives, and CivicCore-backed integration contracts.
+public posting, public archives, and Townlight Core-backed integration contracts.
 
 ## Stack
 
@@ -21,18 +23,18 @@ public posting, public archives, and CivicCore-backed integration contracts.
   workers where applicable.
 - Frontend: React, Vite, TypeScript.
 - Runtime: Docker Compose, local-first deployment.
-- Shared platform dependency: CivicCore, currently pinned to the published
-  CivicCore v1.0.1 release wheel unless a scoped pipeline run changes it.
+- Shared platform dependency: Townlight Core, currently pinned to the published
+  Townlight Core v1.0.1 release wheel unless a scoped pipeline run changes it.
 
 ## Operating Priorities
 
-- Productize CivicMeetings as part of the CivicSuite starter set with CivicCore
-  and CivicRecords AI.
-- Keep CivicCore as the shared base tech. CivicMeetings may depend on CivicCore;
-  CivicCore must not depend on CivicMeetings.
+- Productize Townlight Meetings as part of the Townlight starter set with Townlight Core
+  and Townlight Records AI.
+- Keep Townlight Core as the shared base tech. Townlight Meetings may depend on Townlight Core;
+  Townlight Core must not depend on Townlight Meetings.
 - Preserve honest public status language. Do not promote provisional or
   mock-only validation as production deployment proof.
-- Favor small, verifiable slices that improve installability, CivicCore
+- Favor small, verifiable slices that improve installability, Townlight Core
   integration, UI/UX, operator documentation, and release evidence.
 
 ## Required Gates

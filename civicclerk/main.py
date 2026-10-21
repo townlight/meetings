@@ -84,7 +84,7 @@ from civicclerk.vendor_sync_persistence import VendorSyncConfigError, VendorSync
 from civiccore import __version__ as CIVICCORE_VERSION
 
 app = FastAPI(
-    title="CivicMeetings",
+    title='Townlight Meetings',
     version=__version__,
     summary="Runtime foundation for CivicMeetings municipal meeting workflows.",
 )

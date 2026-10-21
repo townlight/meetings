@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a CivicMeetings bug or documentation issue
+about: Report a Townlight Meetings bug or documentation issue
 title: "[Bug]: "
 labels: bug
 assignees: ""

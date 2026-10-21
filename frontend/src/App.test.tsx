@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App";
 
-describe("CivicMeetings staff workspace", () => {
+describe("Townlight Meetings staff workspace", () => {
   beforeEach(() => {
     vi.stubGlobal(
       "fetch",
@@ -707,20 +707,20 @@ describe("CivicMeetings staff workspace", () => {
               proof_model: "live_or_in_process_boundary_validation",
               network_calls: true,
               dependent_modules_required: true,
-              message: "CivicMeetings integration depth requires live-wire or in-process boundary validation.",
+              message: "Townlight Meetings integration depth requires live-wire or in-process boundary validation.",
               fix: "Keep adversarial mocks as regression coverage.",
               contracts: [
                 {
                   id: "civicrecords-search",
-                  label: "CivicRecords search bridge",
+                  label: "Townlight Records search bridge",
                   status: "ready",
                   mode: "suite-module-live-wire",
                   proof_model: "live_wire_validation",
                   dependent_module_required: true,
                   network_calls: true,
                   supported_operations: ["permission-aware meeting archive query"],
-                  absent_dependency_behavior: "Local public archive search remains authoritative while CivicRecords is absent.",
-                  operator_fix: "Configure CivicRecords, validate the boundary, then keep adversarial checks as regression coverage.",
+                  absent_dependency_behavior: "Local public archive search remains authoritative while Townlight Records is absent.",
+                  operator_fix: "Configure Townlight Records, validate the boundary, then keep adversarial checks as regression coverage.",
                 },
                 {
                   id: "cms-posting",
@@ -817,12 +817,12 @@ describe("CivicMeetings staff workspace", () => {
     vi.unstubAllGlobals();
   });
 
-  it("renders the CivicSuite staff shell and dashboard from the live meeting API", async () => {
+  it("renders the Townlight staff shell and dashboard from the live meeting API", async () => {
     render(<App />);
 
-    expect(screen.getByText("CivicSuite")).toBeInTheDocument();
+    expect(screen.getByText("Townlight")).toBeInTheDocument();
     expect(await screen.findByRole("heading", { name: "Good morning, City Clerk." })).toBeInTheDocument();
-    expect(screen.getByText("Live from CivicMeetings meeting API")).toBeInTheDocument();
+    expect(screen.getByText("Live from Townlight Meetings meeting API")).toBeInTheDocument();
     expect(await screen.findByRole("heading", { name: "Meeting runbook" })).toBeInTheDocument();
     expect(screen.getByText("End-to-end clerk runbook")).toBeInTheDocument();
     expect(screen.getAllByText("Notice legally proved").length).toBeGreaterThan(0);
@@ -1189,7 +1189,7 @@ describe("CivicMeetings staff workspace", () => {
     fireEvent.click(await screen.findByRole("button", { name: /IT\/Admin/ }));
 
     expect(await screen.findByRole("heading", { name: "Integration contract depth" })).toBeInTheDocument();
-    expect(screen.getByText("CivicRecords search bridge")).toBeInTheDocument();
+    expect(screen.getByText("Townlight Records search bridge")).toBeInTheDocument();
     expect(screen.getByText("City website CMS posting")).toBeInTheDocument();
     expect(screen.getAllByText(/Network calls: yes/).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Dependency required now: yes/).length).toBeGreaterThan(0);

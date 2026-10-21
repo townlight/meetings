@@ -879,27 +879,27 @@ const demoIntegrationReadiness: ApiIntegrationReadiness = {
   contracts: [
     {
       id: "civicrecords-search",
-      label: "CivicRecords search bridge",
+      label: "Townlight Records search bridge",
       status: "ready",
       mode: "suite-module-live-wire",
       proof_model: "live_wire_validation",
       dependent_module_required: true,
       network_calls: true,
       supported_operations: ["permission-aware meeting archive query", "closed-session refusal parity", "unavailable-service fallback"],
-      absent_dependency_behavior: "Local public archive search remains authoritative while CivicRecords is absent.",
-      operator_fix: "Configure CivicRecords, validate the boundary, then keep adversarial checks as regression coverage.",
+      absent_dependency_behavior: "Local public archive search remains authoritative while Townlight Records is absent.",
+      operator_fix: "Configure Townlight Records, validate the boundary, then keep adversarial checks as regression coverage.",
     },
     {
       id: "civiccode-handoff",
-      label: "CivicCode adopted-action handoff",
+      label: "Townlight Code adopted-action handoff",
       status: "ready",
       mode: "live-when-configured",
       proof_model: "live_wire_validation",
       dependent_module_required: true,
       network_calls: true,
       supported_operations: ["ordinance/resolution payload export", "idempotent replay", "emit status visibility", "manual retry"],
-      absent_dependency_behavior: "Adopted-action handoffs remain local with EMIT_SKIPPED_UNCONFIGURED until CivicCode intake is configured.",
-      operator_fix: "Set CIVICCODE_INTAKE_URL and the suite bearer handoff value, verify CivicCode health, then retry failed or unconfigured handoffs.",
+      absent_dependency_behavior: "Adopted-action handoffs remain local with EMIT_SKIPPED_UNCONFIGURED until Townlight Code intake is configured.",
+      operator_fix: "Set CIVICCODE_INTAKE_URL and the suite bearer handoff value, verify Townlight Code health, then retry failed or unconfigured handoffs.",
     },
     {
       id: "cms-posting",
@@ -1194,7 +1194,7 @@ export function App() {
       const waitingForStaffSession = staffSessionState !== "error";
       const message =
         staffSessionError ??
-        "CivicMeetings is confirming staff access before loading protected meeting work.";
+        "Townlight Meetings is confirming staff access before loading protected meeting work.";
       setApiError(message);
       setBodyError(message);
       setPacketError(message);
@@ -1475,11 +1475,11 @@ export function App() {
 
   return (
     <div className="app-shell">
-      <aside className="rail" aria-label="CivicMeetings navigation">
+      <aside className="rail" aria-label="Townlight Meetings navigation">
         <div className="brand">
           <div className="seal">B</div>
           <div>
-            <strong>CivicSuite</strong>
+            <strong>Townlight</strong>
             <span>City of Brookfield</span>
           </div>
         </div>
@@ -2824,7 +2824,7 @@ function SpecCompletenessWorkspace({
           <div className="panel-heading">
             <div>
               <h2>Integration contract depth</h2>
-              <p>CivicMeetings separates live-wire or in-process boundary validation from supplemental adversarial regression checks before any city-specific endpoint is enabled.</p>
+              <p>Townlight Meetings separates live-wire or in-process boundary validation from supplemental adversarial regression checks before any city-specific endpoint is enabled.</p>
             </div>
             <StatusBadge
               tone={integrationState === "error" ? "Blocked" : integrationReadiness?.readiness === "ready" ? "Ready" : "Warning"}
@@ -2974,7 +2974,7 @@ function getSpecWorkspaceCopy(
       metrics: [
         { label: "Auth mode", value: counts.authMode, note: "Staff mode shown to operator" },
         { label: "Public leaks", value: "0", note: "Restricted records withheld" },
-        { label: "Role gate", value: "CivicCore", note: "Bearer archive roles resolved centrally" },
+        { label: "Role gate", value: "Townlight Core", note: "Bearer archive roles resolved centrally" },
       ],
       controls: ["Open role-gated archive search", "Summarize without revealing public existence", "Record staff-only notes"],
       apiPaths: ["/public/archive/search", "/staff/session"],
@@ -2985,7 +2985,7 @@ function getSpecWorkspaceCopy(
       title: "Search public records with explicit closed-session permissions.",
       description: "Residents see only public records; authorized archive staff can include restricted material through role-gated search.",
       panelTitle: "Archive search lane",
-      panelDescription: "The query path is public-safe by default and only expands when CivicCore role checks pass.",
+      panelDescription: "The query path is public-safe by default and only expands when Townlight Core role checks pass.",
       ready: counts.publicRecordCount > 0,
       metrics: [
         { label: "Public records", value: String(counts.publicRecordCount), note: "Searchable resident records" },
@@ -3099,13 +3099,13 @@ function Dashboard({
   return (
     <div className="page-stack">
       <PageHeader
-        eyebrow="CivicMeetings staff workspace"
+        eyebrow="Townlight Meetings staff workspace"
         title="Good morning, City Clerk."
         description="Today's meeting work is grouped by urgency, public posting risk, and packet readiness."
       />
       <StaffAccessPanel session={staffSession} state={staffSessionState} error={staffSessionError} />
       <div className="metric-grid">
-        <MetricCard label="Meetings this week" value={String(meetings.length)} note="Live from CivicMeetings meeting API" />
+        <MetricCard label="Meetings this week" value={String(meetings.length)} note="Live from Townlight Meetings meeting API" />
         <MetricCard
           label="Agenda items pending"
           value={String(agendaReviewCount)}
@@ -3176,7 +3176,7 @@ function StaffAccessPanel({
         <div>
           <span className="eyebrow">Staff access</span>
           <h2>Checking staff access</h2>
-          <p>CivicMeetings is confirming whether this browser has a live staff session before sensitive clerk actions appear.</p>
+          <p>Townlight Meetings is confirming whether this browser has a live staff session before sensitive clerk actions appear.</p>
         </div>
       </section>
     );
@@ -3189,7 +3189,7 @@ function StaffAccessPanel({
           <span className="eyebrow">Staff access</span>
           <h2 id="staff-access-title">Staff sign-in needed</h2>
           <p>
-            {error ?? "CivicMeetings could not verify the current staff session."} Use municipal SSO to sign in, ask IT to
+            {error ?? "Townlight Meetings could not verify the current staff session."} Use municipal SSO to sign in, ask IT to
             configure bearer or trusted-header staff access, or open <code>/staff/auth-readiness</code> and follow the
             protected-mode fix steps before writing clerk records.
           </p>
@@ -3212,7 +3212,7 @@ function StaffAccessPanel({
     : isBrowserSession
       ? "Signed in with municipal SSO"
       : "Staff access verified";
-  const message = session?.message ?? "CivicMeetings verified this browser for staff workflow access.";
+  const message = session?.message ?? "Townlight Meetings verified this browser for staff workflow access.";
   const fix = session?.fix ?? "Continue with clerk workflow actions.";
 
   return (
@@ -5694,7 +5694,7 @@ function StateMessage({ state, context, apiError }: { state: ViewState; context:
   const copy = {
     loading: {
       title: `Loading ${context}`,
-      body: "CivicMeetings is contacting the API. If this takes more than a few seconds, check the API service and reload the page.",
+      body: "Townlight Meetings is contacting the API. If this takes more than a few seconds, check the API service and reload the page.",
       action: "Retry loading",
     },
     empty: {
@@ -5757,7 +5757,7 @@ function StateMessage({ state, context, apiError }: { state: ViewState; context:
   if (context === "minutes draft" && state === "error") {
     copy.body = apiError
       ? `${apiError} Do not accept AI-drafted minutes until every material sentence cites a known source and a human approver is recorded.`
-      : "The minutes draft API did not respond. Do not accept AI-drafted minutes until every material sentence cites a known source and a human approver is recorded; confirm CivicMeetings is running, then retry after verifying citation sources.";
+      : "The minutes draft API did not respond. Do not accept AI-drafted minutes until every material sentence cites a known source and a human approver is recorded; confirm Townlight Meetings is running, then retry after verifying citation sources.";
   }
   if (context === "public posted meeting" && state === "empty") {
     copy.body = "No public meeting records are posted yet. Staff should publish a public-safe record from the clerk workflow before residents can see agendas, packets, or approved minutes here.";

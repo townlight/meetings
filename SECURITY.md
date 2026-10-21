@@ -1,6 +1,6 @@
 # Security Policy
 
-CivicMeetings is not installable yet. Security reports should still be
+Townlight Meetings is not installable yet. Security reports should still be
 filed privately because meeting workflows will eventually contain
 privileged and closed-session material.
 

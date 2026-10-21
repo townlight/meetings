@@ -1,6 +1,22 @@
-# CivicMeetings
+<a id="civicmeetings"></a>
 
-## Local Townlight Meetings integration candidate — October 19, 2026
+# Townlight Meetings
+
+## Published connected desktop: 1.4.0-beta.1
+
+This module participates in the signed Townlight Records + Meetings + Code +
+Zoning desktop beta published October 21, 2026. Select zoning-beta for all four
+products; Records-only remains default and city-core excludes Zoning.
+[Download and release limits](https://github.com/townlight/townlight/releases/tag/townlight-records-meetings-code-zoning-v1.4.0-beta.1) ·
+[Current operator manual](https://github.com/townlight/townlight/blob/main/USER-MANUAL.md) ·
+[Signed acceptance](https://github.com/townlight/townlight/blob/main/docs/installer/townlight-zoning-beta1-signed-acceptance.md).
+
+This is a connected desktop release, not a new standalone package version.
+Package/import/API names remain compatibility identifiers. Historical development
+checkpoints below retain their original scope; they are superseded for current
+desktop publication status. No signed installer or historical evidence is changed.
+
+## Historical integration checkpoint — Local Townlight Meetings integration candidate — October 19, 2026
 
 This section describes uncommitted M1–M4 development, not a new published release.
 The explicit desktop `meetings-beta` profile routes integrated operations through
@@ -67,18 +83,18 @@ Code handoffs remain in the subsequent connected-system work. Existing frontend
 and release-recovery notices below describe their own surfaces, not proof that
 all historical web features are present in the native candidate.
 
-> Formerly published as "CivicClerk"; renamed 2026-07 to avoid confusion with an unrelated commercial product of that name. Package and service identifiers are unchanged.
+> Formerly published as "Townlight Meetings"; renamed 2026-07 to avoid confusion with an unrelated commercial product of that name. Package and service identifiers are unchanged.
 
-**CivicMeetings is the CivicSuite module for municipal meetings, agendas, packets, minutes, votes, notices, and public meeting archives.**
+**Townlight Meetings is the Townlight module for municipal meetings, agendas, packets, minutes, votes, notices, and public meeting archives.**
 
-Status: CivicMeetings v1.0.4 runtime foundation label is provisional during the CivicSuite release recovery.
+Status: Townlight Meetings v1.0.4 runtime foundation label is provisional during the Townlight release recovery.
 Current version: `1.0.4`
 Repository: <https://github.com/townlight/meetings>  
 Depends on: published, Sigstore-attested `civiccore` 1.2.1 wheel from the `v1.2.1` release asset
 
 ## Release Recovery Notice
 
-CivicMeetings is not product-ready for public promotion while the CivicSuite
+Townlight Meetings is not product-ready for public promotion while the Townlight
 release recovery is active. Treat the current `v1.0.4` recovery patch
 as provisional until this repo re-earns release status through the recovery
 gates: full local backend tests, frontend unit tests, real Playwright user-flow
@@ -98,7 +114,7 @@ with them — so the legal record of a meeting survives an API restart. The
 public archive database must also contain the published meeting's referent
 row in `civicclerk.meetings` (migration 0014); the publish endpoint returns
 a self-describing 404 with the fix when it does not. Without those
-variables CivicMeetings falls back to in-memory stores and the legal record
+variables Townlight Meetings falls back to in-memory stores and the legal record
 does not survive a restart — do not run a real public meeting without
 database-backed persistence enabled. Minutes adoption/posting write paths,
 transcript records, ordinance/resolution handoffs, posted notice records,
@@ -106,10 +122,10 @@ and packet snapshots remain in-memory pending Persistence Phase 1b.
 
 ## Release Provenance
 
-CivicMeetings now wires the strengthened CivicCore release-provenance preflight
+Townlight Meetings now wires the strengthened Townlight Core release-provenance preflight
 into release-class workflows. GitHub release pages can display a "Verified"
 badge for the target commit even when the release tag itself is lightweight or
-unsigned, so CivicMeetings treats that badge as a commit-only signal. Post-baseline
+unsigned, so Townlight Meetings treats that badge as a commit-only signal. Post-baseline
 releases are verified by a Sigstore-signed `release-attestation.json` plus
 bundle, and the exact verification shape lives in `docs/ops/release-signing.md`.
 
@@ -119,9 +135,11 @@ include `release-attestation.json` or `release-attestation.json.bundle`. CO-4
 records the decision in `docs/ops/tier1-retrofit-ledger.md`: do not delete,
 recreate, mirror, or promote `v0.1.20` as an attested provenance baseline.
 
-## What CivicMeetings will do
+<a id="what-civicmeetings-will-do"></a>
 
-CivicMeetings is designed for the legal record of public meetings:
+## What Townlight Meetings will do
+
+Townlight Meetings is designed for the legal record of public meetings:
 
 - agenda item intake from departments
 - packet assembly
@@ -136,7 +154,7 @@ AI may draft or extract. Humans approve every consequential action.
 
 ## What exists today
 
-CivicMeetings currently contains the runtime and schema foundation plus database-backed agenda item lifecycle records, meeting lifecycle, packet snapshot, shared CivicCore-backed notice compliance, immutable motion capture, immutable vote capture, action-item capture, citation-gated minutes draft capture, permission-aware public calendar/detail/archive endpoints, a prompt YAML library with an offline evaluation harness, local-first connector imports for Granicus, Legistar, PrimeGov, and NovusAGENDA, accessibility/browser QA gates, CivicCore v1.2.1-backed records export bundles, database-backed agenda intake readiness, database-backed packet assembly records, database-backed notice checklist/posting-proof records, database-backed meeting records, and first staff workflow screens for intake, packet assembly/export, notice checklist, meeting outcome, minutes draft, public archive, connector import, and vendor sync work. These capabilities remain under recovery validation and must not be promoted as product-ready until the recovery gates pass. The staff screens submit agenda intake, record readiness review, create/finalize packet assembly records, create records-ready packet export bundles, persist notice checklist records, attach posting proof, capture motions/votes/action items, create citation-gated minutes drafts, publish public-safe archive records, normalize local connector exports through the shared CivicCore connector import contract, surface vendor sync source health and no-network run logging, expose the shared CivicCore connector runtime validation helpers that future live-sync work can adopt without bespoke security plumbing, expose the first vendor live-sync readiness and circuit-breaker contract for future scheduled pulls, consume the shared CivicCore trusted-header config and proxy-source enforcement helpers, and expose `/staff/auth-readiness` so operators can verify whether OIDC, bearer, or trusted-header staff auth is deployment-ready before testing a live session. When OIDC, bearer, or trusted-header mode is ready, the readiness contract now includes a concrete protected-session probe and a protected-write probe instead of only env-var reminders, and trusted-header readiness now carries a loopback-only local proxy rehearsal contract that points operators to `scripts/local_trusted_header_proxy.py` with `127.0.0.1/32` as the safe starter allowlist.
+Townlight Meetings currently contains the runtime and schema foundation plus database-backed agenda item lifecycle records, meeting lifecycle, packet snapshot, shared Townlight Core-backed notice compliance, immutable motion capture, immutable vote capture, action-item capture, citation-gated minutes draft capture, permission-aware public calendar/detail/archive endpoints, a prompt YAML library with an offline evaluation harness, local-first connector imports for Granicus, Legistar, PrimeGov, and NovusAGENDA, accessibility/browser QA gates, Townlight Core v1.2.1-backed records export bundles, database-backed agenda intake readiness, database-backed packet assembly records, database-backed notice checklist/posting-proof records, database-backed meeting records, and first staff workflow screens for intake, packet assembly/export, notice checklist, meeting outcome, minutes draft, public archive, connector import, and vendor sync work. These capabilities remain under recovery validation and must not be promoted as product-ready until the recovery gates pass. The staff screens submit agenda intake, record readiness review, create/finalize packet assembly records, create records-ready packet export bundles, persist notice checklist records, attach posting proof, capture motions/votes/action items, create citation-gated minutes drafts, publish public-safe archive records, normalize local connector exports through the shared Townlight Core connector import contract, surface vendor sync source health and no-network run logging, expose the shared Townlight Core connector runtime validation helpers that future live-sync work can adopt without bespoke security plumbing, expose the first vendor live-sync readiness and circuit-breaker contract for future scheduled pulls, consume the shared Townlight Core trusted-header config and proxy-source enforcement helpers, and expose `/staff/auth-readiness` so operators can verify whether OIDC, bearer, or trusted-header staff auth is deployment-ready before testing a live session. When OIDC, bearer, or trusted-header mode is ready, the readiness contract now includes a concrete protected-session probe and a protected-write probe instead of only env-var reminders, and trusted-header readiness now carries a loopback-only local proxy rehearsal contract that points operators to `scripts/local_trusted_header_proxy.py` with `127.0.0.1/32` as the safe starter allowlist.
 
 Shipped in this foundation:
 
@@ -147,7 +165,7 @@ Shipped in this foundation:
 - discussion seed posts
 - docs verification script and CI workflow
 - Python package metadata with the published `civiccore` 1.2.1 wheel from the `v1.2.1` release asset
-- first `frontend/` React/Vite staff workspace slice adapted from the CivicSuite
+- first `frontend/` React/Vite staff workspace slice adapted from the Townlight
   mockup into production TypeScript
 - live `GET /meetings` endpoint for staff calendar/list views
 - live `PATCH /meetings/{id}` endpoint for pre-lock schedule edits with
@@ -166,18 +184,18 @@ Shipped in this foundation:
   promotion linkage via Alembic migrations `civicclerk_0002_intake_queue` and
   `civicclerk_0008_intake_promotion`
 - `/agenda-intake` submit/list/review/promote endpoints with audit events for consequential review and promotion actions
-- canonical SQLAlchemy metadata for the fourteen CivicMeetings tables
+- canonical SQLAlchemy metadata for the fourteen Townlight Meetings tables
 - Alembic scaffold and first idempotent migration for the `civicclerk` schema
 - CC-5 canonical data model completion through Alembic migration
   `civicclerk_0011_data_model`, adding downstream contract columns for packet
   version uniqueness, motion/vote correction metadata, public comment intake,
   closed-session ACLs, document references, transcript sensitivity, and
-  CivicCode ordinance handoff status
+  Townlight Code ordinance handoff status
 - agenda item lifecycle enforcement from `DRAFTED` through `ARCHIVED`
 - optional database-backed agenda item lifecycle persistence with `CIVICCLERK_AGENDA_ITEM_DB_URL`
-- CivicCore-verifiable persisted audit hashes for allowed and rejected agenda item transitions
+- Townlight Core-verifiable persisted audit hashes for allowed and rejected agenda item transitions
 - meeting lifecycle enforcement from `SCHEDULED` through `ARCHIVED`
-- database-backed meeting records with CivicCore-verifiable lifecycle audit hashes, scheduled
+- database-backed meeting records with Townlight Core-verifiable lifecycle audit hashes, scheduled
   starts, meeting body linkage, location, normalized meeting type, and Alembic
   migrations `civicclerk_0005_meetings` plus
   `civicclerk_0007_meeting_schedule`
@@ -223,7 +241,7 @@ Shipped in this foundation:
   normalization, packet completeness review, notice compliance review,
   motion/vote summary, minutes drafting, ordinance/resolution extraction,
   closed-session safe refusal, and public plain-language meeting explanation
-- prompt registration through `civiccore.llm.resolve_template` as CivicCore
+- prompt registration through `civiccore.llm.resolve_template` as Townlight Core
   code-level overrides under `consumer_app="civicclerk"`
 - offline prompt evaluation harness that runs with `CIVICCORE_LLM_PROVIDER=ollama`
   and outbound network blocked, covering citation requirements,
@@ -240,14 +258,14 @@ Shipped in this foundation:
   pages, five QA states, desktop, 390px mobile, keyboard focus, contrast,
   horizontal overflow, visible copy, and console/runtime checks
 - prompt-version provenance enforcement for minutes drafts
-- integration-depth readiness at `/integrations/readiness` for CivicRecords search,
-  CivicCode handoff, codification export, city CMS posting, and vendor live API
-  adapters, plus a live CivicCode handoff emitter that sends adopted
+- integration-depth readiness at `/integrations/readiness` for Townlight Records search,
+  Townlight Code handoff, codification export, city CMS posting, and vendor live API
+  adapters, plus a live Townlight Code handoff emitter that sends adopted
   ordinance/resolution records to `CIVICCODE_INTAKE_URL` when
   the suite bearer handoff value is configured
 - local-first Granicus, Legistar, PrimeGov, and NovusAGENDA meeting imports
 - source provenance on imported meetings and agenda items
-- records-ready packet export bundles with CivicCore v1.2.1 manifests, SHA256 checksums, provenance, and hash-chained audit events
+- records-ready packet export bundles with Townlight Core v1.2.1 manifests, SHA256 checksums, provenance, and hash-chained audit events
 - closed-session/restricted source guardrails for public packet export bundles
 - safe API export-path handling through `bundle_name` under `CIVICCLERK_EXPORT_ROOT`
 - browser QA gate covering loading, success, empty, error, and partial states
@@ -267,8 +285,8 @@ Shipped in this foundation:
   displays signed-in subject/provider/roles when available, and links clerks or
   IT directly to `/staff/login`, `/staff/logout`, and `/staff/auth-readiness`
 - ADR-0009 documents why the OIDC browser session bridge remains module-local
-  until CivicCore ships that helper, while protected API access continues to
-  use CivicCore bearer, trusted-header, trusted-proxy-source, and optional
+  until Townlight Core ships that helper, while protected API access continues to
+  use Townlight Core bearer, trusted-header, trusted-proxy-source, and optional
   archive bearer helpers
 - nginx-served Docker/installer product routing for `/staff`, `/staff/...`,
   `/public`, and `/public/...`, with workflow API calls staying under
@@ -334,19 +352,19 @@ Shipped in this foundation:
 
 | README data model claim | Verification |
 | --- | --- |
-| All fourteen canonical CivicMeetings tables remain present in the shared `civicclerk` schema. | `tests/test_milestone_2_schema_and_migrations.py::test_canonical_table_models_exist_and_no_tables_are_missing_or_extra` |
+| All fourteen canonical Townlight Meetings tables remain present in the shared `civicclerk` schema. | `tests/test_milestone_2_schema_and_migrations.py::test_canonical_table_models_exist_and_no_tables_are_missing_or_extra` |
 | `civicclerk_0011_data_model` upgrades, downgrades to the prior release head, and re-upgrades while preserving the packet-version contract. | `tests/test_milestone_2_schema_and_migrations.py::test_alembic_command_upgrades_real_pgvector_database`; `tests/test_milestone_2_schema_and_migrations.py::test_data_model_completion_migration_declares_reversible_cc5_contract` |
 | Packet snapshots are versioned per meeting by schema constraint. | `tests/test_milestone_2_schema_and_migrations.py::test_packet_versions_are_versioned_per_meeting_by_schema_contract` |
 | Motion and vote records carry append-only correction metadata that references the original record. | `tests/test_milestone_2_schema_and_migrations.py::test_motion_vote_canonical_tables_preserve_append_only_correction_contract`; `tests/test_milestone_6_motion_vote_action_capture.py::test_api_captured_motion_is_immutable_and_corrections_reference_original` |
-| Closed-session material has staff-only ACL fields, and archive search uses released CivicCore search helpers while document-table references remain ADR-bound until CivicCore ships document tables. | `tests/test_milestone_2_schema_and_migrations.py::test_closed_session_material_has_staff_only_acl_schema_contract`; `tests/test_milestone_2_schema_and_migrations.py::test_civiccore_document_and_search_extraction_boundary_is_documented`; `tests/test_milestone_8_public_archive.py::test_archive_search_requires_allowed_bearer_role_for_closed_session_visibility` |
+| Closed-session material has staff-only ACL fields, and archive search uses released Townlight Core search helpers while document-table references remain ADR-bound until Townlight Core ships document tables. | `tests/test_milestone_2_schema_and_migrations.py::test_closed_session_material_has_staff_only_acl_schema_contract`; `tests/test_milestone_2_schema_and_migrations.py::test_civiccore_document_and_search_extraction_boundary_is_documented`; `tests/test_milestone_8_public_archive.py::test_archive_search_requires_allowed_bearer_role_for_closed_session_visibility` |
 
 ### CC-6 prompt claims registry
 
 | README prompt claim | Verification |
 | --- | --- |
-| Every spec-required CivicMeetings prompt ships as versioned YAML and resolves through `civiccore.llm.resolve_template` under `consumer_app="civicclerk"`. | `tests/test_milestone_9_prompt_yaml_evals.py::test_all_spec_prompts_are_versioned_and_resolve_through_civiccore` |
+| Every spec-required Townlight Meetings prompt ships as versioned YAML and resolves through `civiccore.llm.resolve_template` under `consumer_app="civicclerk"`. | `tests/test_milestone_9_prompt_yaml_evals.py::test_all_spec_prompts_are_versioned_and_resolve_through_civiccore` |
 | The offline eval harness covers policy phrases, public approval gates, and input mutation stability without network calls. | `tests/test_milestone_9_prompt_yaml_evals.py::test_prompt_eval_harness_runs_offline_with_ollama_provider_selected` |
-| The eval harness uses the CivicCore resolver path instead of standalone prompt rendering. | `tests/test_milestone_9_prompt_yaml_evals.py::test_prompt_eval_harness_uses_civiccore_resolver_not_standalone_rendering` |
+| The eval harness uses the Townlight Core resolver path instead of standalone prompt rendering. | `tests/test_milestone_9_prompt_yaml_evals.py::test_prompt_eval_harness_uses_civiccore_resolver_not_standalone_rendering` |
 - Docker Compose deployment stack with PostgreSQL 17 + pgvector, Redis 7.2,
   Ollama, FastAPI, Celery worker, Celery Beat, and nginx-served React frontend
   wired to the `/api` proxy path
@@ -355,9 +373,9 @@ Shipped in this foundation:
   `/data/connector-imports`, writes a provenance ledger under `/data/exports`,
   and never contacts vendor networks
 - vendor live-sync readiness and persistence primitives that validate proposed
-  source URLs through CivicCore guards, reject credentials in URLs, persist
+  source URLs through Townlight Core guards, reject credentials in URLs, persist
   source/run/failure state in `vendor_sync_*` tables, project source-list
-  health and operator fix paths through the shared CivicCore source-status
+  health and operator fix paths through the shared Townlight Core source-status
   helper, compute `healthy`/`degraded`/`circuit_open`, and open the circuit
   after five consecutive full-run failures or two post-unpause grace-period
   failures
@@ -372,7 +390,7 @@ Shipped in this foundation:
   "Windows protected your PC" first-install experience, why this small free
   open-source project ships unsigned installers, and when it is OK to choose
   "More info" -> "Run anyway"
-- CivicMeetings v1.0.4 release gate and build artifacts
+- Townlight Meetings v1.0.4 release gate and build artifacts
 - `scripts/start_fresh_install_rehearsal.ps1` to rehearse the documented
   Windows-first wheel install and first-run smoke checks from an isolated
   `.fresh-install-rehearsal` virtual environment
@@ -393,7 +411,7 @@ Shipped in this foundation:
   and handoff bundle contents before building or handing off installer packages
 - `scripts/check_enterprise_installer_signing.py` remains available for
   downstream organizations that choose to sign their own internal copy, but
-  CivicSuite's supported public Windows path is unsigned
+  Townlight's supported public Windows path is unsigned
 - `scripts/check_connector_sync_readiness.py` to verify supported connector
   payload contracts and future source guards without outbound network calls
 - `scripts/run_mock_city_environment_suite.py` to run the reusable no-network
@@ -456,9 +474,9 @@ Shipped in this foundation:
 
 Not shipped yet:
 
-- city-specific live endpoint enablement for CivicRecords, CivicCode, CMS,
+- city-specific live endpoint enablement for Townlight Records, Townlight Code, CMS,
   codifier, or municipal Granicus/Legistar/PrimeGov/NovusAGENDA tenants. The
-  CivicMeetings side now distinguishes live-wire or in-process boundary validation
+  Townlight Meetings side now distinguishes live-wire or in-process boundary validation
   from supplemental adversarial mock regression checks, and real credentials
   plus endpoint activation remain a deployment task.
 
@@ -494,10 +512,10 @@ A new user can inspect and run the foundation, open staff workflow screens at `/
    - Use `bash scripts/start_fresh_install_rehearsal.sh --print-only` to print the same fresh-install rehearsal plan from Linux, macOS, or Git Bash, or rerun without `--print-only` to create `.fresh-install-rehearsal/.venv`, install the release wheel, start the installed app, and run the same smoke checks automatically; Linux hosts need Python 3 with `venv` support installed first, such as `python3-venv` on Debian or Ubuntu
    - For the Docker product path on Windows, run `powershell -ExecutionPolicy Bypass -File install.ps1` from the source checkout or installed package to create `.env`, build/start Docker Compose, wait for `/health` and the React staff app, and open `http://127.0.0.1:8080/`
    - Build the unsigned Windows setup executable with `bash installer/windows/build-installer.sh` on a workstation with Inno Setup 6; SmartScreen will identify it as unsigned, and Docker volumes are intentionally preserved on uninstall
-   - Expect Windows SmartScreen to show "Unknown Publisher" or "Windows protected your PC" because CivicSuite is a small free open-source project and the public installer is not signed with a paid publisher certificate. That warning is expected; choose "More info" and "Run anyway" only when the installer came from the official CivicSuite GitHub release source or your IT team built it from verified CivicSuite source.
+   - Expect Windows SmartScreen to show "Unknown Publisher" or "Windows protected your PC" because Townlight is a small free open-source project and the public installer is not signed with a paid publisher certificate. That warning is expected; choose "More info" and "Run anyway" only when the installer came from the official Townlight GitHub release source or your IT team built it from verified Townlight source.
    - Use `powershell -ExecutionPolicy Bypass -File scripts/build_release_handoff_bundle.ps1 -PrintOnly` on Windows PowerShell or `bash scripts/build_release_handoff_bundle.sh --print-only` on Linux, macOS, or Git Bash to preview the release handoff bundle, or rerun without the print-only flag after `bash scripts/verify-release.sh` has built `dist/` artifacts
    - Run `python scripts/check_installer_readiness.py` after creating the handoff bundle to verify installer input artifacts, checksums, docs, env examples, and rehearsal helpers before building or handing off the Windows setup package
-   - Run `python scripts/check_starter_set_integration.py --umbrella-root ..\civicsuite --require-archives` from this repo when verifying the CivicSuite starter-set package; it checks that CivicCore installs first, CivicRecords AI and CivicMeetings are selectable, package workflow proof is required, and Linux/Windows archives exist
+   - Run `python scripts/check_starter_set_integration.py --umbrella-root ..\civicsuite --require-archives` from this repo when verifying the Townlight starter-set package; it checks that Townlight Core installs first, Townlight Records and Townlight Meetings are selectable, package workflow proof is required, and Linux/Windows archives exist
    - Run `python scripts/check_connector_sync_readiness.py` before vendor-network live-sync design work to prove the supported local connector payload contracts and optional future URL/ODBC guard checks without making vendor network calls
    - Run `python scripts/run_mock_city_environment_suite.py --output mock-city-report.json` to prove the reusable City of Brookfield vendor-interface and municipal IdP contract suite before adding module-specific integration assertions; this does not contact vendor networks or expose mock secrets
    - Run `python scripts/run_mock_city_environment_suite.py --hostile-mode --output mock-city-hostile-report.json` to prove the adversarial IdP, agenda-vendor, and backup-retention fixtures remain secret-free, no-network, and actionable before live city integration work begins
@@ -526,7 +544,7 @@ A new user can inspect and run the foundation, open staff workflow screens at `/
    - Use `powershell -ExecutionPolicy Bypass -File scripts/start_protected_demo_rehearsal.ps1 -PrintOnly` on Windows PowerShell or `bash scripts/start_protected_demo_rehearsal.sh --print-only` on Linux, macOS, or Git Bash to print the protected trusted-header demo profile before launching it
 7. Exercise `/agenda-intake`, `/agenda-intake/{id}/review`, `/agenda-items`, `/agenda-items/{id}/transitions`, `/meetings`, `/meetings/{id}/transitions`, `/meetings/{id}/packet-snapshots`, `/meetings/{id}/packet-assemblies`, `/packet-assemblies/{id}/finalize`, `/meetings/{id}/notice-checklists`, `/notice-checklists/{id}/posting-proof`, `/meetings/{id}/export-bundle`, `/meetings/{id}/notices/post`, `/meetings/{id}/motions`, `/motions/{id}/votes`, `/meetings/{id}/action-items`, `/meetings/{id}/minutes/drafts`, `/meetings/{id}/public-record`, `/public/meetings`, `/public/archive/search`, `/imports/{connector}/meetings`, `/vendor-live-sync/sources`, `/vendor-live-sync/sources/{id}/run-log`, and `/vendor-live-sync/sources/{id}/cursor-reset` to smoke-check Milestone 10 plus the production-depth live staff action slices and the no-network vendor sync ledger.
 8. Set `CIVICCLERK_AGENDA_ITEM_DB_URL` before agenda item lifecycle persistence smoke checks, set `CIVICCLERK_MEETING_DB_URL` before meeting persistence smoke checks, set `CIVICCLERK_VENDOR_SYNC_DB_URL` before durable vendor sync ledger smoke checks, and set `CIVICCLERK_EXPORT_ROOT` before API packet export smoke checks; API callers provide a relative `bundle_name`, not an arbitrary filesystem path.
-9. In OIDC, bearer, or trusted-header mode, call `/staff/auth-readiness` first and use the returned `session_probe` plus `write_probe` before trusting a protected deployment. In OIDC mode, complete the browser-login settings and open `/staff/login`; CivicMeetings redirects to the municipal provider with authorization-code + PKCE parameters, accepts the callback at `/staff/oidc/callback`, and stores a signed HttpOnly CivicMeetings staff session cookie instead of storing the raw OIDC token in the browser.
+9. In OIDC, bearer, or trusted-header mode, call `/staff/auth-readiness` first and use the returned `session_probe` plus `write_probe` before trusting a protected deployment. In OIDC mode, complete the browser-login settings and open `/staff/login`; Townlight Meetings redirects to the municipal provider with authorization-code + PKCE parameters, accepts the callback at `/staff/oidc/callback`, and stores a signed HttpOnly Townlight Meetings staff session cookie instead of storing the raw OIDC token in the browser.
 10. If trusted-header mode is headed toward a real deployment, start from the returned `reverse_proxy_reference` block and the shipped `docs/examples/trusted-header-nginx.conf` sample before you wire in your real identity provider variables and TLS paths.
 11. If trusted-header mode is still being rehearsed on one workstation, use the returned `local_proxy_rehearsal` block, set `CIVICCLERK_STAFF_SSO_TRUSTED_PROXIES=127.0.0.1/32`, run `python scripts/local_trusted_header_proxy.py`, and browse the helper listen URL instead of the upstream app URL.
 12. If you want the trusted-header demo profile without hand-exporting env vars on Windows PowerShell, run `powershell -ExecutionPolicy Bypass -File scripts/start_protected_demo_rehearsal.ps1 -PrintOnly` to print the exact commands, then rerun the same script without `-PrintOnly` to launch the app on `8877` and the helper proxy on `8878`.
@@ -540,7 +558,7 @@ A new user can inspect and run the foundation, open staff workflow screens at `/
 
 ## Architecture direction
 
-CivicMeetings follows the CivicSuite pattern:
+Townlight Meetings follows the Townlight pattern:
 
 - FastAPI backend
 - React frontend
@@ -569,11 +587,11 @@ empty rehearsal database. The Windows installer package under
 The installer is unsigned, local-rehearsal oriented, and still requires Docker
 Desktop; use OIDC, bearer, or trusted-header auth before any shared deployment.
 
-The foundation is intentionally thin. Canonical schema, Alembic scaffolding, agenda item lifecycle enforcement, agenda item lifecycle persistence, meeting lifecycle enforcement, meeting records, packet snapshot versioning, packet assembly records, notice checklist records, shared notice compliance enforcement, immutable motion capture, immutable vote capture, action-item capture, citation-gated minutes draft capture, permission-aware public archive endpoints, prompt YAML/evaluation gates, local-first connector import normalization, browser QA gates, CivicMeetings v1.0.4 release artifacts, and CivicCore v1.2.1 packet export, browser-evidence verification, connector runtime validation, and trusted-header config enforcement primitives are present. Minutes drafts require sentence-level citations, YAML prompt-version provenance, and human approval before acceptance, and they are never auto-adopted or auto-posted. Anonymous public archive endpoints do not reveal closed-session content in response bodies, counts, suggestions, or error messages. Connector imports record source provenance and do not require outbound network calls in the default local profile. The vendor live-sync foundation now validates proposed vendor source URLs without network calls, blocks credentials in URLs, persists source/run/failure state in `vendor_sync_sources`, `vendor_sync_run_log`, and `vendor_sync_failures`, computes source health as `healthy`, `degraded`, or `circuit_open`, persists `last_success_cursor_at`, plans connector-specific delta URLs from that cursor, advances it only after fully successful normalized pulls, and follows the CivicRecords AI circuit-breaker pattern of five consecutive full-run failures or two grace-period failures after unpause. Public packet exports block closed-session/restricted sources and include manifest, checksum, provenance, and audit evidence. Agenda item records now persist lifecycle status and CivicCore-verifiable transition audit hashes when `CIVICCLERK_AGENDA_ITEM_DB_URL` is configured, and ready agenda intake records can be promoted into those lifecycle records while preserving the generated agenda item id, promotion timestamp, and audit hash on the intake record. Meeting records now persist scheduled starts, meeting body ids, locations, normalized meeting type, lifecycle status, and CivicCore-verifiable transition and schedule-edit audit hashes when `CIVICCLERK_MEETING_DB_URL` is configured; schedule edits are allowed before the in-session lock point, write audit entries, and validate changed meeting body ids before accepting create/update requests. Vendor sync source, run, failure, and cursor state persist when `CIVICCLERK_VENDOR_SYNC_DB_URL` is configured; the API records operator state and no-network cursor resets without pulling vendors, while `scripts/run_vendor_live_sync.py` provides an explicitly enabled one-source pull runner that records outcomes in the same circuit-breaker ledger. Packet assembly records now persist source references, citations, linked packet snapshot ids, and durable audit hashes. Notice checklist records persist compliance outcomes, warnings, posting proof, and durable audit hashes. Browser QA now checks loading, success, empty, error, and partial states plus keyboard, focus, contrast, and console evidence, and release screenshots are bound to the current docs page through shared CivicCore verification helpers. CivicMeetings v1.0.4 now pairs with the published `civiccore` 1.2.1 wheel from the `v1.2.1` release asset. The first staff auth foundation is now explicit: fresh installs default to `CIVICCLERK_STAFF_AUTH_MODE=protected` so anonymous staff writes are denied, local rehearsals can explicitly opt into `CIVICCLERK_STAFF_AUTH_MODE=open`, municipal identity-provider deployments can set `CIVICCLERK_STAFF_AUTH_MODE=oidc` plus issuer, audience, JWKS, role-claim, algorithm, authorization URL, token URL, client, redirect URI, and session-cookie-secret settings, bearer-protected pilots can set `CIVICCLERK_STAFF_AUTH_MODE=bearer` plus `CIVICCLERK_STAFF_AUTH_TOKEN_ROLES`, and trusted reverse-proxy deployments can set `CIVICCLERK_STAFF_AUTH_MODE=trusted_header` plus `CIVICCLERK_STAFF_SSO_PRINCIPAL_HEADER`, `CIVICCLERK_STAFF_SSO_ROLES_HEADER`, `CIVICCLERK_STAFF_SSO_PROVIDER`, and `CIVICCLERK_STAFF_SSO_TRUSTED_PROXIES`. The `/staff/auth-readiness` endpoint now tells operators whether those OIDC token-validation, OIDC browser-login, bearer, or trusted-proxy settings are merely present or actually deployment-ready, and it includes a loopback-only rehearsal recipe so trusted-header testing does not require inventing a custom proxy first.
+The foundation is intentionally thin. Canonical schema, Alembic scaffolding, agenda item lifecycle enforcement, agenda item lifecycle persistence, meeting lifecycle enforcement, meeting records, packet snapshot versioning, packet assembly records, notice checklist records, shared notice compliance enforcement, immutable motion capture, immutable vote capture, action-item capture, citation-gated minutes draft capture, permission-aware public archive endpoints, prompt YAML/evaluation gates, local-first connector import normalization, browser QA gates, Townlight Meetings v1.0.4 release artifacts, and Townlight Core v1.2.1 packet export, browser-evidence verification, connector runtime validation, and trusted-header config enforcement primitives are present. Minutes drafts require sentence-level citations, YAML prompt-version provenance, and human approval before acceptance, and they are never auto-adopted or auto-posted. Anonymous public archive endpoints do not reveal closed-session content in response bodies, counts, suggestions, or error messages. Connector imports record source provenance and do not require outbound network calls in the default local profile. The vendor live-sync foundation now validates proposed vendor source URLs without network calls, blocks credentials in URLs, persists source/run/failure state in `vendor_sync_sources`, `vendor_sync_run_log`, and `vendor_sync_failures`, computes source health as `healthy`, `degraded`, or `circuit_open`, persists `last_success_cursor_at`, plans connector-specific delta URLs from that cursor, advances it only after fully successful normalized pulls, and follows the Townlight Records circuit-breaker pattern of five consecutive full-run failures or two grace-period failures after unpause. Public packet exports block closed-session/restricted sources and include manifest, checksum, provenance, and audit evidence. Agenda item records now persist lifecycle status and Townlight Core-verifiable transition audit hashes when `CIVICCLERK_AGENDA_ITEM_DB_URL` is configured, and ready agenda intake records can be promoted into those lifecycle records while preserving the generated agenda item id, promotion timestamp, and audit hash on the intake record. Meeting records now persist scheduled starts, meeting body ids, locations, normalized meeting type, lifecycle status, and Townlight Core-verifiable transition and schedule-edit audit hashes when `CIVICCLERK_MEETING_DB_URL` is configured; schedule edits are allowed before the in-session lock point, write audit entries, and validate changed meeting body ids before accepting create/update requests. Vendor sync source, run, failure, and cursor state persist when `CIVICCLERK_VENDOR_SYNC_DB_URL` is configured; the API records operator state and no-network cursor resets without pulling vendors, while `scripts/run_vendor_live_sync.py` provides an explicitly enabled one-source pull runner that records outcomes in the same circuit-breaker ledger. Packet assembly records now persist source references, citations, linked packet snapshot ids, and durable audit hashes. Notice checklist records persist compliance outcomes, warnings, posting proof, and durable audit hashes. Browser QA now checks loading, success, empty, error, and partial states plus keyboard, focus, contrast, and console evidence, and release screenshots are bound to the current docs page through shared Townlight Core verification helpers. Townlight Meetings v1.0.4 now pairs with the published `civiccore` 1.2.1 wheel from the `v1.2.1` release asset. The first staff auth foundation is now explicit: fresh installs default to `CIVICCLERK_STAFF_AUTH_MODE=protected` so anonymous staff writes are denied, local rehearsals can explicitly opt into `CIVICCLERK_STAFF_AUTH_MODE=open`, municipal identity-provider deployments can set `CIVICCLERK_STAFF_AUTH_MODE=oidc` plus issuer, audience, JWKS, role-claim, algorithm, authorization URL, token URL, client, redirect URI, and session-cookie-secret settings, bearer-protected pilots can set `CIVICCLERK_STAFF_AUTH_MODE=bearer` plus `CIVICCLERK_STAFF_AUTH_TOKEN_ROLES`, and trusted reverse-proxy deployments can set `CIVICCLERK_STAFF_AUTH_MODE=trusted_header` plus `CIVICCLERK_STAFF_SSO_PRINCIPAL_HEADER`, `CIVICCLERK_STAFF_SSO_ROLES_HEADER`, `CIVICCLERK_STAFF_SSO_PROVIDER`, and `CIVICCLERK_STAFF_SSO_TRUSTED_PROXIES`. The `/staff/auth-readiness` endpoint now tells operators whether those OIDC token-validation, OIDC browser-login, bearer, or trusted-proxy settings are merely present or actually deployment-ready, and it includes a loopback-only rehearsal recipe so trusted-header testing does not require inventing a custom proxy first.
 
-The staff experience at `/staff` now includes a product cockpit plus first workflow screens for agenda intake, packet assembly/export, notice checklist/posting-proof, meeting outcome, minutes draft, public archive, connector import, and vendor sync work. It is intentionally honest: the cockpit gives clerks a day-at-a-glance desk, reads the live agenda intake queue for ready/pending/needs-revision counts, the Agenda Intake, Packet Assembly, Notice Checklist, Meeting Outcomes, Minutes Draft, and Vendor Sync panels render live queue/record rows with escaped user-submitted titles where applicable and actionable empty/unavailable-store rows, the workflow screens can submit their corresponding live API actions, the auth panel now renders concrete protected-session and protected-write probes from `/staff/auth-readiness` when OIDC, bearer, or trusted-header mode is ready, it surfaces the loopback-only local proxy rehearsal command and env vars when trusted-header mode is being staged, and the broader multi-role React clerk console is now beginning under `frontend/`. The React slice uses the CivicSuite mockup direction for a real staff shell, meeting body management, meeting scheduling, meeting calendar, lifecycle ribbon, audit/evidence drawer, pre-lock schedule editing, Agenda Intake submit/review/promotion, Packet Builder promoted-item selection, packet draft creation, per-meeting queue review, packet finalization, Notice Checklist statutory deadline review, legal-blocker copy, posting-proof attachment, immutable audit-hash evidence, Public Posting resident-safe list/detail/search, Meeting Outcomes motion/vote/action capture with immutable-record guidance, Minutes Draft source/citation/provenance capture, Vendor Sync source-health/circuit-breaker/cursor visibility with no-network run logging and full-reconciliation reset guidance, and no-dead-end QA states. The Docker profile now seeds Brookfield demo data so city IT can open the React app and see live work immediately; the unsigned Windows installer wraps that same stack for install/repair and daily start. The resident-facing `/public` route in the nginx product path now opens the React public portal directly, loads public calendar records, public-safe detail, and anonymous archive search from the live public APIs, and keeps restricted-session existence, counts, and summaries out of resident copy.
+The staff experience at `/staff` now includes a product cockpit plus first workflow screens for agenda intake, packet assembly/export, notice checklist/posting-proof, meeting outcome, minutes draft, public archive, connector import, and vendor sync work. It is intentionally honest: the cockpit gives clerks a day-at-a-glance desk, reads the live agenda intake queue for ready/pending/needs-revision counts, the Agenda Intake, Packet Assembly, Notice Checklist, Meeting Outcomes, Minutes Draft, and Vendor Sync panels render live queue/record rows with escaped user-submitted titles where applicable and actionable empty/unavailable-store rows, the workflow screens can submit their corresponding live API actions, the auth panel now renders concrete protected-session and protected-write probes from `/staff/auth-readiness` when OIDC, bearer, or trusted-header mode is ready, it surfaces the loopback-only local proxy rehearsal command and env vars when trusted-header mode is being staged, and the broader multi-role React clerk console is now beginning under `frontend/`. The React slice uses the Townlight mockup direction for a real staff shell, meeting body management, meeting scheduling, meeting calendar, lifecycle ribbon, audit/evidence drawer, pre-lock schedule editing, Agenda Intake submit/review/promotion, Packet Builder promoted-item selection, packet draft creation, per-meeting queue review, packet finalization, Notice Checklist statutory deadline review, legal-blocker copy, posting-proof attachment, immutable audit-hash evidence, Public Posting resident-safe list/detail/search, Meeting Outcomes motion/vote/action capture with immutable-record guidance, Minutes Draft source/citation/provenance capture, Vendor Sync source-health/circuit-breaker/cursor visibility with no-network run logging and full-reconciliation reset guidance, and no-dead-end QA states. The Docker profile now seeds Brookfield demo data so city IT can open the React app and see live work immediately; the unsigned Windows installer wraps that same stack for install/repair and daily start. The resident-facing `/public` route in the nginx product path now opens the React public portal directly, loads public calendar records, public-safe detail, and anonymous archive search from the live public APIs, and keeps restricted-session existence, counts, and summaries out of resident copy.
 
-For Windows installer packaging, `install.ps1` is the install/repair entrypoint and `installer/windows/` contains the Inno Setup source, launcher scripts, prerequisite checker, and build helper. The package creates `.env` from `docs/examples/docker.env.example` when needed, generates a local database password, starts Docker Compose with seeded demo data by default, waits for API and staff-app health, and opens the React staff app. The public CivicSuite installer is unsigned by design for this small free open-source project, so Windows may show SmartScreen or Unknown Publisher warnings; it is OK to bypass those warnings only for official CivicSuite release artifacts or installer builds your IT team produced from verified CivicSuite source. The installer preserves Docker volumes on uninstall and does not replace the protected-auth deployment checks required for shared municipal use.
+For Windows installer packaging, `install.ps1` is the install/repair entrypoint and `installer/windows/` contains the Inno Setup source, launcher scripts, prerequisite checker, and build helper. The package creates `.env` from `docs/examples/docker.env.example` when needed, generates a local database password, starts Docker Compose with seeded demo data by default, waits for API and staff-app health, and opens the React staff app. The public Townlight installer is unsigned by design for this small free open-source project, so Windows may show SmartScreen or Unknown Publisher warnings; it is OK to bypass those warnings only for official Townlight release artifacts or installer builds your IT team produced from verified Townlight source. The installer preserves Docker volumes on uninstall and does not replace the protected-auth deployment checks required for shared municipal use.
 
 For the first real trusted-header deployment handoff, `docs/examples/trusted-header-nginx.conf` now ships a reference nginx bridge that strips client-supplied identity headers, sets proxy-owned staff headers, and points operators back to `CIVICCLERK_STAFF_SSO_TRUSTED_PROXIES` plus the `/staff/auth-readiness` contract before live staff traffic is trusted.
 
@@ -583,35 +601,37 @@ For fresh Bash install rehearsals on Linux, macOS, or Git Bash, `scripts/start_f
 
 For IT release handoff, `scripts/build_release_handoff_bundle.ps1` and `scripts/build_release_handoff_bundle.sh` now print and can create `dist/civicclerk-1.0.4-release-handoff.zip` containing the built wheel, source distribution, checksums, current README/manual/changelog/license, docs landing page, deployment env profile example, installer-readiness helper, enterprise signing-readiness helper, connector sync readiness helper, vendor live-sync readiness helper, protected deployment smoke helper, trusted-header nginx reference, and the fresh-install/protected-demo rehearsal helpers. Both helpers intentionally refuse to overwrite an existing bundle and they are release-input zips, not setup executables; build artifacts first with `bash scripts/verify-release.sh`. After the zip exists, `python scripts/check_installer_readiness.py` verifies the handoff bundle before the Windows setup package is built or handed to IT.
 
-For connector import operations, `python scripts/check_connector_sync_readiness.py` verifies the supported Granicus, Legistar, PrimeGov, and NovusAGENDA local payload contracts without outbound network calls. It can also validate a proposed `--source-url` or `--odbc-connection-string` through the shared CivicCore host guards before vendor-network live sync is designed. `python scripts/check_vendor_live_sync_readiness.py --connector legistar --source-url https://vendor.example.gov/api/meetings --auth-method bearer_token` checks the first live-sync source contract, rejects credentials in URLs, previews `healthy`/`degraded`/`circuit_open`, and simulates the circuit breaker without contacting the vendor. With `CIVICCLERK_VENDOR_SYNC_DB_URL` set, `POST /vendor-live-sync/sources` saves a validated source and `POST /vendor-live-sync/sources/{id}/run-log` records success, partial, or failed run outcomes into the durable no-network ledger; `GET /vendor-live-sync/sources` and `GET /vendor-live-sync/sources/{id}/run-log` expose the operator health state and actionable fix text. When IT has exported local JSON files, `python scripts/run_connector_import_sync.py --payload-dir path\to\exports --output connector-import-ledger.json` normalizes `<connector>.json` or `<connector>/*.json` payloads through the same import contract and writes a provenance ledger. In the Docker product path, IT can enable the same local-first normalization on a schedule with `CIVICCLERK_CONNECTOR_SYNC_ENABLED=true`, drop approved exports into `CIVICCLERK_CONNECTOR_SYNC_PAYLOAD_DIR_HOST`, and review the ledger at `CIVICCLERK_CONNECTOR_SYNC_LEDGER_PATH`. This scheduled local export-drop sync still does not contact vendors, and the vendor live-sync ledger does not contact vendors until a later adapter/scheduled-pull slice is built.
+For connector import operations, `python scripts/check_connector_sync_readiness.py` verifies the supported Granicus, Legistar, PrimeGov, and NovusAGENDA local payload contracts without outbound network calls. It can also validate a proposed `--source-url` or `--odbc-connection-string` through the shared Townlight Core host guards before vendor-network live sync is designed. `python scripts/check_vendor_live_sync_readiness.py --connector legistar --source-url https://vendor.example.gov/api/meetings --auth-method bearer_token` checks the first live-sync source contract, rejects credentials in URLs, previews `healthy`/`degraded`/`circuit_open`, and simulates the circuit breaker without contacting the vendor. With `CIVICCLERK_VENDOR_SYNC_DB_URL` set, `POST /vendor-live-sync/sources` saves a validated source and `POST /vendor-live-sync/sources/{id}/run-log` records success, partial, or failed run outcomes into the durable no-network ledger; `GET /vendor-live-sync/sources` and `GET /vendor-live-sync/sources/{id}/run-log` expose the operator health state and actionable fix text. When IT has exported local JSON files, `python scripts/run_connector_import_sync.py --payload-dir path\to\exports --output connector-import-ledger.json` normalizes `<connector>.json` or `<connector>/*.json` payloads through the same import contract and writes a provenance ledger. In the Docker product path, IT can enable the same local-first normalization on a schedule with `CIVICCLERK_CONNECTOR_SYNC_ENABLED=true`, drop approved exports into `CIVICCLERK_CONNECTOR_SYNC_PAYLOAD_DIR_HOST`, and review the ledger at `CIVICCLERK_CONNECTOR_SYNC_LEDGER_PATH`. This scheduled local export-drop sync still does not contact vendors, and the vendor live-sync ledger does not contact vendors until a later adapter/scheduled-pull slice is built.
 
 For deployment hardening, `scripts/check_deployment_readiness.py` now prints a non-mutating readiness report that reuses the staff auth readiness contract, checks whether deployment database URL environment variables are present without printing secret values, warns when `CIVICCLERK_EXPORT_ROOT` is still using the local default, verifies release artifacts and required docs exist, and confirms the trusted-header nginx reference is available. Run it without flags for an operator report, with `--env-file path\to\deployment.env` to validate a copied profile from `docs/examples/deployment.env.example`, or with `--strict` when CI or IT handoff should fail unless the deployment posture is ready.
 
-### CivicCode live handoff emitter
+<a id="civiccode-live-handoff-emitter"></a>
 
-CivicMeetings emits ordinance/resolution handoff records to CivicCode when the
+### Townlight Code live handoff emitter
+
+Townlight Meetings emits ordinance/resolution handoff records to Townlight Code when the
 city-core installer or operator configures `CIVICCODE_INTAKE_URL` and the suite
 bearer handoff value. On successful
-`POST /meetings/{meeting_id}/ordinance-resolution-handoff`, CivicMeetings maps the
+`POST /meetings/{meeting_id}/ordinance-resolution-handoff`, Townlight Meetings maps the
 meeting, motion/agenda provenance, affected sections, source document reference,
-and adopted text into CivicCode's existing
+and adopted text into Townlight Code's existing
 `/api/v1/civiccode/staff/civicclerk/ordinance-events` intake contract. The
 local handoff record always shows the result:
 
-- `EMIT_DELIVERED` with `civiccode_event_id` when CivicCode accepts it.
+- `EMIT_DELIVERED` with `civiccode_event_id` when Townlight Code accepts it.
 - `EMIT_FAILED` with `civiccode_handoff_last_error` and
-  `civiccode_handoff_last_attempt_at` when CivicCode returns 4xx/5xx or the
+  `civiccode_handoff_last_attempt_at` when Townlight Code returns 4xx/5xx or the
   network times out.
 - `EMIT_SKIPPED_UNCONFIGURED` when either required setting is missing.
 
 Retry failed or previously unconfigured records with
-`POST /meetings/{meeting_id}/ordinance-resolution-handoff/retry`. CivicMeetings does
+`POST /meetings/{meeting_id}/ordinance-resolution-handoff/retry`. Townlight Meetings does
 not run an infinite background retry loop; operators should fix the URL, shared
-value, or CivicCode health issue shown in the local record and then retry.
+value, or Townlight Code health issue shown in the local record and then retry.
 
 For protected deployment smoke checks, `scripts/check_protected_deployment_smoke.py --env-file path\to\deployment.env` now loads the completed env profile, requires strict deployment readiness, verifies `/health` and `/staff/auth-readiness`, executes the readiness-provided protected session probe, executes the protected write probe, and redacts bearer tokens from output. Trusted-header profiles use `127.0.0.1` as the default in-process proxy source; pass `--trusted-proxy-client-ip` when the completed profile allowlists a different proxy test address. The sample profile intentionally fails this smoke until placeholders are replaced.
 
-For local wheel backup/restore rehearsal, `scripts/check_backup_restore_rehearsal.py` creates a timestamped run under `.backup-restore-rehearsal`, seeds the SQLite-backed agenda intake, agenda item, meeting, packet assembly, and notice checklist stores, writes packet export evidence, copies those files into a backup directory with `civicclerk-backup-manifest.json`, restores them to separate `restored-data` and `restored-exports` directories, and reopens the restored records through CivicMeetings repositories. Operators can preview the Windows-first wrapper with `powershell -ExecutionPolicy Bypass -File scripts/start_backup_restore_rehearsal.ps1 -PrintOnly` or the Bash wrapper with `bash scripts/start_backup_restore_rehearsal.sh --print-only`; failures name the file or record that did not survive and tell the operator to keep the run directory, fix the backup source or env var, and rerun with a new run id.
+For local wheel backup/restore rehearsal, `scripts/check_backup_restore_rehearsal.py` creates a timestamped run under `.backup-restore-rehearsal`, seeds the SQLite-backed agenda intake, agenda item, meeting, packet assembly, and notice checklist stores, writes packet export evidence, copies those files into a backup directory with `civicclerk-backup-manifest.json`, restores them to separate `restored-data` and `restored-exports` directories, and reopens the restored records through Townlight Meetings repositories. Operators can preview the Windows-first wrapper with `powershell -ExecutionPolicy Bypass -File scripts/start_backup_restore_rehearsal.ps1 -PrintOnly` or the Bash wrapper with `bash scripts/start_backup_restore_rehearsal.sh --print-only`; failures name the file or record that did not survive and tell the operator to keep the run directory, fix the backup source or env var, and rerun with a new run id.
 
 For Docker/PostgreSQL backup/restore rehearsal, `scripts/check_docker_backup_restore_rehearsal.py` works against the running Compose stack instead of the SQLite wheel stores. Operators can preview it with `powershell -ExecutionPolicy Bypass -File scripts/start_docker_backup_restore_rehearsal.ps1 -PrintOnly` or `bash scripts/start_docker_backup_restore_rehearsal.sh --print-only`; rerunning without the print-only flag creates `.docker-backup-restore-rehearsal`, uses `pg_dump` to write `backup/civicclerk-postgres.dump`, creates a temporary restore database, runs `pg_restore`, records restored application tables in `restore-verification.json`, writes `backup/civicclerk-docker-backup-manifest.json`, and drops the temporary restore database by default. It does not drop, clean, or overwrite the source `civicclerk` database.
 

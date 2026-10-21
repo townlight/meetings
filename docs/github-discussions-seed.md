@@ -1,8 +1,10 @@
 # GitHub Discussions Seed Posts
 
-## Announcements: CivicMeetings scaffold created
+<a id="announcements-civicmeetings-scaffold-created"></a>
 
-CivicMeetings is now scaffolded under the CivicSuite organization. It is
+## Announcements: Townlight Meetings scaffold created
+
+Townlight Meetings is now scaffolded under the Townlight organization. It is
 not installable yet. The first milestone is a UX-first MVP around
 meeting setup, agenda item intake, packet assembly, notice tracking, and
 minutes drafting.
@@ -17,7 +19,9 @@ We are prioritizing clerk workflows first. Useful feedback:
 - minute drafting formats
 - public meeting archive expectations
 
-## Q&A: Is CivicMeetings replacing livestream or voting systems?
+<a id="qa-is-civicmeetings-replacing-livestream-or-voting-systems"></a>
 
-No. CivicMeetings records and publishes the legal record; it does not
+## Q&A: Is Townlight Meetings replacing livestream or voting systems?
+
+No. Townlight Meetings records and publishes the legal record; it does not
 conduct votes or host livestreams.
