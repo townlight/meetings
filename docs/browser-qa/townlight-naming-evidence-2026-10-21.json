@@ -1,0 +1,11 @@
+{
+  "page": "docs/index.html",
+  "page_sha256": "94b8d8decd758ef96a361c68d5e5729c910359d97c5fae74eba61f073944b0f7",
+  "reviewed_at": "2026-10-21T20:22:43.991Z",
+  "screenshots": {
+    "desktop": "docs/townlight-naming-desktop.png",
+    "mobile": "docs/townlight-naming-mobile.png"
+  },
+  "version": "1.0.4",
+  "scope": "Current public documentation naming only; original release evidence retained in release-evidence.json."
+}
