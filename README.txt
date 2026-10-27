@@ -1,3 +1,28 @@
+# Townlight Meetings
+
+**From agenda preparation to a cited public record.**
+
+Meetings keeps the relationship between a meeting, its agenda material, review history and published meeting evidence. Pending language and staff-only material remain distinct from adopted or public material.
+
+## Use this product
+
+- [Current user manual](USER-MANUAL.md): installed workflow, roles, sources, review, export, recovery and limits.
+- [Product landing page](https://townlight.github.io/products/meetings/).
+- [Overall eight-product manual](https://github.com/townlight/townlight/blob/main/USER-MANUAL.md) and [feature/integration assessment](https://github.com/townlight/townlight/blob/main/docs/assessment/feature-and-integration-review.md).
+- [Signed composition and acceptance](https://github.com/townlight/townlight/releases/tag/townlight-records-meetings-code-zoning-planning-permitting-inspections-v1.7.0-beta.1): Meetings 1.0.4 in accepted connected desktops.
+
+Meetings supplies evidence to Code, Zoning, Planning and Records. Notice/Access are supporting components. No automatic Permit-to-Meeting or Inspect-to-Meeting workflow is certified.
+
+## Release scope
+
+Transcript text capture and history exist. Automatic transcription, livestream hosting and every vendor synchronization are separate capabilities, not proved by transcript capture or a mock connector. Preserve the accepted MVP boundary and later implemented source evidence separately.
+
+Documentation reviewed 2026-10-26. Installed acceptance, source/API implementation and future requirements are different evidence. Code is AGPL-3.0-only with the repository’s public institution exception where applicable; documentation is CC BY 4.0. See the repository license files.
+
+## Historical repository reference
+
+The earlier README below is retained for package history and contributor commands. Older maturity/version statements describe that historical reference and are superseded by the current operating guide and linked release evidence.
+
 <a id="civicmeetings"></a>
 
 # Townlight Meetings

@@ -1,3 +1,100 @@
+# Townlight Meetings — User manual
+
+Current operating guide · reviewed 2026-10-26 · Meetings 1.0.4 in accepted connected desktops.
+
+[Product page](https://townlight.github.io/products/meetings/) · [Overall manual](https://github.com/townlight/townlight/blob/main/USER-MANUAL.md) · [Requirements assessment](https://github.com/townlight/townlight/blob/main/docs/assessment/feature-and-integration-review.md)
+
+## Purpose and audience
+
+Meetings keeps the relationship between a meeting, its agenda material, review history and published meeting evidence. Pending language and staff-only material remain distinct from adopted or public material.
+
+Primary operators: **Clerks, meeting staff and authorized reviewers**. [Release and acceptance notes](https://github.com/townlight/townlight/releases/tag/townlight-records-meetings-code-zoning-planning-permitting-inspections-v1.7.0-beta.1).
+
+## Before starting
+
+Use the explicit product composition in the installed Townlight desktop. Sign in with the required local staff account, confirm System Health readiness and take a backup before maintenance. If a workspace is absent, inspect the profile and release identity before importing data. Optional AI is not needed for the accepted deterministic workflow. The procedures below use real saved sources; sample/demo web pages are not substitutes.
+
+## Complete the workflow
+
+### 1. Prepare the meeting
+
+Open Meetings as authorized staff. Select the body and meeting, retain its date and public/closed-session context, and enter agenda items. Review required notice information against the jurisdiction; software support does not replace the clerk’s statutory review.
+
+### 2. Assemble the packet
+
+Add staff reports and supporting material to the intended agenda item. Inspect citations and public visibility before assembling the packet. Keep restricted attachments and closed-session text outside public packet material.
+
+### 3. Record proceedings
+
+Record motions, vote details and resulting actions against the correct meeting/item. Distinguish a proposed action from an adopted result. Capture supplied transcript text with its source where that feature is used; this is not automatic audio transcription.
+
+### 4. Review minutes
+
+Draft minutes from the available meeting evidence, inspect each citation and correct the text. A draft is not approved minutes. Use the explicit review/adoption/publication controls available to the configured workflow and retain the history.
+
+### 5. Hand off adopted legislation
+
+Select the actual adopted ordinance/resolution evidence for Code. The adoption event is evidence for codification; it does not itself silently replace the code text. Code staff review the separate codification step.
+
+### 6. Provide downstream evidence
+
+Only permitted public meeting material appears in Records searches or public sources. Zoning may retain permitted hearing/precedent context; Planning may select versioned adoption or hearing evidence. Private staff precedent must not leak into public snapshots.
+
+### 7. Check the public view
+
+Use the public meeting view to inspect only the approved public material. Verify the expected meeting/item and document. A local public view does not deploy an internet portal or prove all public-portal requirements.
+
+## How this product connects
+
+Meetings supplies evidence to Code, Zoning, Planning and Records. Notice/Access are supporting components. No automatic Permit-to-Meeting or Inspect-to-Meeting workflow is certified.
+
+## Boundaries and known gaps
+
+Transcript text capture and history exist. Automatic transcription, livestream hosting and every vendor synchronization are separate capabilities, not proved by transcript capture or a mock connector. Preserve the accepted MVP boundary and later implemented source evidence separately.
+
+## Shared operating rules
+
+Use the installed native desktop for the accepted workflow. Standalone package web pages, sample endpoints and developer API examples are different surfaces. A local Resident/Public view is not an internet deployment. Confirm the selected composition before looking for a workspace.
+
+1. Keep named staff accounts and least privilege. Administrators manage setup; ordinary staff use their authorized workspace. Do not put credentials, unredacted evidence or resident data into public issues.
+2. Preserve originals and their hashes. Import preview and confirmation are distinct actions. Treat fictional fixtures as fictional; they are not municipal authority.
+3. Save before navigating away, closing or signing out. Unsaved drafts are not a durable record. On a conflict, reopen and reconcile; on an unknown result, inspect the saved record before repeating a write.
+4. Review the exact revision and audience. A private packet and a public copy are different artifacts. Public text is explicitly edited/reviewed; changing a filename does not sanitize private content.
+5. Keep source permission, version and hash checks. If a provider is stopped or a source becomes restricted, retain the draft, restore authorized access and deliberately reselect evidence. Never bypass the check or substitute a sample.
+6. Approval, attachment, export and publication are separate actions. No cross-product attachment is an automatic records response, official permit, legal determination or enforcement decision.
+
+## Installation, maintenance and recovery
+
+Choose a release from the overall manual; do not infer a supported upgrade from a higher version number. Verify its published checksum, publisher signature and acceptance notes before installing. The default download remains the signed 1.4 beta, and Records-only remains its default selection. Planning 1.5.1 has a fresh-install boundary; Permitting and Inspections use separately identified products.
+
+Complete Setup and normal runtime activation for the selected composition. Optional local AI can be deferred. Use System Health to distinguish stopped, starting, ready and failed dependencies. Wait for readiness before opening a dependent workspace. Use documented Retry controls after recovery; do not repeat business writes to refresh a stale screen.
+
+Back up through the canonical desktop controls before migration or maintenance. Keep the coherent data, document and profile backup and its receipt in protected storage. A source export is not a full backup. Stop dependent services before PostgreSQL maintenance. Restore through the supported controls rather than editing SQL or restoring historical JSON into the active runtime. Uninstall can retain data; backup before uninstalling and inspect the chosen removal options. Never assume uninstall means data deletion.
+
+For an error, retain the message, time, selected profile, installed version and operation; inspect System Health and relevant logs. Use a redacted support bundle. Do not delete the profile, run an arbitrary downgrade or repair prerequisites as a first response. If an installer requests a restart, save work and obtain the operator’s explicit restart decision before proceeding.
+
+## Evidence and scope
+
+This manual reuses the accepted installed, required-CI and signed-delivery evidence. It does not turn source inspection into a new installed test. Recovery evidence is reused only within its recorded candidate/profile boundaries; no universal upgrade, hardware, accessibility or production deployment certification is implied. The [overall manual](https://github.com/townlight/townlight/blob/main/USER-MANUAL.md) gives release identities and shared operations. The [feature and integration assessment](https://github.com/townlight/townlight/blob/main/docs/assessment/feature-and-integration-review.md) separates implementation, explicit deferral, missing capability and unverified acceptance.
+
+
+## Maintainer and API reference
+
+The following source contracts support these instructions. The historical reference below retains older API/setup details for their original version; it does not override this operating guide or the release acceptance.
+
+- [civicclerk/main.py](https://github.com/townlight/meetings/tree/main/civicclerk/main.py)
+- [civicclerk/transcripts.py](https://github.com/townlight/meetings/tree/main/civicclerk/transcripts.py)
+- [civicclerk/meeting_lifecycle.py](https://github.com/townlight/meetings/tree/main/civicclerk/meeting_lifecycle.py)
+- [civicclerk/records_sources.py](https://github.com/townlight/meetings/tree/main/civicclerk/records_sources.py)
+- [docs/architecture/ADR-0001-mvp-boundary.md](https://github.com/townlight/meetings/tree/main/docs/architecture/ADR-0001-mvp-boundary.md)
+
+
+---
+
+## Historical package/API reference
+
+The material below is retained from the previous manual for historical and developer reference. Version, unreleased, sample, planned and installation claims below describe that earlier document, not current desktop release status. Use the current guide above for operation. Existing detailed API reference remains useful only for the matching package/version.
+
 <a id="civicmeetings-user-manual"></a>
 
 # Townlight Meetings User Manual
