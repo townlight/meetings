@@ -1,4 +1,4 @@
-"""Vendor-network live sync readiness and Townlight Core-backed health primitives."""
+"""Vendor-network live sync readiness and CivicCore-backed health primitives."""
 
 from __future__ import annotations
 
@@ -105,7 +105,7 @@ def validate_live_sync_config(config: VendorLiveSyncConfig) -> list[LiveSyncChec
             LiveSyncCheck(
                 status="PASS",
                 name="source URL",
-                message="source URL host passed shared Townlight Core validation.",
+                message="source URL host passed shared CivicCore validation.",
                 fix="Store credentials in deployment secrets; do not put them in the URL.",
             )
         )
@@ -144,7 +144,7 @@ def apply_vendor_sync_result(
     *,
     now: datetime | None = None,
 ) -> VendorSyncState:
-    """Apply one run result using the shared Townlight Core circuit-breaker pattern."""
+    """Apply one run result using the shared CivicCore circuit-breaker pattern."""
 
     return apply_sync_run_result(
         state,

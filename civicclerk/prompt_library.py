@@ -79,7 +79,7 @@ def load_prompt(prompt_id: str) -> PromptDefinition:
     prompt_path = PROMPTS_DIR / f"{prompt_id}.yaml"
     if not prompt_path.exists():
         raise PromptLibraryError(
-            f"Prompt '{prompt_id}' is not present in the Townlight Meetings YAML prompt library."
+            f"Prompt '{prompt_id}' is not present in the CivicMeetings YAML prompt library."
         )
     return _parse_prompt_yaml(prompt_path.read_text(encoding="utf-8"))
 
@@ -171,7 +171,7 @@ def expected_prompt_version_hint(prompt_id: str = "minutes_draft") -> str:
 
 
 def _parse_prompt_yaml(raw: str) -> PromptDefinition:
-    """Parse the limited YAML shape used by Townlight Meetings prompt files."""
+    """Parse the limited YAML shape used by CivicMeetings prompt files."""
     lines = raw.splitlines()
     scalar_values: dict[str, str] = {}
     required_variables: list[str] = []

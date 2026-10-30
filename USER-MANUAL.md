@@ -1,1015 +1,425 @@
-# Townlight Meetings — User manual
+# Townlight Meetings Manual
 
-Current operating guide · reviewed 2026-10-26 · Meetings 1.0.4 in accepted connected desktops.
+**Townlight Beta 1** · Documentation edition 30 October 2026
 
-[Product page](https://townlight.github.io/products/meetings/) · [Overall manual](https://github.com/townlight/townlight/blob/main/USER-MANUAL.md) · [Requirements assessment](https://github.com/townlight/townlight/blob/main/docs/assessment/feature-and-integration-review.md)
+## Contents
 
-## Purpose and audience
+- [Using this manual](#using-this-manual)
+- [Beta identity](#beta-identity)
+- [First run](#first-run)
+- [Daily workflow](#daily-workflow)
+- [Connected workflows](#connected-workflows)
+- [Architecture](#architecture)
+- [Transcript corrections and action items](#transcript-corrections-and-action-items)
+- [Technical specifications](#technical-specifications)
+- [Configuration and administration](#configuration-and-administration)
+- [API and integration examples](#api-and-integration-examples)
+- [MCP and automation boundary](#mcp-and-automation-boundary)
+- [Security and permissions](#security-and-permissions)
+- [Backup recovery and maintenance](#backup-recovery-and-maintenance)
+- [Troubleshooting](#troubleshooting)
+- [Verified workflows and limits](#verified-workflows-and-limits)
+- [Terms of service and license](#terms-of-service-and-license)
+- [Glossary](#glossary)
+- [Alphabetical subject index](#alphabetical-subject-index)
+- [Source and document control](#source-and-document-control)
 
-Meetings keeps the relationship between a meeting, its agenda material, review history and published meeting evidence. Pending language and staff-only material remain distinct from adopted or public material.
+## Using this manual
 
-Primary operators: **Clerks, meeting staff and authorized reviewers**. [Release and acceptance notes](https://github.com/townlight/townlight/releases/tag/townlight-records-meetings-code-zoning-planning-permitting-inspections-v1.7.0-beta.1).
+Townlight Meetings helps clerks, meeting coordinators and authorized reviewers. Meetings supports clerk preparation and the retained proceedings of a meeting: agenda items, packets, motions, votes, supplied transcript material, minutes decisions and archives. It supplies canonical meeting and agenda context to Station.
 
-## Before starting
+Staff should begin with First run and Daily workflow. Administrators should also read Architecture, Technical specifications, Configuration, Security and Recovery. Developers should use the exact API/data dictionary and examples. The table of contents and alphabetical subject index link to the relevant sections in the HTML edition; the PDF preserves headings and searchable text. An editable Word edition is included with the same documentation companion.
 
-Use the explicit product composition in the installed Townlight desktop. Sign in with the required local staff account, confirm System Health readiness and take a backup before maintenance. If a workspace is absent, inspect the profile and release identity before importing data. Optional AI is not needed for the accepted deterministic workflow. The procedures below use real saved sources; sample/demo web pages are not substitutes.
+## Beta identity
 
-## Complete the workflow
+| Identity | Value |
+| --- | --- |
+| Public documentation identity | Townlight Beta 1 |
+| Installer version | 1.6.0.1 |
+| Product component | civicclerk 1.0.4 |
+| Native desktop source version | 1.6.0-1 |
+| Candidate MSI SHA256 | `98bcdef11ebdf5c767f620c904ff49f85115fde3b5c23f62703b111e645aaf86` |
+| Corresponding-source SHA256 | `84a23e1297e42d17b16cfc9e51b2dd78bc46414c0de8ad7ebd2466c1a409d06b` |
+| Current owned software license | AGPL-3.0-only |
+| Supported acceptance profile | Windows x64 fresh install; inspections-preview; separate Station configuration |
 
-### 1. Prepare the meeting
 
-Open Meetings as authorized staff. Select the body and meeting, retain its date and public/closed-session context, and enter agenda items. Review required notice information against the jurisdiction; software support does not replace the clerk’s statutory review.
+“Townlight Beta 1” identifies this coordinated beta delivery. It does not renumber the installer, native binary, Python packages or historical receipts. Component versions may differ. This documentation is a later companion to unchanged signed bytes, not a rebuilt installer. Historical release pages and manuals describe their own versions and are not the download instructions for this private candidate.
 
-### 2. Assemble the packet
+## First run
 
-Add staff reports and supporting material to the intended agenda item. Inspect citations and public visibility before assembling the packet. Keep restricted attachments and closed-session text outside public packet material.
+1. Obtain the identified signed private candidate and its corresponding-source companion from the beta coordinator. The landing pages in this documentation are not an installer download service.
+2. On the intended fresh Windows test installation, verify the MSI hash and publisher signature before installing. Preserve unrelated profiles and recovery material. This candidate has fresh-install acceptance; historical in-place upgrades are unverified.
+3. Launch Townlight under the intended named Windows account. Choose the storage folders. Select **Townlight Inspections candidate** (`inspections-preview`) for all eight desktop products. A narrower default selection will not expose all workspaces.
+4. Enter the city profile, time zone and contacts. Create the first named local administrator, sign in and choose protected backup storage. **Continue without local AI** is valid for the deterministic workflows.
+5. Run Health Check and wait for readiness. Open Townlight. In System Health select **Finish Records Migration** to activate the canonical Python/PostgreSQL runtime. Do not fabricate migration receipts or seed accounts.
+6. Create named staff through Settings. Import authorized sources using each product’s source library. All examples in this package are synthetic; they are not municipal authority.
+7. Provision Station separately if it is part of the beta exercise. Selecting the desktop composition does not start or configure Station. Configure vision explicitly only if automatic photo drafting is selected.
 
-### 3. Record proceedings
+## Daily workflow
 
-Record motions, vote details and resulting actions against the correct meeting/item. Distinguish a proposed action from an adopted result. Capture supplied transcript text with its source where that feature is used; this is not automatic audio transcription.
+<a name="workflow-1"></a>
 
-### 4. Review minutes
+### 1. Create the meeting
 
-Draft minutes from the available meeting evidence, inspect each citation and correct the text. A draft is not approved minutes. Use the explicit review/adoption/publication controls available to the configured workflow and retain the history.
+Enter its title, date/time including the intended time zone, location and meeting type. Save and reopen it before adding downstream evidence.
 
-### 5. Hand off adopted legislation
+<a name="workflow-2"></a>
 
-Select the actual adopted ordinance/resolution evidence for Code. The adoption event is evidence for codification; it does not itself silently replace the code text. Code staff review the separate codification step.
+### 2. Prepare the agenda and packet
 
-### 6. Provide downstream evidence
+Create agenda items, assign them to the actual meeting and record review. Assemble a packet from the selected items and source documents. Check the saved assembly’s packet identifier before using it for an archive or delivery.
 
-Only permitted public meeting material appears in Records searches or public sources. Zoning may retain permitted hearing/precedent context; Planning may select versioned adoption or hearing evidence. Private staff precedent must not leak into public snapshots.
+<a name="workflow-3"></a>
 
-### 7. Check the public view
+### 3. Record notice work
 
-Use the public meeting view to inspect only the approved public material. Verify the expected meeting/item and document. A local public view does not deploy an internet portal or prove all public-portal requirements.
+Use the existing notice checklist, template and posting-proof controls where applicable. A calculated checklist is evidence for clerk review; staff verify the jurisdiction’s notice requirements and actual posting.
 
-## How this product connects
+<a name="workflow-4"></a>
 
-Meetings supplies evidence to Code, Zoning, Planning and Records. Notice/Access are supporting components. No automatic Permit-to-Meeting or Inspect-to-Meeting workflow is certified.
+### 4. Record proceedings
 
-## Boundaries and known gaps
+Capture the actual motion, seconder and votes. Record corrections as corrections, preserving the earlier event. Retain supplied transcript text with its source label.
 
-Transcript text capture and history exist. Automatic transcription, livestream hosting and every vendor synchronization are separate capabilities, not proved by transcript capture or a mock connector. Preserve the accepted MVP boundary and later implemented source evidence separately.
+<a name="workflow-5"></a>
 
-## Shared operating rules
+### 5. Review minutes
 
-Use the installed native desktop for the accepted workflow. Standalone package web pages, sample endpoints and developer API examples are different surfaces. A local Resident/Public view is not an internet deployment. Confirm the selected composition before looking for a workspace.
+Draft from identified source material. Check the citations and wording. Record the explicit minutes decision; a draft or a motion is not adopted minutes.
 
-1. Keep named staff accounts and least privilege. Administrators manage setup; ordinary staff use their authorized workspace. Do not put credentials, unredacted evidence or resident data into public issues.
-2. Preserve originals and their hashes. Import preview and confirmation are distinct actions. Treat fictional fixtures as fictional; they are not municipal authority.
-3. Save before navigating away, closing or signing out. Unsaved drafts are not a durable record. On a conflict, reopen and reconcile; on an unknown result, inspect the saved record before repeating a write.
-4. Review the exact revision and audience. A private packet and a public copy are different artifacts. Public text is explicitly edited/reviewed; changing a filename does not sanitize private content.
-5. Keep source permission, version and hash checks. If a provider is stopped or a source becomes restricted, retain the draft, restore authorized access and deliberately reselect evidence. Never bypass the check or substitute a sample.
-6. Approval, attachment, export and publication are separate actions. No cross-product attachment is an automatic records response, official permit, legal determination or enforcement decision.
+<a name="workflow-6"></a>
 
-## Installation, maintenance and recovery
+### 6. Record legislation evidence
 
-Choose a release from the overall manual; do not infer a supported upgrade from a higher version number. Verify its published checksum, publisher signature and acceptance notes before installing. The default download remains the signed 1.4 beta, and Records-only remains its default selection. Planning 1.5.1 has a fresh-install boundary; Permitting and Inspections use separately identified products.
+When an ordinance or resolution is adopted, record the actual Code connection decision. Code staff separately perform codification; meeting adoption does not silently rewrite the code.
 
-Complete Setup and normal runtime activation for the selected composition. Optional local AI can be deferred. Use System Health to distinguish stopped, starting, ready and failed dependencies. Wait for readiness before opening a dependent workspace. Use documented Retry controls after recovery; do not repeat business writes to refresh a stale screen.
+<a name="workflow-7"></a>
 
-Back up through the canonical desktop controls before migration or maintenance. Keep the coherent data, document and profile backup and its receipt in protected storage. A source export is not a full backup. Stop dependent services before PostgreSQL maintenance. Restore through the supported controls rather than editing SQL or restoring historical JSON into the active runtime. Uninstall can retain data; backup before uninstalling and inspect the chosen removal options. Never assume uninstall means data deletion.
+### 7. Archive and hand off
 
-For an error, retain the message, time, selected profile, installed version and operation; inspect System Health and relevant logs. Use a redacted support bundle. Do not delete the profile, run an arbitrary downgrade or repair prerequisites as a first response. If an installer requests a restart, save work and obtain the operator’s explicit restart decision before proceeding.
+Choose the appropriate visibility and saved packet/minutes. Inspect the resulting proceedings and permitted archive. Use Station’s operator for capture and Records for a separate response/release.
 
-## Evidence and scope
+### Working safely
 
-This manual reuses the accepted installed, required-CI and signed-delivery evidence. It does not turn source inspection into a new installed test. Recovery evidence is reused only within its recorded candidate/profile boundaries; no universal upgrade, hardware, accessibility or production deployment certification is implied. The [overall manual](https://github.com/townlight/townlight/blob/main/USER-MANUAL.md) gives release identities and shared operations. The [feature and integration assessment](https://github.com/townlight/townlight/blob/main/docs/assessment/feature-and-integration-review.md) separates implementation, explicit deferral, missing capability and unverified acceptance.
+Use your own named account and save before leaving a screen. A saved draft is durable; unsaved form text may not be. If a write has an unknown result, reopen its record before repeating it.
 
+Read source jurisdiction, dates, citation, version and visibility. A copied source hash identifies exact bytes, not their legal applicability. If a source changes or permission is removed, resolve the source problem rather than substituting stale cached content.
 
-## Maintainer and API reference
+Keep originals and derivatives separate. Review the intended audience before export. A public summary excludes private fields only through the applicable copy contract and your review. A renamed private packet is still private content.
 
-The following source contracts support these instructions. The historical reference below retains older API/setup details for their original version; it does not override this operating guide or the release acceptance.
+Drafting, review, approval, attachment, export, fulfillment and publication are separate operations. A Townlight workpaper does not itself adopt law, issue a permit, impose a fine or release a records response. The responsible staff member records the applicable decision.
 
-- [civicclerk/main.py](https://github.com/townlight/meetings/tree/main/civicclerk/main.py)
-- [civicclerk/transcripts.py](https://github.com/townlight/meetings/tree/main/civicclerk/transcripts.py)
-- [civicclerk/meeting_lifecycle.py](https://github.com/townlight/meetings/tree/main/civicclerk/meeting_lifecycle.py)
-- [civicclerk/records_sources.py](https://github.com/townlight/meetings/tree/main/civicclerk/records_sources.py)
-- [docs/architecture/ADR-0001-mvp-boundary.md](https://github.com/townlight/meetings/tree/main/docs/architecture/ADR-0001-mvp-boundary.md)
+## Connected workflows
 
+Provides evidence to Records, Code, Zoning and Planning, and meeting identity to Station. Code adoption and codification remain separate. Supporting Notice and Access do not replace clerk review.
 
----
 
-## Historical package/API reference
+| Direction | Material |
+| --- | --- |
+| Input | A meeting schedule, staff agenda material, source documents, recorded clerk decisions and supplied transcript text. |
+| Output | Versioned meeting evidence, packets, proceedings, reviewed minutes and permitted archive documents. Station receives the selected meeting and agenda snapshot. |
 
-The material below is retained from the previous manual for historical and developer reference. Version, unreleased, sample, planned and installation claims below describe that earlier document, not current desktop release status. Use the current guide above for operation. Existing detailed API reference remains useful only for the matching package/version.
 
-<a id="civicmeetings-user-manual"></a>
+### Product boundary
 
-# Townlight Meetings User Manual
+Supplied transcript handling is not automatic audio transcription. Station adds capture; it does not imply a Meetings livestream hosting service. Vendor sync code and adapters are not proof that every vendor is configured or live.
 
-## Published connected desktop: 1.4.0-beta.1
-
-This module participates in the signed Townlight Records + Meetings + Code +
-Zoning desktop beta published October 21, 2026. Select zoning-beta for all four
-products; Records-only remains default and city-core excludes Zoning.
-[Download and release limits](https://github.com/townlight/townlight/releases/tag/townlight-records-meetings-code-zoning-v1.4.0-beta.1) ·
-[Current operator manual](https://github.com/townlight/townlight/blob/main/USER-MANUAL.md) ·
-[Signed acceptance](https://github.com/townlight/townlight/blob/main/docs/installer/townlight-zoning-beta1-signed-acceptance.md).
-
-This is a connected desktop release, not a new standalone package version.
-Package/import/API names remain compatibility identifiers. Historical development
-checkpoints below retain their original scope; they are superseded for current
-desktop publication status. No signed installer or historical evidence is changed.
-
-## Historical integration checkpoint — Local Townlight Records–Meetings development candidate — October 19, 2026
-
-This is not a new public release. The unsigned M4 Windows installer offers
-**Townlight Records + Meetings** during setup. Choose that profile explicitly;
-the default Records profile does not add Meetings. Complete administrator
-setup and the displayed Records activation before using the connected system.
-
-Closing the application stops its supervised services. After reopening, use
-System Health → Start for the local workflow services if Records reports that
-the service is unavailable. Do not reload an old JSON copy. The M4 installed
-check verified this native-window restart, backup/restore, repair and ordinary
-uninstall. Ordinary Windows uninstall retains the profile; Prepare Uninstall
-is a different, explicitly reviewed data-removal operation.
-
-In Meetings & Notices, the mapped native workflow supports meeting/agenda
-records, packet files and local delivery, editable notice documents and posting
-evidence, transcript and vote corrections, action items, manual minutes, and
-local archives. Human-selected sequence is not blocked by advisory warnings.
-Posting unadopted minutes labels them as a draft; signing does not adopt them.
-Earlier decisions, documents and corrections remain in the history.
-
-In Records, use Search Meetings to find explicitly public archive text and
-attach a selected item to the request. The managed copy retains its source
-identity, citation and hash. Restricted archive material and raw staff files
-are not offered. Attachment or drafting does not approve a Records response.
-Local text delivery is not external website publication. Native AI minutes
-and transcription are not verified for this candidate. Code is not included.
-
-The release-recovery material below describes the historical web/release
-surface, not proof of feature parity or a public native Meetings release.
-
-Status: Townlight Meetings v1.0.4 runtime foundation label is provisional during release recovery
-Version: `1.0.4`
-
-## Release Recovery Notice
-
-Townlight Meetings is not product-ready for public promotion while the Townlight
-release recovery is active. The current `v1.0.4` recovery patch is the supported release
-until the repo passes the recovery gates: full backend tests, frontend tests,
-tracked Playwright user-flow tests, WSL runtime install proof, consistency
-gates, security scans, docs-source parity, and explicit separation between
-mock validation and production deployment. Integration release depth requires
-live-wire or in-process boundary validation; mock validation remains local
-regression evidence and does not claim that a city production deployment has
-occurred.
-
-## Part 1: Non-Technical Overview
-
-<a id="what-civicmeetings-is"></a>
-
-### What Townlight Meetings is
-
-Townlight Meetings will help city clerks manage the legal record of public
-meetings. It is planned to cover agendas, packets, notices, minutes,
-votes, motions, ordinances, resolutions, and public meeting archives.
-
-### Who it is for
-
-- city clerks
-- deputy clerks
-- department staff submitting agenda items
-- city attorneys reviewing legal form
-- mayors, council members, board members, and commissioners
-- residents and journalists viewing public meeting materials
-
-### What a clerk should expect
-
-The product goal is a calm workflow:
-
-1. Create a meeting body.
-2. Schedule a meeting.
-3. Collect agenda items from departments.
-4. Assemble and review the packet.
-5. Track notice deadlines.
-6. Capture motions and votes.
-7. Draft minutes with source citations.
-8. Publish approved materials.
-
-Every warning should explain what is wrong and how to fix it. AI may
-draft language, but staff remain in control.
-
-### Current status
-
-Townlight Meetings currently contains a runtime foundation, canonical schema
-metadata, Alembic migration scaffolding, agenda item lifecycle enforcement,
-meeting lifecycle enforcement, packet snapshot versioning, notice
-compliance enforcement, immutable motion capture, immutable vote capture,
-action-item capture linked to meeting outcomes, citation-gated minutes
-draft capture, and permission-aware public calendar/detail/archive
-endpoints, a versioned prompt YAML library registered through
-`civiccore.llm.resolve_template` under `consumer_app="civicclerk"`, an offline
-evaluation harness for agenda item summaries, staff report normalization,
-packet completeness review, notice compliance review, motion/vote summary,
-minutes drafting, ordinance/resolution extraction, closed-session safe
-refusal, and public plain-language meeting explanation,
-local-first connector imports for Granicus, Legistar, PrimeGov, and
-NovusAGENDA, no-network vendor live-sync readiness plus durable source/run
-ledgering, accessibility/browser QA gates, provisional Townlight Meetings v1.0.4 release
-artifacts, Townlight Core 1.2.1 freeze-backed packet export bundles, a database-backed
-agenda intake queue with clerk readiness review, database-backed meeting
-records with lifecycle audit entries, database-backed packet assembly records
-with source/citation metadata, database-backed agenda item lifecycle records
-with durable transition audit entries, and database-backed notice
-checklist/posting-proof records.
-CC-7 now adds a published OpenAPI artifact at `docs/api/openapi.json`, generated
-from the live FastAPI app, and direct React QA routes for all 20 spec frontend
-pages. New API surfaces cover staff report normalization, transcript capture,
-ordinance/resolution handoff, public comment review, admin configuration, and
-prompt-library administration. Browser evidence in
-`docs/browser-qa/cc7-api-frontend-completeness-qa-2026-05-06.json` covers all
-20 pages across loading, success, empty, error, and partial states at desktop
-and 390px mobile widths.
-The `/staff` page now provides a product cockpit plus first staff workflow
-screens for agenda intake, packet assembly/export, notice
-checklist/posting-proof, meeting outcome, member packet, minutes draft, public
-archive, connector import, and vendor sync work. The cockpit gives clerks a day-at-a-glance desk before
-they drill into individual forms, and it reads the live agenda intake queue for
-ready, pending, and needs-revision counts. The Agenda Intake panel also renders
-live queue rows with escaped submitted titles plus actionable empty and
-unavailable-store states. The Packet Assembly panel renders recent live packet
-assembly records with escaped packet titles plus actionable empty and
-unavailable-store states. The Notice Checklist panel renders recent live notice
-records with posting-proof status plus actionable empty and unavailable-store
-states. The Meeting Outcomes panel renders recent live motion-centered outcome
-rows with vote/action status plus an actionable empty state. The Minutes Draft
-panel renders recent live citation-gated draft rows with human-review next steps
-plus an actionable empty state. The workflow forms can submit
-intake items, record readiness review, create/finalize packet assembly records,
-create records-ready packet export bundles, persist notice checklist records, attach posting proof, capture
-motions/votes/action items, create citation-gated minutes drafts, publish
-public-safe archive records, and normalize local connector export payloads
-through the live API. IT
-staff can import and serve `civicclerk.main:app`, call `/`, call `/health`,
-open `/staff`, create draft agenda items and meetings, version packet snapshots, test
-allowed/rejected notice compliance postings, capture motions, capture
-votes, add correction records, create action items, create minutes drafts
-with sentence-level citations and prompt-version provenance, verify public
-archive filtering, and run prompt evaluations with outbound network
-blocked. IT staff can also import local connector export payloads while
-preserving source provenance. IT staff can now generate records-ready packet
-export bundles with Townlight Core manifests, checksums, provenance, and
-hash-chained audit evidence. Clerks can submit/list/review `/agenda-intake`
-items with readiness status stored in the configured intake database and persist
-agenda item lifecycle status/audit entries with `CIVICCLERK_AGENDA_ITEM_DB_URL`. The
-current `/staff` page submits and reviews agenda intake records directly,
-creates/finalizes packet assembly records, persists notice checklist
-posting-proof records, captures meeting outcome records, creates
-citation-gated minutes draft records, publishes public archive records, and
-normalizes local connector exports, records vendor live-sync source/run health
-without contacting vendor networks, and creates records-ready packet export
-bundles. The React staff workspace now includes Vendor Sync, where IT staff can
-register an approved source, see healthy/degraded/circuit-open status, record a
-controlled run outcome, see the persisted delta cursor, reset that cursor for a
-full reconciliation with a reason, and read the exact fix path before scheduled
-vendor pulls are enabled. The staff shell now checks `/staff/session` so IT staff and clerks can
-see whether the service is in protected default mode, local open mode, OIDC-protected staff mode,
-OIDC browser-session mode, bearer-protected staff mode, or trusted-header staff
-mode.
-`/staff/auth-readiness` now reports whether the configured OIDC,
-bearer-token, or trusted-proxy bridge is deployment-ready before a live session
-check. OIDC mode uses `CIVICCLERK_STAFF_AUTH_MODE=oidc` plus
-`CIVICCLERK_STAFF_OIDC_PROVIDER`, `CIVICCLERK_STAFF_OIDC_ISSUER`,
-`CIVICCLERK_STAFF_OIDC_AUDIENCE`, `CIVICCLERK_STAFF_OIDC_JWKS_URL`,
-`CIVICCLERK_STAFF_OIDC_ROLE_CLAIMS`, and
-`CIVICCLERK_STAFF_OIDC_ALGORITHMS` for token validation. Browser sign-in adds
-`CIVICCLERK_STAFF_OIDC_AUTHORIZATION_URL`,
-`CIVICCLERK_STAFF_OIDC_TOKEN_URL`, `CIVICCLERK_STAFF_OIDC_CLIENT_ID`,
-`CIVICCLERK_STAFF_OIDC_CLIENT_SECRET`,
-`CIVICCLERK_STAFF_OIDC_REDIRECT_URI`, and
-`CIVICCLERK_STAFF_OIDC_SESSION_COOKIE_SECRET`; `/staff/login` redirects to the
-provider with authorization-code + PKCE parameters, `/staff/oidc/callback`
-validates the returned token, and Townlight Meetings stores a signed HttpOnly staff
-session cookie rather than the raw OIDC token.
-The React dashboard now makes that session state visible in a Staff Access
-panel. A clerk sees whether the browser is in protected default mode, local open mode, signed in with
-municipal SSO, using bearer access, or behind a trusted-header bridge. When a
-session is missing or expired, the panel gives the clerk a direct sign-in path
-and tells IT to inspect `/staff/auth-readiness` for the exact missing OIDC
-browser-login settings.
-Bearer mode uses
-`CIVICCLERK_STAFF_AUTH_MODE=bearer` plus `CIVICCLERK_STAFF_AUTH_TOKEN_ROLES`.
-Trusted-header mode uses `CIVICCLERK_STAFF_AUTH_MODE=trusted_header` plus
-`CIVICCLERK_STAFF_SSO_PRINCIPAL_HEADER`,
-`CIVICCLERK_STAFF_SSO_ROLES_HEADER`,
-`CIVICCLERK_STAFF_SSO_PROVIDER`, and
-`CIVICCLERK_STAFF_SSO_TRUSTED_PROXIES`. When OIDC, bearer, or trusted-header mode is ready, the
-readiness response now
-includes a concrete session probe and a protected write probe so IT staff can
-test the real deployment path instead of inferring the next request from env
-vars alone.
-When trusted-header mode is still being staged on one workstation, the
-readiness response also includes a `local_proxy_rehearsal` block that points to
-`scripts/local_trusted_header_proxy.py`, pre-fills `127.0.0.1/32` as the safe
-starter allowlist, and tells operators to browse the helper URL instead of
-calling the upstream app directly.
-The resident-facing `/public` portal now loads public calendar records,
-public-safe detail, and anonymous archive search from the live public APIs. It
-also explains empty public-record states and keeps closed-session material out
-of anonymous resident views. The React staff workspace now exists under
-`frontend/`. It translates the Townlight mockup into the real Townlight Meetings
-frontend direction: staff shell, meeting calendar, meeting detail
-lifecycle ribbon, audit/evidence drawer, and loading/success/empty/error/partial
-states with actionable copy. It now loads the live `/api/meetings` list for
-dashboard metrics, meeting calendar cards, and meeting detail selection, with
-`?source=demo` retained for deterministic QA evidence. The dashboard also
-loads `/api/meeting-bodies` so staff can create, rename, and deactivate boards
-or commissions without hard-deleting meeting history. Clerks can now schedule
-meetings from active meeting bodies and edit pre-lock schedule fields from the
-meeting detail view, including title, body, type, start time, and location. The
-API rejects nonexistent or inactive body ids, writes audit entries for schedule
-edits, and blocks those edits after the meeting reaches the in-session lock
-point. This React staff route is now the primary clerk workspace for local
-product rehearsal; the older HTML staff cockpit remains useful as a lightweight
-reference shell, not as the target product surface.
-
-The first React Sprint 2 surface is now also present. Staff can open Agenda
-Intake from the React navigation, submit a department agenda request with source
-material, review pending items as ready or needing revision, and see the audit
-hash cue that proves the reviewed record changed. Ready records now include a
-Promote to agenda action that creates a canonical agenda item, advances it to
-`CLERK_ACCEPTED`, stores the promoted agenda item id and promotion audit hash on
-the intake record, and tells staff that the next step is adding the item to the
-target meeting packet assembly. Staff can now open Packet Builder from the
-React navigation, choose a meeting, select promoted agenda items, create a
-packet assembly draft, see the packet queue for that meeting, and finalize the
-draft with a visible audit-hash cue. Staff can also open Notice Checklist from
-the React navigation, select the meeting, see the computed statutory notice
-deadline, record the posting time, notice type, statutory basis, human approver,
-and actor, run the live compliance check, and attach posting proof only after
-the checklist passes. If the statutory deadline has passed, the workspace says
-that plainly, disables proof attachment, and tells the clerk to reschedule or
-document the lawful emergency/special basis before proceeding. The Public
-Posting React surface is also present: staff can open a resident-safe view of
-posted public records, show the public agenda, packet, and approved minutes
-text, show plain-language summaries, adopted/signed minutes metadata, download
-agenda/packet/minutes text files, support public comment intake where enabled,
-and search public archive records without exposing or implying
-restricted closed-session material. The Meeting Outcomes React surface is now
-present: staff can select a meeting, capture immutable motions with seconded-by
-metadata, record roll-call votes against a selected motion including
-abstentions, recusals, and absences, create action items that reference the
-source motion, and see copy explaining that corrections must be append-only
-rather than silent edits. The Member Packet React surface is now present:
-members can review packet contents, item history, role-aware staff-report
-visibility, prior vote ledger entries, and conflict/vote capture without moving
-restricted material into the resident view. The Minutes Draft React surface is now present: staff can
-select a meeting, review existing citation-gated drafts, enter source material,
-draft sentences, sentence-level citations, model, prompt version, and human
-approver, create a cited draft through the live minutes API, and see the public
-posting gate explain that AI-drafted minutes cannot bypass human adoption.
-
-The admin settings surface now includes integration-depth readiness from
-`/integrations/readiness`. It shows contracts for Townlight Records search,
-Townlight Code adopted-action handoff, codification-system fallback export, city
-website CMS posting, and vendor live API adapters. Townlight Code handoff now has a
-live emitter when `CIVICCODE_INTAKE_URL` and the suite bearer handoff value are
-configured; otherwise handoff records stay local and visibly show
-`EMIT_SKIPPED_UNCONFIGURED`. Failed emissions show `EMIT_FAILED`,
-`civiccode_handoff_last_error`, and `civiccode_handoff_last_attempt_at`, and can
-be retried with
-`POST /meetings/{meeting_id}/ordinance-resolution-handoff/retry` after the
-operator fixes the URL, shared value, or Townlight Code health issue.
-The Vendor Sync React surface is now present: IT staff can open Vendor Sync
-from the React navigation, register an approved Granicus, Legistar, PrimeGov,
-or NovusAgenda source without making a vendor call, record run outcomes into
-the durable ledger, see failure counts, cursor state, and circuit-breaker state,
-reset the cursor when a full source reconciliation is needed, and read
-actionable fix guidance before scheduled vendor-network pulls are enabled.
-
-## Part 2: IT and Technical Overview
-
-### Deployment model
-
-Townlight Meetings now has the first Townlight-style Docker Compose stack for local
-product rehearsal:
-
-- local Docker-based deployment
-- PostgreSQL 17 + pgvector
-- Redis 7.2 + Celery + Celery Beat
-- FastAPI backend
-- React frontend
-- Ollama/Gemma 4 for local LLM inference through `civiccore.llm`, selected by `CIVICCORE_LLM_PROVIDER=ollama`
-- no runtime cloud dependency
-- no telemetry
-
-Copy `docs/examples/docker.env.example` to `.env`, replace the sample database
-password before shared use, then run:
+## Architecture
+
+![Townlight Meetings architecture and evidence flow](docs/beta-1/assets/meetings-architecture.svg)
+
+The drawing shows the principal staff/evidence path. Native commands carry trusted identity to Python business services; PostgreSQL and retained original files hold durable state. A downstream copy does not silently transfer decision authority. Station has its own configured authority/media boundary, database and mutable files. The connected-workflow text supplies the drawing’s reading order and accessibility alternative.
+
+## Transcript corrections and action items
+
+### Preserve supplied transcript history
+
+1. Save the actual meeting first. Retain the supplied text's source label and confirm that the material belongs to that meeting. Supplied text is not automatic audio transcription.
+2. Use the transcript capture operation. The installed route is `POST /desktop/v1/meetings/meetings/{meeting_id}/transcripts`. It requires `source_label` and `transcript_text`; the server attributes the signed-in actor.
+3. Read the meeting's proceedings and retain the returned transcript `id`. If text needs correction, submit a **new capture** for the same meeting with `correction_of_id` set to that original ID. Do not replace the original row or silently edit its audit history.
+4. Read proceedings again and confirm both entries, their source labels, actor/time and correction link. A correction referencing an entry from another meeting is refused. Reconcile the corrected text before using it in reviewed minutes.
+
+For an already saved synthetic meeting, an initial request body is:
+
+```json
+{"source_label":"Synthetic clerk text v1","transcript_text":"The synthetic meeting opened at 18:00."}
+```
+
+A subsequent correction body is:
+
+```json
+{"source_label":"Synthetic clerk correction v2","transcript_text":"The synthetic meeting opened at 18:05.","correction_of_id":"11111111-1111-4111-8111-111111111111"}
+```
+
+Replace the example UUID with the ID returned by the first capture. An HTTP client must use the existing authenticated native proof as described in the technical reference. Readback uses `GET /desktop/v1/meetings/meetings/{meeting_id}/proceedings`; its `transcripts` collection preserves the append-only entries. Correcting a transcript does not automatically revise adopted minutes or publish the material.
+
+### Retain action items with the proceedings
+
+Use `POST /desktop/v1/meetings/meetings/{meeting_id}/action-items` with a description, optional assignee and optional saved source motion ID. For example:
+
+```json
+{"description":"Prepare the synthetic follow-up report","assigned_to":"Synthetic staff","source_motion_id":null}
+```
+
+If linking a motion, obtain its actual saved identity and keep the item in its meeting context. Inspect the returned identity and the `action_items` collection in proceedings. This captures a retained action item; it does not send an email, enforce a task deadline or turn a note into adopted legislation. Where a native screen does not expose this field, technical staff use the existing authenticated API rather than an invented button.
+
+Source contracts: `civicclerk/transcripts.py`, `civicclerk/motion_vote.py` and `civicsuite_runtime/meetings_bridge.py`. The exact motion repository filename and all mounted route models are retained in the source inventory/API companion.
+
+
+## Technical specifications
+### Runtime and storage
+
+The accepted package targets **Windows x64 fresh installation**. Its native shell uses **Rust 2021, Tauri 2 and Microsoft WebView2**; browser assets are JavaScript built with **Vite 8.1.6**. This describes the native desktop frontend; Station has a separate React operator, specified below or in its product manual. Canonical business workflows use bundled **CPython 3.13.5, FastAPI, Pydantic, SQLAlchemy and Alembic**, with **PostgreSQL 17 / PostGIS** and managed original files. The installed runtime tested here contains FastAPI 0.162.0. Package minimum Python requirements can differ from the bundled executable; the metadata reference preserves both. No stack rewrite is implied by the beta label.
+
+The native transport is fixed to loopback `127.0.0.1:15480`; PostgreSQL uses the configured local runtime port (default `15432`). Optional local model service defaults to `127.0.0.1:15434`. Those are deployment defaults, not internet endpoints. The runtime has health, module and readiness endpoints; readiness is stronger than process existence. The task queue is the existing local Core task infrastructure, not an assertion that a separate Redis service is required for this desktop composition.
+
+The default native profile is `%LOCALAPPDATA%\CivicSuite`; the historical directory name remains part of compatibility. Do not rename it to Townlight. A configured `TOWNLIGHT_PROFILE_ROOT` must be absolute. Local configuration and secrets live under that profile; protected managed files and database state must be backed up coherently. Source/runtime identity is distinct from a product’s display label.
+
+### Data and consistency
+
+Meetings and stages; agenda items and assignments; packet snapshots and deliveries; notices and posting proof; motions and corrections; votes; transcript records; minutes drafts and decisions; archives.
+
+Versioned saves use expected prior revision identifiers where defined. Reopen and reconcile on conflict. Exact exports and handoffs use source IDs, current visibility, revision and SHA256. Review belongs to the saved revision and does not transfer silently to edited text. Database changes use the owning product’s migrations; a request or readiness check is not an authorization to mutate schema.
+
+### Capacity and platform statements
+
+This beta has synthetic single-profile workflow evidence. It does not have a published benchmark for concurrent staff capacity, minimum RAM/CPU, large-source limits or a field SLA. Do not turn a developer machine’s specification into a supported minimum. Installer size is 2,092,122,112 bytes before installation; allow additional disk for extracted runtime, database, originals, exports, media and backups. Select equipment/storage after sizing those actual workloads.
+
+The exact [runtime payload lock](docs/beta-1/reference/runtime-payload-lock.json) records pinned files, sizes and hashes. The [component metadata](docs/beta-1/reference/component-metadata.json) records shipped dependency declarations. These references are more precise than a manually copied dependency list. Third-party and historical license notices must accompany their matching payloads.
+
+## Configuration and administration
+### Native deployment configuration
+
+Use Setup, Settings and System Health for supported staff operation. Administrators provision folders, backup storage, named accounts and the city profile. Select `inspections-preview` for the full eight-workspace desktop. Station remains a separate service boundary. Do not use a standalone product’s demo server as a substitute for the installed workspace.
+
+Technical deployments use `TOWNLIGHT_PRODUCT_PROFILE`, `TOWNLIGHT_PROFILE_ROOT`, `DATABASE_URL`, `CIVICSUITE_RUNTIME_PORT`, `PORTAL_MODE` and the runtime-managed secret files. Treat database URLs and native session proofs as secrets. The installed native domain runtime explicitly refuses non-loopback binding. `PORTAL_MODE=private` is the accepted posture; changing it does not by itself commission an internet portal, authentication provider or reverse proxy.
+
+The isolated documentation exporter sets a fictional profile and unusable synthetic database origin only to read schemas; those values are not deployment configuration. Keep deployment values in the intended process/account scope. An already-running process does not automatically inherit later environment edits.
+
+## API and integration examples
+### Native command example
+
+The following JavaScript belongs in the existing trusted Townlight frontend/development environment with `invoke` imported from `@tauri-apps/api/core`. It is not a command for an arbitrary web page or an instruction for nontechnical staff. IDs must come from records created in an isolated synthetic exercise.
+
+```javascript
+import { invoke } from '@tauri-apps/api/core';
+const result = await invoke('meetings_domain_request', {request: {operation: 'get-proceedings', id: meetingId}});
+console.log(result);
+```
+
+### Trusted local HTTP example
+
+An administrator/developer can inspect an already-configured isolated runtime from a trusted local process. This PowerShell example reads the signed-in synthetic profile’s existing proof into memory; it does not create a user, seed a session, reveal the proof in output or bypass a permission check. Do not use real city data in development examples. A read response does not prove approval or publication.
 
 ```powershell
-docker compose up --build
+$profilePath = Join-Path $env:LOCALAPPDATA 'CivicSuite'
+$sessionPath = Join-Path $profilePath 'config\local-session.json'
+$session = Get-Content -LiteralPath $sessionPath -Raw | ConvertFrom-Json
+$headers = @{ 'X-Townlight-Session' = $session.session_hash }
+Invoke-RestMethod -Uri 'http://127.0.0.1:15480/desktop/v1/meetings/station/catalog' -Headers $headers
+Remove-Variable session, headers
 ```
 
-Open `http://127.0.0.1:8080` for the nginx-served React app. The API is exposed
-at `http://127.0.0.1:8776`, and nginx proxies React `/api/*` requests to the
-FastAPI service. The Windows installer package now wraps this same Compose
-profile; Docker Desktop is still required.
-Fresh `.env` files start in protected mode. If IT changes `.env` from protected mode to OIDC, bearer, or trusted-header
-staff auth, Compose forwards the corresponding staff-auth variables into the
-API, worker, and beat containers so `/staff/session`, `/staff/login`, and
-`/staff/auth-readiness` report the same protected profile the operator set.
-IT can also enable scheduled local connector export-drop ingestion in the same
-Compose profile by setting `CIVICCLERK_CONNECTOR_SYNC_ENABLED=true`, dropping
-approved agenda-system JSON exports into `CIVICCLERK_CONNECTOR_SYNC_PAYLOAD_DIR_HOST`
-(default `.\connector-imports`), and reviewing the generated provenance ledger
-under `CIVICCLERK_CONNECTOR_SYNC_LEDGER_PATH`. This scheduled path still reads
-local files only; it does not contact Granicus, Legistar, PrimeGov, NovusAGENDA,
-or any vendor network.
+### A synthetic write with subsequent readback
 
-By default, Compose sets `CIVICCLERK_DEMO_SEED=1`. On API startup, Townlight Meetings
-creates a Brookfield rehearsal dataset with meeting bodies, meetings in multiple
-lifecycle states, one promoted agenda intake item, a finalized packet, a posted
-notice checklist with statutory basis and posting proof, captured motion/vote
-outcomes, citation-gated minutes, and a public archive record. Set
-`CIVICCLERK_DEMO_SEED=0` in `.env` when IT wants an empty local database instead.
-
-### Windows installer package
-
-For a Windows IT install or repair of the Docker product stack, run:
+This example demonstrates the existing Meetings HTTP contract in an isolated exercise. It is intentionally fictional. It does not start a service. Its authentication setup is included so it can be run independently under the signed-in synthetic account. If a write times out, inspect current records before repeating it.
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File install.ps1
+$profilePath = Join-Path $env:LOCALAPPDATA 'CivicSuite'
+$sessionPath = Join-Path $profilePath 'config/local-session.json'
+$session = Get-Content -LiteralPath $sessionPath -Raw | ConvertFrom-Json
+$headers = @{ 'X-Townlight-Session' = $session.session_hash }
+$body = @{
+  title = 'Synthetic documentation exercise'
+  scheduled_start = '2026-11-05T18:00:00-07:00'
+  location = 'Synthetic room'
+  meeting_type = 'regular'
+} | ConvertTo-Json
+$meeting = Invoke-RestMethod -Method Post `
+  -Uri 'http://127.0.0.1:15480/desktop/v1/meetings/meetings' `
+  -Headers $headers -ContentType 'application/json' -Body $body
+Invoke-RestMethod `
+  -Uri ('http://127.0.0.1:15480/desktop/v1/meetings/meetings/' + $meeting.id) `
+  -Headers $headers
+Remove-Variable session, headers
 ```
 
-The script checks Docker Desktop, creates `.env` from
-`docs/examples/docker.env.example` if it does not already exist, generates a
-local PostgreSQL password, starts `docker compose up -d --build`, waits for
-`/health` and the React staff app, and opens `http://127.0.0.1:8080/`. The
-default `.env` keeps `CIVICCLERK_DEMO_SEED=1`, so the first app launch shows
-Brookfield demo data instead of an empty shell.
+This write requires Meetings to be enabled and the signed-in staff role to permit it. It is a cross-suite integration example; for this product’s request models, use the complete technical reference below.
 
-### Prompt library and approval ceremony
+### Complete technical contract
 
-Townlight Meetings ships nine versioned YAML prompts in `prompts/`: agenda item
-summary, staff report normalizer, packet completeness reviewer, notice
-compliance reviewer, motion/vote summary, minutes drafter,
-ordinance/resolution extractor, closed-session safe summarizer/refuser, and
-public plain-language meeting explainer. Runtime prompt lookup registers those
-files as Townlight Core code-level prompt overrides and resolves them through
-`civiccore.llm.resolve_template` with `consumer_app="civicclerk"`; standalone
-YAML loading is kept as a compatibility/test helper, not the production
-resolver path.
+Read the [Meetings API reference](docs/beta-1/api/meetings.html) for every documented operation, request field, constraint, response declaration and source supplement. Download the [OpenAPI JSON](docs/beta-1/api/meetings-openapi.json) for tools. For Station this is the suite-side schema only; its separate service contract is documented in the API supplement. The [reference directory](docs/beta-1/reference/index.html) includes configuration/source inventories, dependency declarations, native command contracts, MCP signatures and candidate evidence.
 
-Run the prompt gate with:
+## MCP and automation boundary
 
-```bash
-CIVICCORE_LLM_PROVIDER=ollama CIVICCLERK_EVAL_OFFLINE=1 python -m civicclerk.prompt_evals
+No direct product MCP server is exposed by the accepted Townlight desktop or Station boundary. Do not configure an invented `townlight mcp` command or assume an AI client has staff permissions. The integration surfaces for this beta are native IPC, the documented HTTP APIs, source bundle imports, exact exports and the existing Station CLI.
+
+The bundled transcription code includes a **TextFlowKit MCP adapter** as a separate source capability. It offers job-based `transcribe_media`, `get_transcript`, `list_jobs`, `get_job_status` and `export_transcript`, and additional tools declared in that adapter. It uses stdio first and optional Streamable HTTP, with the MCP SDK as an optional extra. It is not automatically launched, authenticated as Townlight staff or accepted as a Townlight product MCP deployment. This documentation does not add such a service.
+
+For a transcription client already provisioned separately, an illustrative tool call is:
+
+```json
+{"name":"get_job_status","arguments":{"job_id":"synthetic-existing-job-id"}}
 ```
 
-The gate runs with `CIVICCORE_LLM_PROVIDER=ollama`, requires outbound network
-to remain blocked, and checks citation requirements, closed-session refusal,
-legal-determination refusal, public approval gates, and stability when prompt
-inputs are mutated.
-
-Public-facing prompt variants require the clerk-and-attorney approval ceremony
-before deployment. The ceremony is: the clerk reviews the exact rendered prompt
-and sample output for public-record accuracy, the city attorney reviews the same
-artifact for legal-advice and closed-session boundaries, both approvals are
-recorded in the deployment packet, and IT enables the public variant only after
-that signed approval record is present. If approval is missing, the prompt must
-stay in staff-only rehearsal.
-
-To build the setup executable on a workstation with Inno Setup 6:
-
-```bash
-bash installer/windows/build-installer.sh
-```
-
-The resulting setup package installs Start and Install or Repair shortcuts.
-It is unsigned because Townlight is a small free open-source project and does
-not ship a paid publisher-certificate-signed Windows installer. Windows
-SmartScreen may show "Unknown Publisher" or "Windows protected your PC" because
-Windows cannot verify a publisher certificate. That warning is expected. It is
-OK to choose "More info" and "Run anyway" only when the installer came from the
-official Townlight GitHub release source or your IT team built it from verified
-Townlight source. Do not bypass SmartScreen for installers from email
-attachments, chat links, mirrors, or any source you cannot verify.
-
-Uninstall stops the Compose stack and removes installed source files, but Docker volumes are preserved so meeting data is not
-destroyed accidentally. `CIVICCLERK_STAFF_AUTH_MODE=protected` is the default and denies anonymous staff writes. Use `CIVICCLERK_STAFF_AUTH_MODE=open` only for a single-workstation rehearsal; switch to OIDC, bearer, or trusted-header mode before shared deployment.
-
-### Planned dependency
-
-The runtime foundation now pins to the published `civiccore` 1.2.1 wheel from the `v1.2.1` release asset. Agenda intake uses
-`CIVICCLERK_AGENDA_INTAKE_DB_URL` when set; agenda item lifecycle records use
-`CIVICCLERK_AGENDA_ITEM_DB_URL` when set; meeting records, schedule fields, and
-schedule-edit audit entries use `CIVICCLERK_MEETING_DB_URL` when set; meeting body records use
-`CIVICCLERK_MEETING_BODY_DB_URL` when set; packet assembly records use
-`CIVICCLERK_PACKET_ASSEMBLY_DB_URL` when set; notice checklist records use
-`CIVICCLERK_NOTICE_CHECKLIST_DB_URL` when set; motion, vote, and action-item
-records use `CIVICCLERK_MOTION_VOTE_DB_URL` when set; minutes draft records use
-`CIVICCLERK_MINUTES_DB_URL` when set; public archive records and resident
-comments use `CIVICCLERK_PUBLIC_ARCHIVE_DB_URL` when set. If unset, each
-repository uses an in-memory SQLite database suitable for local smoke checks.
-
-### Fresh-machine install rehearsal
-
-The current release is expected to work from a clean machine install, not just
-from a source checkout. The repeatable rehearsal path verified in this release
-is the Windows PowerShell path:
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install dist/civicclerk-1.0.4-py3-none-any.whl
-$env:CIVICCLERK_STAFF_AUTH_MODE="protected"
-python -m uvicorn civicclerk.main:app --host 127.0.0.1 --port 8776
-```
-
-Then verify these first-run checks:
-
-- `GET /health` returns `{"status":"ok","service":"civicclerk","version":"1.0.4","civiccore":"1.2.1"}`
-- `GET /staff/auth-readiness` returns `mode: "protected"` and explains that anonymous staff writes are denied until OIDC, bearer, or trusted-header deployment is configured
-- `GET /staff` renders the first workflow shell without console errors
-
-To rehearse that Windows-first path without hand-copying each command, run:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts/start_fresh_install_rehearsal.ps1 -PrintOnly
-```
-
-The print-only mode shows the virtual environment path, wheel path, app command,
-and exact smoke-check URLs. Rerun the same script without `-PrintOnly` to create
-`.fresh-install-rehearsal\.venv`, install the release wheel into that isolated
-environment, start the installed app on `127.0.0.1:8776`, verify `/health`,
-verify `/staff/auth-readiness`, and fetch `/staff`. If the release wheel is not
-present, the helper stops with the fix path: build it first with `python -m
-build`.
-
-For the same fresh-install rehearsal from Bash on Linux, macOS, or Git Bash,
-run:
-
-```bash
-bash scripts/start_fresh_install_rehearsal.sh --print-only
-```
-
-The Bash helper prints the same wheel path, isolated
-`.fresh-install-rehearsal/.venv`, app command, and smoke-check URLs. Rerun
-without `--print-only` to execute the install and first-run checks. If the
-default port is already occupied, rerun with `--app-port` set to an available
-loopback port. Linux hosts must have Python 3 with `venv` support available
-before this helper can create the isolated environment; on Debian or Ubuntu,
-install `python3-venv` first.
-
-To hand the release artifacts to IT without calling the result an installer,
-run:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts/build_release_handoff_bundle.ps1 -PrintOnly
-```
-
-or from Linux, macOS, or Git Bash:
-
-```bash
-bash scripts/build_release_handoff_bundle.sh --print-only
-```
-
-The bundle helper previews the files that will be packaged, including the built
-wheel, source distribution, checksums, current docs, trusted-header reference,
-installer-readiness helper, enterprise signing-readiness helper, and install rehearsal helpers. After
-`bash scripts/verify-release.sh` has built `dist/`, rerun without `-PrintOnly`
-or `--print-only` to create
-`dist/civicclerk-1.0.4-release-handoff.zip`. If that zip already exists, the
-helpers stop instead of overwriting it.
-
-After the handoff zip exists, verify the installer input contract:
-
-```bash
-python scripts/check_installer_readiness.py
-```
-
-This check verifies release artifacts, `SHA256SUMS.txt`, zip validity, and the
-required docs/env examples/rehearsal helpers. It complements the Windows
-installer source package by proving the release handoff inputs are intact before
-an installer is built or handed to IT.
-
-Before vendor-network live-sync design work, verify the local connector contract:
-
-```bash
-python scripts/check_connector_sync_readiness.py
-```
-
-This check normalizes the supported Granicus, Legistar, PrimeGov, and
-NovusAGENDA sample payloads without outbound network calls. It can also validate
-a proposed `--source-url` or `--odbc-connection-string` with the shared
-Townlight Core host guards. It is intentionally not vendor-network live sync; it
-tells the team what must be fixed before scheduled vendor polling or database
-sync is designed.
-
-Before repeating this pattern for another Townlight module, run the reusable
-mock-city environment suite:
-
-```bash
-python scripts/run_mock_city_environment_suite.py --output mock-city-report.json
-```
-
-This suite uses the City of Brookfield mock profile to verify the shared
-Legistar, Granicus, PrimeGov, and NovusAGENDA connector contracts, normalize the
-sample payloads, and plan connector-specific delta URLs without contacting
-vendor networks. Legistar is tracked as a public-reference interface; the other
-vendor contracts stay labeled as vendor-gated until a city provides account
-documentation. The same report now validates the Brookfield Entra ID-style OIDC
-contract, including issuer, audience, authorization-code + PKCE URLs, JWKS
-shape, role claims, and a staff-role token path without contacting an identity
-provider or writing secrets into the report.
-The normal suite should stay green and no-network for every module that reuses
-the Brookfield contract.
-
-Run hostile mode before live city integration work:
-
-```bash
-python scripts/run_mock_city_environment_suite.py --hostile-mode --output mock-city-hostile-report.json
-```
-
-Hostile mode adds secret-free adversarial fixtures for IdP expiry, refresh
-requirements, JWKS rotation, MFA prompts, clock skew, and group-claim-only
-roles; vendor rate limits, pagination, schema drift, partial outages, duplicate
-IDs, and stale deltas; and backup-retention delayed restore proof, missing
-manifest fields, stale restore proof, legal-hold conflicts, and checksum
-mismatch. Every hostile report entry must say what failed and how an operator
-should recover. Module teams should reuse this report and add only the
-module-specific assertions needed for the new product surface.
-
-Then preview the first vendor live-sync operating contract without contacting a
-vendor:
-
-```bash
-python scripts/check_vendor_live_sync_readiness.py --connector legistar --source-url https://vendor.example.gov/api/meetings --auth-method bearer_token
-```
-
-This validates the supported connector, source URL host, credential placement,
-and auth method. It also shows the operator-facing health status and
-circuit-breaker behavior that future vendor adapters must use: `healthy`,
-`degraded`, or `circuit_open`, with the circuit opening after five consecutive
-full-run failures or two post-unpause grace-period failures.
-
-To persist the vendor source and its operator-visible health before any live
-adapter is enabled, set `CIVICCLERK_VENDOR_SYNC_DB_URL` and use the no-network
-ledger endpoints:
-
-```bash
-curl -X POST http://127.0.0.1:8776/vendor-live-sync/sources \
-  -H "content-type: application/json" \
-  -d '{"connector":"legistar","source_name":"Legistar production","source_url":"https://vendor.example.gov/api/meetings","auth_method":"bearer_token"}'
-curl -X POST http://127.0.0.1:8776/vendor-live-sync/sources/{id}/run-log \
-  -H "content-type: application/json" \
-  -d '{"records_discovered":1,"records_succeeded":0,"records_failed":1,"error_summary":"Vendor API unavailable."}'
-curl -X POST http://127.0.0.1:8776/vendor-live-sync/sources/{id}/cursor-reset \
-  -H "content-type: application/json" \
-  -d '{"cursor_at":null,"reason":"Force full reconciliation after vendor backfill notice."}'
-```
-
-These endpoints validate and record source/run/failure state only. They return
-`network_calls: false`, health status, and actionable fix text; they do not
-contact Granicus, Legistar, PrimeGov, NovusAGENDA, or any other vendor network.
-The cursor reset path clears or moves `last_success_cursor_at` locally so the
-next controlled pull can perform a full reconciliation or replay from an
-operator-selected point. Townlight Meetings saves the operator reason as a
-`cursor_reset` run-log event and returns that `reset_event` in the API response;
-the reset itself never calls the vendor.
-
-For a deliberately enabled one-time vendor pull, keep the same ledger source,
-store the credential in a deployment secret environment variable, and run:
-
-```bash
-CIVICCLERK_VENDOR_NETWORK_SYNC_ENABLED=true \
-python scripts/run_vendor_live_sync.py --source-id <id> --db-url <ledger-url> --auth-secret-env LEGISTAR_TOKEN --output vendor-sync-report.json
-```
-
-The runner refuses circuit-open sources, revalidates the source URL before the
-HTTP request, reads credentials from the named env var instead of the URL,
-normalizes returned JSON through the existing connector contract, writes an
-optional report without secrets, and records success or failure in the same
-circuit-breaker ledger. The report includes `delta_request_url`,
-`cursor_param`, `cursor_value`, and `cursor_advanced_at`. Townlight Meetings advances
-the persisted `last_success_cursor_at` only after every discovered payload
-normalizes successfully; failed and partial runs leave the cursor unchanged so
-the next pull can retry without skipping records.
-
-For scheduled vendor-network pulls in Docker, keep both live-sync gates disabled
-until IT has approved source records and credentials:
-
-```bash
-CIVICCLERK_VENDOR_NETWORK_SYNC_ENABLED=false
-CIVICCLERK_VENDOR_NETWORK_SYNC_SCHEDULE_ENABLED=false
-```
-
-When IT is ready for live scheduled pulls, set
-`CIVICCLERK_VENDOR_NETWORK_SYNC_ENABLED=true`,
-`CIVICCLERK_VENDOR_NETWORK_SYNC_SCHEDULE_ENABLED=true`,
-`CIVICCLERK_VENDOR_NETWORK_SYNC_SOURCE_IDS=<id>`, and either
-`CIVICCLERK_VENDOR_NETWORK_SYNC_AUTH_SECRET_ENV` for a shared pilot secret or
-per-source secret env vars using `CIVICCLERK_VENDOR_NETWORK_SYNC_AUTH_SECRET_ENV_PREFIX`.
-Celery Beat then calls the same guarded runner, writes per-source reports under
-`CIVICCLERK_VENDOR_NETWORK_SYNC_REPORT_DIR`, and records outcomes in the same
-circuit-breaker ledger visible from the Vendor Sync workspace.
-The delta-planning layer now defines the connector-specific "changed since"
-query parameter for Granicus, Legistar, PrimeGov, and NovusAGENDA; cursor
-persistence, safe advancement, and operator-visible reset controls are present.
-Before a city relies on unattended vendor polling, IT still needs municipal
-vendor API credentials, approved source ids, and deployment proof against the
-actual city vendor tenant.
-
-When IT has approved local agenda-system export files and wants the Docker
-product path to ingest them repeatedly, create the host drop folder and enable
-the Celery Beat schedule in `.env`:
-
-```powershell
-New-Item -ItemType Directory -Force .\connector-imports
-$env:CIVICCLERK_CONNECTOR_SYNC_ENABLED="true"
-```
-
-For the Compose profile, set `CIVICCLERK_CONNECTOR_SYNC_ENABLED=true` and, if
-needed, `CIVICCLERK_CONNECTOR_SYNC_CONNECTORS=granicus,legistar` in `.env`.
-Drop approved `granicus.json`, `legistar.json`, `primegov.json`, or
-`novusagenda.json` files into `CIVICCLERK_CONNECTOR_SYNC_PAYLOAD_DIR_HOST`.
-Celery Beat schedules the same local-first normalization used by
-`scripts/run_connector_import_sync.py`, and the worker writes the ledger under
-`/data/exports` without making vendor network calls.
-
-Before IT moves beyond local rehearsal, print the deployment preflight:
-
-```bash
-python scripts/check_deployment_readiness.py
-```
-
-Use `python scripts/check_deployment_readiness.py --strict` when the check
-should fail unless staff auth, persistent-store env vars, packet export root,
-release artifacts, required docs, and trusted-header proxy references are
-deployment-ready. The report intentionally does not print database URLs or token
-values; it names missing environment variables and gives the next fix step.
-To validate a profile without hand-exporting each variable, copy
-`docs/examples/deployment.env.example` to a private deployment path, replace the
-placeholder token, database URLs, export root, and dist root, then run:
-
-```bash
-python scripts/check_deployment_readiness.py --env-file path/to/deployment.env --strict
-```
-
-The env-file loader accepts `KEY=VALUE` and `export KEY=VALUE` lines, ignores
-comments and blanks, lets already-exported process environment values win, and
-still avoids printing token values or database URLs in the report.
-After strict readiness passes, run the protected smoke helper:
-
-```bash
-python scripts/check_protected_deployment_smoke.py --env-file path/to/deployment.env
-```
-
-The smoke helper loads the same completed profile, verifies `/health`, verifies
-`/staff/auth-readiness`, executes the returned protected session probe, and
-executes the returned protected write probe. Bearer tokens are redacted from
-output. Trusted-header profiles use `127.0.0.1` as the default in-process
-proxy source; pass `--trusted-proxy-client-ip` when the completed profile
-allowlists a different proxy test address. If the sample
-`docs/examples/deployment.env.example` is used without replacing placeholders,
-the helper stops before running probes and points back to the readiness failures.
-
-After `bash scripts/verify-release.sh` and the release handoff bundle have been
-built, run the pilot-readiness rollup:
-
-```bash
-python scripts/check_pilot_readiness.py
-```
-
-The report is intentionally honest: it can mark release readiness as ready only
-after release artifacts, reusable vendor-interface contracts, hostile municipal
-IdP fixtures, protected-auth smoke checks, backup-retention/off-host regression
-checks, and unsigned-installer warning docs pass. Use
-`--require-adversarial-mocks` when the release gate should fail unless every
-adversarial mock validation check passes.
-
-Before IT trusts restore operations, rehearse the local backup/restore path:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts/start_backup_restore_rehearsal.ps1 -PrintOnly
-```
-
-or from Linux, macOS, or Git Bash:
-
-```bash
-bash scripts/start_backup_restore_rehearsal.sh --print-only
-```
-
-The print-only plan previews the five SQLite-backed persistent stores, the
-packet export evidence, the `backup/civicclerk-backup-manifest.json` file, the
-restored store directory, and the restored `CIVICCLERK_EXPORT_ROOT`. Rerun
-without the print-only flag to execute the rehearsal under
-`.backup-restore-rehearsal`: `scripts/check_backup_restore_rehearsal.py` seeds
-agenda intake, agenda item, meeting, packet assembly, and notice checklist
-records, copies the databases and export evidence into a backup directory,
-restores them to separate `restored-data` and `restored-exports` directories,
-then reopens the restored records through Townlight Meetings repositories. If a check
-fails, keep the run directory, inspect the named file or record, fix the backup
-source or environment variable, and rerun with a new run id.
-
-For the Docker Compose product path, rehearse PostgreSQL backup and restore
-instead of the SQLite wheel stores:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts/start_docker_backup_restore_rehearsal.ps1 -PrintOnly
-```
-
-or from Linux, macOS, or Git Bash:
-
-```bash
-bash scripts/start_docker_backup_restore_rehearsal.sh --print-only
-```
-
-After `docker compose up -d` is running, rerun the same command without the
-print-only flag. The helper creates `.docker-backup-restore-rehearsal`, runs
-`pg_dump` from the `postgres` container into
-`backup/civicclerk-postgres.dump`, creates a temporary restore database, runs
-`pg_restore`, verifies restored application tables, writes
-`backup/civicclerk-docker-backup-manifest.json`, and drops the temporary restore
-database unless `--keep-restore-database` is supplied. It does not drop, clean,
-or overwrite the source Townlight Meetings database.
-
-If staff access will stay local for a demo or rehearsal, keep
-`CIVICCLERK_STAFF_AUTH_MODE=protected`. If a local rehearsal must stay open, explicitly opt into `CIVICCLERK_STAFF_AUTH_MODE=open`; otherwise move to `oidc`, `bearer`, or `trusted_header` before user testing and use
-`/staff/auth-readiness` to confirm the service reports a deployment-ready
-contract instead of a local-only rehearsal mode. In protected modes, use the
-returned `session_probe` first and the returned `write_probe` second so the
-deployment check covers both identity acceptance and a live staff write.
-In OIDC mode, complete the browser-login fields, open `/staff/login`, finish
-the municipal provider sign-in, and confirm `/staff/session` reports
-`auth_method: "oidc_browser_session"` before clerks use the browser app.
-If trusted-header testing is happening on one loopback workstation before a
-real reverse proxy is available, use the returned `local_proxy_rehearsal`
-contract, set `CIVICCLERK_STAFF_SSO_TRUSTED_PROXIES=127.0.0.1/32`, run
-`python scripts/local_trusted_header_proxy.py`, and send the browser through
-that helper so Townlight Meetings only trusts loopback proxy traffic during rehearsal.
-If the deployment is moving to a real reverse proxy, use the returned
-`reverse_proxy_reference` block and start from
-`docs/examples/trusted-header-nginx.conf` before replacing the placeholder TLS
-paths and authenticated identity variables with your real gateway values.
-For a repeatable protected demo profile on Windows PowerShell, run
-`powershell -ExecutionPolicy Bypass -File scripts/start_protected_demo_rehearsal.ps1 -PrintOnly`
-to print the exact env vars, commands, and smoke-check URLs first. When the
-plan looks right, rerun the same script without `-PrintOnly` to launch the app
-on `127.0.0.1:8877` and the helper proxy on `127.0.0.1:8878`, then browse the
-proxy `/staff` URL instead of the upstream app URL.
-For the same protected demo profile from Bash on Linux, macOS, or Git Bash,
-run `bash scripts/start_protected_demo_rehearsal.sh --print-only` first. When
-the printed plan looks right, rerun the same script without `--print-only` to
-launch the same app/proxy pair with Unix-shell `export` commands and the same
-loopback-only smoke checks.
-
-### Security posture
-
-- Local-first data ownership.
-- Role-based access control.
-- API-enforced public/private boundaries.
-- Audit log for every state transition.
-- Closed-session material must never leak into public views.
-
-### Verification
-
-This runtime foundation ships with:
-
-```bash
-python -m pytest
-bash scripts/verify-docs.sh
-python scripts/check-civiccore-placeholder-imports.py
-```
-
-Runtime test gates now run in CI. Meeting-workflow tests are added in later milestones.
-Milestone 3 adds an agenda item lifecycle test matrix covering every pair
-of canonical states. Only direct forward transitions are accepted; invalid
-transitions return a 4xx response with a fix path and record a
-Townlight Core-verifiable persisted audit hash.
-Milestone 4 adds a meeting lifecycle test matrix from `SCHEDULED` through
-`ARCHIVED`, plus emergency/special notice preconditions, closed/executive
-session statutory-basis preconditions, cancellation handling, generated
-sequence coverage, and Townlight Core-verifiable audit hashes for allowed and
-rejected meeting transitions.
-Milestone 5 adds packet snapshot versioning and notice compliance tests for
-deadline warnings, statutory-basis requirements, and public-posting human
-approval. Every warning includes a concrete fix path. Milestone 6 adds
-immutable motion and vote capture, append-only correction records, and
-action-item capture linked to meeting outcomes. Milestone 7 adds
-citation-gated minutes drafts: every material sentence needs a source
-citation, provenance records model, prompt version, data sources, and human
-approver, and AI drafts are never auto-adopted or auto-posted. Milestone 8
-adds permission-aware public calendar, public detail, and archive search
-tests that prevent closed-session leakage in anonymous response bodies,
-counts, suggestions, and not-found responses. Milestone 9 adds a YAML
-prompt library, prompt-version enforcement, and an offline evaluation
-harness that runs with `CIVICCORE_LLM_PROVIDER=ollama` and outbound network
-blocked before prompt changes merge. Milestone 10 adds local-first
-Granicus, Legistar, PrimeGov, and NovusAGENDA meeting imports with source
-provenance and actionable errors, without requiring outbound runtime calls.
-Milestone 11 adds browser QA evidence and a CI gate for loading, success,
-empty, error, and partial states plus keyboard navigation, focus states,
-contrast, and console checks. Milestone 12 synchronizes version surfaces,
-builds release artifacts and checksums, and publishes Townlight Meetings v1.0.4.
-CC-7 extends browser QA to every named spec page through
-`node scripts/capture-cc7-browser-qa.mjs`; the verification script requires the
-resulting 200-case ledger before browser-visible changes can merge.
-The current production-depth branch pairs Townlight Meetings with the published `civiccore` 1.2.1 wheel from the `v1.2.1` release asset
-so packet exports, packet assembly records, notice checklist records, and the
-browser QA release-evidence gate can use shared Townlight Core manifests,
-provenance, checksums, audit primitives, and verification helpers.
-
-## Part 3: Architecture Reference
-
-### Planned module boundaries
-
-Townlight Meetings owns meeting workflows. It should not become:
-
-- electronic voting software
-- livestream hosting
-- a legal decision-maker
-- a full document-management system
-
-### Initial data model sketch
-
-Milestone 2 defines the canonical schema and Alembic migration foundation
-for these Townlight Meetings tables. Milestone 3 adds agenda lifecycle enforcement
-for agenda items. Milestone 4 adds meeting lifecycle enforcement. Milestone
-5 adds packet snapshot versioning and notice compliance enforcement.
-Milestone 6 adds immutable motion capture, immutable vote capture, and
-action-item capture linked to meeting outcomes. Milestone 7 adds
-citation-gated minutes draft capture with provenance. Milestone 8 adds
-permission-aware public archive behavior, including closed-session
-filtering for anonymous and under-privileged users. Milestone 9 moves
-policy-bearing prompt text into YAML and adds an evaluation harness.
-Milestone 10 adds source-provenanced connector import normalization for
-Granicus, Legistar, PrimeGov, and NovusAGENDA. Production-depth slices add
-records-ready packet export bundles using Townlight Core 1.2.1 freeze provenance, export
-manifest, checksum, and audit primitives; database-backed agenda intake and
-clerk readiness review state; database-backed agenda item lifecycle records with
-durable Townlight Core-verifiable transition audit hashes and ready-intake promotion linkage; database-backed meeting records with lifecycle
-and schedule-edit audit hashes, meeting body ids, and locations; database-backed packet assembly records with source references,
-citations, and packet snapshot linkage; database-backed notice checklist
-records with posting-proof metadata; live staff form actions for minutes
-draft creation; live staff form actions for public archive publishing; and
-live staff form actions for local connector import normalization and packet
-export bundle creation. Public
-packet exports reject closed-session and restricted source files. The React
-staff workspace now covers meeting body setup, scheduling, calendar viewing,
-detail viewing, pre-lock schedule editing, agenda intake, packet building,
-notice checklist/posting-proof work, public posting, meeting outcomes, and
-minutes draft work, plus vendor sync source-health/run logging, against live API-backed data, and the dashboard now surfaces
-staff access/session status for protected default mode, local open mode, OIDC browser sessions, bearer
-mode, and trusted-header mode. Production municipal use still requires a signed
-installer and actual vendor-network adapters/scheduled pulls before IT should
-treat it as a shared deployment; scheduled local connector export-drop
-ingestion is available for approved JSON files in the Docker product path, and
-the vendor live-sync readiness/persistence/circuit-breaker contract is present
-for the next adapter/scheduled-pull slices. The Docker/PostgreSQL
-backup/restore path now has a rehearsal helper, but cities still need their own
-retention schedule, off-host storage target, and restore-runbook approval.
-Browser QA gates now verify the required state fixtures and accessibility
-evidence before browser-visible changes merge.
-
-CC-5 completes the canonical data model contract. The Alembic chain now ends at
-`civicclerk_0011_data_model`, which adds downstream-facing columns for packet
-version uniqueness, motion and vote correction metadata, public comments,
-closed-session ACLs, opaque document references, transcript sensitivity, and
-Townlight Code ordinance handoff status. The migration is tested forward, backward to
-the prior release head, and forward again against PostgreSQL.
-
-- `meeting_bodies`
-- `meetings`
-- `agenda_items`
-- `staff_reports`
-- `motions`
-- `votes`
-- `public_comments`
-- `notices`
-- `minutes`
-- `transcripts`
-- `action_items`
-- `packet_versions`
-- `ordinances_adopted`
-- `closed_sessions`
-
-### Architecture sketch
-
-```mermaid
-flowchart LR
-    Staff["Department staff"] --> Intake["Agenda item intake"]
-    Intake --> Clerk["Clerk review"]
-    Clerk --> Packet["Packet builder"]
-    Packet --> Notice["Notice checklist"]
-    Notice --> Meeting["Meeting record"]
-    Meeting --> Minutes["Minutes draft + citations"]
-    Minutes --> Public["Public meeting archive"]
-    Core["civiccore"] --> Intake
-    Core --> Packet
-    Core --> Minutes
-```
-
-### First MVP acceptance bar
-
-- Meeting setup works end to end.
-- Agenda item intake has loading, empty, success, error, and partial states.
-- Notice warnings are actionable.
-- Public material clearly labels draft, posted, approved, and archived states.
-- Browser QA evidence exists before frontend merges.
+Use a job ID returned by that transcription service. This example does not create a Townlight record or bypass its review/Records handoff. The exact optional adapter tool signatures are supplied in the [MCP source reference](docs/beta-1/reference/mcp.html). Station meeting capture does not become live speech recognition because this optional donor adapter exists.
+
+## Security and permissions
+
+
+Use your own named account and save before leaving a screen. A saved draft is durable; unsaved form text may not be. If a write has an unknown result, reopen its record before repeating it.
+
+Read source jurisdiction, dates, citation, version and visibility. A copied source hash identifies exact bytes, not their legal applicability. If a source changes or permission is removed, resolve the source problem rather than substituting stale cached content.
+
+Keep originals and derivatives separate. Review the intended audience before export. A public summary excludes private fields only through the applicable copy contract and your review. A renamed private packet is still private content.
+
+Drafting, review, approval, attachment, export, fulfillment and publication are separate operations. A Townlight workpaper does not itself adopt law, issue a permit, impose a fine or release a records response. The responsible staff member records the applicable decision.
+
+The native session is validated and mapped to a persisted SQL identity. An editable actor/reviewer label is not authentication. Product/module permissions and source visibility apply at the server boundary. Revoked/unavailable authority fails closed for new Station operations; a previous permission result is not a perpetual authorization.
+
+Use protected local folders, account permissions and credential storage. Never include the native session file, database passwords, provider keys or unredacted support bundles in a public issue or generated public documentation. A local public view is not automatically a secured internet deployment. Keep network exposure and real equipment acceptance specific to the chosen beta site.
+
+## Backup recovery and maintenance
+
+Save work and use Core’s canonical **Backup Now** before maintenance. That operation stops writers. Preserve the coherent profile/database/document backup and its receipt, then use **Start** to resume. A source export is not a full backup.
+
+Use **Restore Latest Backup** through the supported controls. If the result says **Restore needs service start**, use **Start**, then **Check**, and reopen a known record. Do not repeat restore merely because services need to start. The fresh-profile acceptance verified that a fulfilled request survived restore and a post-backup marker did not.
+
+Keep Station’s dedicated database and media evidence together in its own backup. Core’s native-profile backup must not be assumed to include an external Station data directory. Stop writers during a coordinated backup. Preserve failed media attempts and logs.
+
+On failure, record the time, selected composition, component/installer versions and exact message. Check System Health for stopped, starting, ready or failed dependencies. Use the existing Retry control after readiness; do not create duplicate business records to refresh a stale view. Share only a redacted diagnostic bundle. Preserve secrets, original evidence, recovery material and unrelated installations.
+
+## Troubleshooting
+
+| Symptom | Likely meaning | Next action |
+| --- | --- | --- |
+| Workspace absent | Wrong product composition or unavailable canonical runtime. | Check selected composition; activate through Finish Records Migration; wait for readiness. |
+| Cannot sign in / 401 | Missing or expired named account session. | Sign in normally; reopen a Station launch ticket if applicable. |
+| Permission denied / 403 | Account, module, source or browser-origin permission. | Ask the authorized administrator to inspect the intended permission; do not invent role headers. |
+| Save conflict / 409 | The saved revision, expected source hash or lifecycle changed. | Keep edits, reopen current state and reconcile deliberately. |
+| Invalid input / 422 | Required field, format, geometry, source envelope or state is invalid. | Read the field detail and correct the input/source; preserve originals. |
+| Service unavailable / 503 | Database, schema, connected source or configuration unavailable. | Inspect System Health and the named dependency. Preserve work; retry only after readiness. |
+| Export refused | Missing exact review, approval, audience or source authorization. | Read the refusal and complete the owning product’s explicit decision. |
+| Restore needs service start | The snapshot was restored but services have not resumed. | Use Start, then Check and verify a saved record; do not blindly repeat restore. |
+
+
+## Verified workflows and limits
+
+| Product | Recorded result | Precisely exercised |
+| --- | --- | --- |
+| Meetings | PASS | Meeting/agenda, packet assembly, motion/vote, supplied transcript, reviewed/adopted minutes, restricted local archive and proceedings readback; Code decision integration. |
+
+
+These results come from the identified signed candidate’s fresh normal-profile Sandbox exercise: real native IPC/HTTP/PostgreSQL and selected headless controls. All accounts, source bundles and media were synthetic. The guest install/uninstall and recovery passed, and the owned Sandbox stopped. No host installed application or standalone CivicCast was changed. This documentation task reuses those receipts; it does not claim a new software acceptance run.
+
+The [workflow matrix](docs/beta-1/reference/workflow-matrix.json) identifies raw receipt filenames. The [evidence index](docs/beta-1/reference/sandbox-evidence-index.json) retains their original hashes; raw receipts remain in the private beta handoff rather than being silently republished with the documentation site.
+
+The limits remain: actual city field acceptance and equipment/network commissioning; Station automatic provisioning/SCM commissioning; every UI/role combination; field recognition accuracy; and historical in-place upgrades are not certified. They are not five invented feature requirements. Fresh-install controlled beta handoff remains the accepted scope. This package makes no city-deployment, publication or general-availability claim.
+
+## Terms of service and license
+
+### Scope and status
+
+These terms describe the Townlight Beta 1 software and this documentation package. This is a locally prepared private beta, not a hosted-service subscription, a city deployment agreement or a public release. No uptime commitment, support response time, indemnity, data-processing agreement or paid service is created by these documents. A separate signed agreement, if any, governs services it actually provides.
+
+### Software license and rights
+
+Current Townlight-owned distributions identified in this candidate use **AGPL-3.0-only**. The full license is supplied with this documentation and with the source companion. The license governs rights to run, copy, modify and convey the covered software; these operational terms do not add restrictions to those rights. Historical grants and dependency licenses retain their own terms. CivicCast remains a separate product and is not relicensed by this documentation work.
+
+When conveying covered software, retain applicable notices and provide the corresponding source and installation/build information required by the license. For a modified version supporting remote network interaction, follow section 13’s source-offer requirement. The companion archive identifies the source for this candidate; a link to a different public branch is not a substitute for the matching source. Read the supplied license for the complete conditions. See the [GNU license reference](https://www.gnu.org/licenses/agpl-3.0.html) and [GNU licensing FAQ](https://www.gnu.org/licenses/gpl-faq.en.html).
+
+### Data ownership and access
+
+Importing a document does not transfer its ownership or grant permission to publish it. The operating organization controls its accounts, access decisions, lawful source use, retention and review/release policy. Keep resident information, credentials, private notes and restricted evidence in their authorized locations. Documentation examples contain fictional data. No real city account, credential or record is required to exercise these examples in an isolated test environment.
+
+### Local operation and external processors
+
+The accepted beta workflow is local and uses named staff accounts. Station has separate storage and credentials. Configure backup destinations and optional model/network providers deliberately. A configured external provider may receive submitted prompts, images or audio according to that configuration and provider’s terms; this documentation does not promise that every optional configuration is offline. An email outbox or local public view does not establish external delivery or an internet deployment. This static documentation site has no analytics, account collection or remote font dependency.
+
+### Staff decisions and source applicability
+
+Staff verify the jurisdiction, source currency, permissions, citations and proposed audience. Model output and generated guidance require review. No draft is automatically an official legal interpretation, zoning determination, permit approval, fee assessment, enforcement notice or records-release decision. Official permit fee authority remains with the adopted source and responsible organization; imported amounts do not become a new authoritative calculation.
+
+### Beta operation and recovery
+
+Use the identified candidate in its supported fresh-install scope. Preserve backups and original evidence. Test physical equipment and chosen network/service configuration before relying on them. The supplied acceptance describes selected synthetic workflows, not every screen, vendor, field condition or upgrade. Operators decide whether a particular deployment meets their own operational obligations.
+
+### Warranty and liability
+
+The covered software’s warranty and liability conditions are those in sections 15–17 of the supplied AGPL and any applicable separate written undertaking. This documentation creates no additional warranty or limitation beyond those terms. Third-party software is subject to its retained license notices. Nothing here removes rights that applicable law makes nonwaivable.
+
+### Support and incident reporting
+
+Use the project’s existing SUPPORT and SECURITY guidance for its matching repository. Report reproducible behavior with the version, operation and redacted logs. Do not put credentials, resident records or unredacted evidence in a public issue. Coordinate sensitive reports through the channel designated in SECURITY. No new support address or service commitment is invented here.
+
+### Ending a beta exercise and document changes
+
+When an organization ends testing, it controls retention/export and removes access according to its policy. Uninstall may retain data; back up and inspect the selected removal options. Ending an exercise does not revoke rights already granted by AGPL. Later software/documentation versions must identify their changed candidate and scope; historical receipts retain their original identities. These terms do not claim that a city has accepted a contract merely by reading a manual.
+
+## Glossary
+
+| Term | Meaning |
+| --- | --- |
+| Approval | An explicit authorized decision on the saved text/artifact. It is separate from saving or attachment. |
+| Canonical record | The owning product’s retained identity and saved version, rather than an editable copied label. |
+| Composition | The selected set of desktop modules; inspections-preview exposes the eight staff products. |
+| Corresponding source | The source/build material matching the delivered covered program, subject to its license. |
+| Derivative / Records copy | A separately prepared document with its own intended audience and hash. |
+| Hash / SHA256 | A fingerprint of exact bytes. It detects change; it does not establish legal authority. |
+| Idempotency | Repeating the same identified request has the same intended effect; changing its payload can be refused. |
+| IPC | The native desktop command boundary between its browser interface and Rust host. |
+| MCP | Model Context Protocol; no direct Townlight product server is enabled by this beta. |
+| Original | Retained source bytes. A reviewed derivative does not replace them. |
+| Provenance | Source, version, date, actor and relationship information retained with evidence. |
+| Revision | An immutable saved version. Later edits do not inherit an earlier review automatically. |
+| Snapshot | A fixed audience-specific copy tied to a source/reviewed revision. |
+| Station | Townlight’s separate media boundary using a pinned CivicCast-derived engine; standalone CivicCast remains separate. |
+
+
+## Alphabetical subject index
+
+- **Accounts and authentication** — [Security and permissions](#security-and-permissions).
+- **AGPL and source** — [Terms of service and license](#terms-of-service-and-license).
+- **API contracts** — [API and integration examples](#api-and-integration-examples).
+- **Architecture** — [Architecture](#architecture).
+- **Backup** — [Backup recovery and maintenance](#backup-recovery-and-maintenance).
+- **Beta version** — [Beta identity](#beta-identity).
+- **Configuration** — [Configuration and administration](#configuration-and-administration).
+- **Evidence and acceptance** — [Verified workflows and limits](#verified-workflows-and-limits).
+- **Fees and official decisions** — [Terms of service and license](#terms-of-service-and-license).
+- **First run** — [First run](#first-run).
+- **Handoffs and audience** — [Connected workflows](#connected-workflows).
+- **MCP** — [MCP and automation boundary](#mcp-and-automation-boundary).
+- **Originals and provenance** — [Security and permissions](#security-and-permissions).
+- **Recovery** — [Backup recovery and maintenance](#backup-recovery-and-maintenance).
+- **Staff procedures** — [Daily workflow](#daily-workflow).
+- **Station configuration** — [Configuration and administration](#configuration-and-administration).
+- **Technical stack** — [Technical specifications](#technical-specifications).
+- **Troubleshooting** — [Troubleshooting](#troubleshooting).
+
+### Operating subject links
+
+- **Preserve supplied transcript history** — [Preserve supplied transcript history](#preserve-supplied-transcript-history).
+- **Retain action items with the proceedings** — [Retain action items with the proceedings](#retain-action-items-with-the-proceedings).
+- **Transcript corrections and action items** — [Transcript corrections and action items](#transcript-corrections-and-action-items).
+
+## Source and document control
+
+This edition is authored from the immutable corresponding-source companion, the generated installed-domain schema and the retained workflow receipts. The current software versions and signed artifacts are unchanged. Public historical pages are not synchronized or published by this local documentation task.
+
+### Workflow subject index
+
+- **Archive and hand off** — [Daily workflow, step 7](#workflow-7).
+- **Create the meeting** — [Daily workflow, step 1](#workflow-1).
+- **Prepare the agenda and packet** — [Daily workflow, step 2](#workflow-2).
+- **Record legislation evidence** — [Daily workflow, step 6](#workflow-6).
+- **Record notice work** — [Daily workflow, step 3](#workflow-3).
+- **Record proceedings** — [Daily workflow, step 4](#workflow-4).
+- **Review minutes** — [Daily workflow, step 5](#workflow-5).
+
+- [Source inventory and file hashes](docs/beta-1/reference/source-inventory.json)
+- [All component metadata](docs/beta-1/reference/component-metadata.json)
+- [Installed domain OpenAPI](docs/beta-1/reference/desktop-domain-openapi.json)
+- [Workflow matrix](docs/beta-1/reference/workflow-matrix.json)
+- [Full AGPL text](docs/beta-1/reference/AGPL-3.0.txt)
