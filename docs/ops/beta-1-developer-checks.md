@@ -2,7 +2,8 @@
 
 The suite MSI is signed. The standalone Meetings installer built from this
 repository is a different artifact; Windows may show Unknown Publisher for
-that unsigned development build. Use the signed suite MSI for beta installation.
+that unsigned development build, or a "Windows protected your PC" prompt.
+Use the signed suite MSI for beta installation.
 
 The existing connector runtime validation remains a developer check, not proof
 that a city has configured every vendor. From the repository root:
