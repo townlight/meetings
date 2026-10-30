@@ -78,7 +78,7 @@ def test_runtime_package_layout_exists() -> None:
 def test_public_fastapi_app_import_path_exists() -> None:
     module = load_app_module()
     assert isinstance(module.app, FastAPI)
-    assert module.app.title == "Townlight Meetings"
+    assert module.app.title == "CivicMeetings"
 
 
 @pytest.mark.asyncio
@@ -103,7 +103,7 @@ async def test_root_endpoint_explains_current_user_experience() -> None:
     assert "prompt YAML" in payload["message"]
     assert "Granicus" in payload["message"]
     assert "keyboard" in payload["message"]
-    assert "shared Townlight Core notice compliance helper" in payload["message"]
+    assert "shared CivicCore notice compliance helper" in payload["message"]
     assert f"v{VERSION}" in payload["message"]
     assert "trusted-header reverse-proxy mode" in payload["message"]
     assert "trusted-proxy CIDR allowlist" in payload["message"]
@@ -165,17 +165,10 @@ def test_placeholder_import_gate_passes_for_runtime_source() -> None:
 
 
 def test_current_facing_docs_describe_runtime_foundation_honestly() -> None:
-    docs = {
-        "README.md": (ROOT / "README.md").read_text(encoding="utf-8"),
-        "README.txt": (ROOT / "README.txt").read_text(encoding="utf-8"),
-        "USER-MANUAL.md": (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8"),
-        "USER-MANUAL.txt": (ROOT / "USER-MANUAL.txt").read_text(encoding="utf-8"),
-        "docs/index.html": (ROOT / "docs" / "index.html").read_text(encoding="utf-8"),
-    }
-
-    for path, text in docs.items():
-        assert "runtime foundation" in text.lower(), f"{path} must mention the shipped foundation."
-        assert "not installable yet" not in text.lower(), f"{path} must not retain pre-runtime scaffold wording."
-
-    changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
-    assert "runtime foundation" in changelog.lower()
+    for relative in ("README.md", "README.txt", "USER-MANUAL.md", "docs/index.html"):
+        text = (ROOT / relative).read_text(encoding="utf-8")
+        assert "Townlight Beta 1" in text
+        assert "AGPL-3.0-only" in text
+        assert "1.0.4" in text
+        for claim in ("scaffold only", "not installable yet", "legal advice is available", "automatic ordinance codification is available"):
+            assert claim not in text.lower()

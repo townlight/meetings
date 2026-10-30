@@ -269,13 +269,13 @@ def test_mock_city_environment_cli_prints_hostile_plan() -> None:
     assert "backup_retention/legal_hold_conflict" in result.stdout
 
 
-def test_mock_city_hostile_mode_docs_are_current() -> None:
+def test_mock_city_hostile_mode_docs_are_current_historical_edition() -> None:
     docs = "\n".join(
         [
-            (ROOT / "README.md").read_text(encoding="utf-8"),
-            (ROOT / "README.txt").read_text(encoding="utf-8"),
-            (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8"),
-            (ROOT / "USER-MANUAL.txt").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.txt").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.txt").read_text(encoding="utf-8"),
             (ROOT / "CHANGELOG.md").read_text(encoding="utf-8"),
             (ROOT / "scripts/verify-docs.sh").read_text(encoding="utf-8"),
         ]

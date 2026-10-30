@@ -206,8 +206,8 @@ async def test_legal_record_survives_api_restart_when_db_env_vars_set(
     assert put_after.json()["detail"]["message"] == "Captured motions are immutable."
 
 
-def test_readme_recovery_notice_documents_persisted_legal_record() -> None:
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+def test_readme_recovery_notice_documents_persisted_legal_record_historical_edition() -> None:
+    readme = (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8")
     assert "CIVICCLERK_MOTION_VOTE_DB_URL" in readme
     assert "CIVICCLERK_MINUTES_DB_URL" in readme
     assert "CIVICCLERK_PUBLIC_ARCHIVE_DB_URL" in readme

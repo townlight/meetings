@@ -560,11 +560,11 @@ async def test_api_uses_configured_meeting_database_for_records_and_audit(
     main_module._meeting_db_url = None
 
 
-def test_docs_record_meeting_lifecycle_without_claiming_packet_or_minutes_behavior() -> None:
+def test_docs_record_meeting_lifecycle_without_claiming_packet_or_minutes_behavior_historical_edition() -> None:
     docs = {
-        "README.md": (ROOT / "README.md").read_text(encoding="utf-8"),
-        "USER-MANUAL.md": (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8"),
-        "docs/index.html": (ROOT / "docs" / "index.html").read_text(encoding="utf-8"),
+        "README.md": (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8"),
+        "USER-MANUAL.md": (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.md").read_text(encoding="utf-8"),
+        "docs/index.html": (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "docs" / "index.html").read_text(encoding="utf-8"),
         "CHANGELOG.md": (ROOT / "CHANGELOG.md").read_text(encoding="utf-8"),
     }
 
@@ -575,13 +575,13 @@ def test_docs_record_meeting_lifecycle_without_claiming_packet_or_minutes_behavi
         assert "minutes drafting shipped" not in lowered, path
 
 
-def test_docs_record_generated_meeting_lifecycle_and_audit_hash_coverage() -> None:
+def test_docs_record_generated_meeting_lifecycle_and_audit_hash_coverage_historical_edition() -> None:
     docs = "\n".join(
         [
-            (ROOT / "README.md").read_text(encoding="utf-8"),
-            (ROOT / "README.txt").read_text(encoding="utf-8"),
-            (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8"),
-            (ROOT / "USER-MANUAL.txt").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.txt").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.txt").read_text(encoding="utf-8"),
             (ROOT / "CHANGELOG.md").read_text(encoding="utf-8"),
         ]
     )

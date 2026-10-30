@@ -156,13 +156,13 @@ def test_deployment_readiness_helper_loads_env_file_without_printing_secrets(tmp
     assert str(tmp_path / "intake.db") not in result.stdout
 
 
-def test_deployment_env_example_documents_required_profile_keys() -> None:
+def test_deployment_env_example_documents_required_profile_keys_historical_edition() -> None:
     example = (ROOT / "docs" / "examples" / "deployment.env.example").read_text(encoding="utf-8")
     docs = "\n".join(
         [
-            (ROOT / "README.md").read_text(encoding="utf-8"),
-            (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8"),
-            (ROOT / "docs" / "index.html").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "docs" / "index.html").read_text(encoding="utf-8"),
         ]
     )
 

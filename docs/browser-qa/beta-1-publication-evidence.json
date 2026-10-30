@@ -1,0 +1,35 @@
+{
+  "page": "docs/index.html",
+  "page_sha256": "f54256aa2ec9054a5282d314feee36292ab5a3d977bd0c572208bc187410521a",
+  "reviewed_at": "2026-10-30T18:19:35.277Z",
+  "screenshots": {
+    "desktop": "docs/screenshots/beta-1-publication-desktop.png",
+    "mobile": "docs/screenshots/beta-1-publication-mobile.png"
+  },
+  "version": "1.0.4",
+  "scope": "Current Beta 1 publication landing page only. Historical application/state evidence is retained unchanged.",
+  "checks": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "title": "Townlight Meetings | Townlight Beta 1",
+      "h1": "Keep the agenda, decisions and evidence connected.",
+      "overflow": false,
+      "skip": true,
+      "main": true,
+      "imageReady": true,
+      "console_errors": 0
+    },
+    {
+      "label": "mobile",
+      "width": 390,
+      "title": "Townlight Meetings | Townlight Beta 1",
+      "h1": "Keep the agenda, decisions and evidence connected.",
+      "overflow": false,
+      "skip": true,
+      "main": true,
+      "imageReady": true,
+      "console_errors": 0
+    }
+  ]
+}

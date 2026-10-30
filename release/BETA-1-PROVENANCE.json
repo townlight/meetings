@@ -12,7 +12,7 @@
       "path": "LICENSE",
       "sha256": "e0eedba615d5cd1b986afb6c5b3a4b1ae33713e7e9dc74d19daec5e3221f9d2e",
       "status": "same",
-      "publication_sha256": "e0eedba615d5cd1b986afb6c5b3a4b1ae33713e7e9dc74d19daec5e3221f9d2e"
+      "publication_sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0"
     },
     {
       "archive": "products/meetings/LICENSE-CODE",
@@ -20,7 +20,7 @@
       "path": "LICENSE-CODE",
       "sha256": "e0eedba615d5cd1b986afb6c5b3a4b1ae33713e7e9dc74d19daec5e3221f9d2e",
       "status": "changed",
-      "publication_sha256": "e0eedba615d5cd1b986afb6c5b3a4b1ae33713e7e9dc74d19daec5e3221f9d2e"
+      "publication_sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0"
     },
     {
       "archive": "products/meetings/LICENSE-DOCS",
@@ -28,7 +28,7 @@
       "path": "LICENSE-DOCS",
       "sha256": "d07988f4be47912f75a73b44da8a9c0b602bf6c8ced69de858b848f379ecd973",
       "status": "same",
-      "publication_sha256": "e0eedba615d5cd1b986afb6c5b3a4b1ae33713e7e9dc74d19daec5e3221f9d2e"
+      "publication_sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0"
     },
     {
       "archive": "products/meetings/README.md",
@@ -36,7 +36,7 @@
       "path": "README.md",
       "sha256": "ab71c593fa5ae3381f2e553d11e916d7a3cced3ed680b96f349f99dc041e7b3f",
       "status": "changed",
-      "publication_sha256": "7485288f6dcd5ebb3ec071293f1c51da9dd6ece7d7eae0eec8d08b25e988cada"
+      "publication_sha256": "a7f847cfbcfe5503cd48c3252aab11a3daedfb44f019544211777f4a4cfbde77"
     },
     {
       "archive": "products/meetings/civicclerk/__init__.py",
