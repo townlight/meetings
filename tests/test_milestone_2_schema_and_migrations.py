@@ -766,10 +766,10 @@ def test_civiccore_document_and_search_extraction_boundary_is_documented() -> No
     assert "extraction plan" in adr
 
 
-def test_docs_and_changelog_record_schema_milestone_without_claiming_lifecycle_behavior() -> None:
+def test_docs_and_changelog_record_schema_milestone_without_claiming_lifecycle_behavior_historical_edition() -> None:
     changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8").lower()
-    manual = (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8").lower()
-    landing = (ROOT / "docs" / "index.html").read_text(encoding="utf-8").lower()
+    manual = (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.md").read_text(encoding="utf-8").lower()
+    landing = (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "docs" / "index.html").read_text(encoding="utf-8").lower()
 
     for document_text in [changelog, manual, landing]:
         assert "canonical schema" in document_text
@@ -778,11 +778,11 @@ def test_docs_and_changelog_record_schema_milestone_without_claiming_lifecycle_b
         assert "meeting workflows are implemented" not in document_text
 
 
-def test_cc5_docs_claims_registry_maps_data_model_claims_to_tests() -> None:
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    manual = (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8")
+def test_cc5_docs_claims_registry_maps_data_model_claims_to_tests_historical_edition() -> None:
+    readme = (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8")
+    manual = (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.md").read_text(encoding="utf-8")
     changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
-    landing = (ROOT / "docs" / "index.html").read_text(encoding="utf-8")
+    landing = (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "docs" / "index.html").read_text(encoding="utf-8")
 
     assert "### CC-5 data model claims registry" in readme
     assert "civicclerk_0011_data_model" in readme

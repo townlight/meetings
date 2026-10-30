@@ -248,11 +248,11 @@ async def test_api_unknown_status_returns_actionable_422_without_state_change() 
         assert current.json()["status"] == "DRAFTED"
 
 
-def test_docs_record_agenda_lifecycle_without_claiming_full_meeting_workflows() -> None:
+def test_docs_record_agenda_lifecycle_without_claiming_full_meeting_workflows_historical_edition() -> None:
     docs = {
-        "README.md": (ROOT / "README.md").read_text(encoding="utf-8"),
-        "USER-MANUAL.md": (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8"),
-        "docs/index.html": (ROOT / "docs" / "index.html").read_text(encoding="utf-8"),
+        "README.md": (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8"),
+        "USER-MANUAL.md": (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.md").read_text(encoding="utf-8"),
+        "docs/index.html": (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "docs" / "index.html").read_text(encoding="utf-8"),
         "CHANGELOG.md": (ROOT / "CHANGELOG.md").read_text(encoding="utf-8"),
     }
 

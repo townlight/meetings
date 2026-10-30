@@ -71,7 +71,7 @@ def test_ci_runs_browser_qa_gate_before_merge() -> None:
 def test_landing_page_has_accessible_focus_and_no_console_error_script() -> None:
     landing = (ROOT / "docs" / "index.html").read_text(encoding="utf-8").lower()
 
-    assert ":focus-visible" in landing
+    assert ":focus-visible" in (ROOT / "docs/beta-1/assets/site.css").read_text(encoding="utf-8")
     assert "<main" in landing
     assert "aria-label" in landing
     assert "console.error" not in landing

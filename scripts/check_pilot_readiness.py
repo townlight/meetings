@@ -24,11 +24,7 @@ from scripts.check_installer_readiness import build_checks as build_installer_ch
 
 DEFAULT_VERSION = __version__
 DOC_WARNING_FILES = (
-    "README.md",
-    "README.txt",
-    "USER-MANUAL.md",
-    "USER-MANUAL.txt",
-    "docs/index.html",
+    "docs/ops/beta-1-developer-checks.md",
     "installer/windows/README.md",
 )
 

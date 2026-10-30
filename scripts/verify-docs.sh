@@ -81,35 +81,35 @@ if [[ -n "$hits" ]]; then
   fail=1
 fi
 
-for file in README.md README.txt docs/index.html; do
+for file in docs/ops/beta-1-developer-checks.md; do
   if ! grep -q "connector runtime validation" "$file"; then
     echo "  MISSING CURRENT CONNECTOR CLAIM: $file"
     fail=1
   fi
 done
 
-for file in README.md README.txt USER-MANUAL.md USER-MANUAL.txt docs/index.html installer/windows/README.md; do
+for file in docs/ops/beta-1-developer-checks.md installer/windows/README.md; do
   if ! grep -q "Unknown Publisher" "$file"; then
     echo "  MISSING UNSIGNED INSTALLER WARNING: $file"
     fail=1
   fi
 done
 
-for file in README.md README.txt USER-MANUAL.md USER-MANUAL.txt docs/index.html; do
+for file in docs/ops/beta-1-developer-checks.md; do
   if ! grep -q "run_mock_city_environment_suite.py" "$file"; then
     echo "  MISSING MOCK CITY SUITE DOC: $file"
     fail=1
   fi
 done
 
-for file in README.md README.txt; do
+for file in docs/ops/beta-1-developer-checks.md; do
   if ! grep -q "check_starter_set_integration.py" "$file"; then
     echo "  MISSING STARTER SET INTEGRATION CHECK DOC: $file"
     fail=1
   fi
 done
 
-for file in README.md README.txt USER-MANUAL.md USER-MANUAL.txt CHANGELOG.md; do
+for file in docs/ops/beta-1-developer-checks.md CHANGELOG.md; do
   if ! grep -q -- "--hostile-mode" "$file"; then
     echo "  MISSING MOCK CITY HOSTILE MODE DOC: $file"
     fail=1
@@ -121,4 +121,14 @@ if [[ $fail -ne 0 ]]; then
   exit 1
 fi
 
+for file in README.md README.txt USER-MANUAL.md USER-MANUAL.txt docs/index.html; do
+  if ! grep -q "Townlight Beta 1" "$file"; then
+    echo "MISSING CURRENT BETA EDITION: $file"
+    fail=1
+  fi
+done
+for file in USER-MANUAL.pdf USER-MANUAL.docx release/BETA-1-PROVENANCE.json; do
+  if [[ ! -s "$file" ]]; then echo "MISSING BETA ARTIFACT: $file"; fail=1; fi
+done
+if [[ $fail -ne 0 ]]; then exit 1; fi
 echo "VERIFY-DOCS: PASSED"

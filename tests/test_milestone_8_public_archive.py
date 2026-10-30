@@ -10,13 +10,13 @@ from civicclerk.main import app
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_cc4_workflow_claims_registry_docs_are_current() -> None:
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    readme_txt = (ROOT / "README.txt").read_text(encoding="utf-8")
-    user_manual = (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8")
-    user_manual_txt = (ROOT / "USER-MANUAL.txt").read_text(encoding="utf-8")
+def test_cc4_workflow_claims_registry_docs_are_current_historical_edition() -> None:
+    readme = (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8")
+    readme_txt = (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.txt").read_text(encoding="utf-8")
+    user_manual = (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.md").read_text(encoding="utf-8")
+    user_manual_txt = (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.txt").read_text(encoding="utf-8")
     changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
-    docs_index = (ROOT / "docs" / "index.html").read_text(encoding="utf-8")
+    docs_index = (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "docs" / "index.html").read_text(encoding="utf-8")
     normalized_manual = " ".join(user_manual.split())
     normalized_manual_txt = " ".join(user_manual_txt.split())
 
@@ -278,7 +278,7 @@ async def test_permission_aware_archive_search_for_staff_roles() -> None:
         )
 
     assert underprivileged.status_code == 503
-    assert underprivileged.json()["detail"]["message"] == "Townlight Meetings archive search staff access auth is not configured."
+    assert underprivileged.json()["detail"]["message"] == "CivicMeetings archive search staff access auth is not configured."
     assert "CIVICCLERK_AUTH_TOKEN_ROLES" in underprivileged.json()["detail"]["fix"]
     assert permitted.status_code == 503
 
@@ -360,11 +360,11 @@ async def test_publish_public_record_response_does_not_echo_closed_session_notes
     assert "closed_session_notes" not in response.text
 
 
-def test_docs_record_public_archive_scope_without_claiming_full_ui() -> None:
+def test_docs_record_public_archive_scope_without_claiming_full_ui_historical_edition() -> None:
     docs = {
-        "README.md": (ROOT / "README.md").read_text(encoding="utf-8"),
-        "USER-MANUAL.md": (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8"),
-        "docs/index.html": (ROOT / "docs" / "index.html").read_text(encoding="utf-8"),
+        "README.md": (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8"),
+        "USER-MANUAL.md": (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.md").read_text(encoding="utf-8"),
+        "docs/index.html": (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "docs" / "index.html").read_text(encoding="utf-8"),
         "CHANGELOG.md": (ROOT / "CHANGELOG.md").read_text(encoding="utf-8"),
     }
 

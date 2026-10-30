@@ -233,11 +233,11 @@ async def test_api_notice_posting_records_approved_public_notice() -> None:
     assert posted.json()["warnings"] == []
 
 
-def test_docs_record_packet_notice_scope_without_claiming_votes_or_minutes_behavior() -> None:
+def test_docs_record_packet_notice_scope_without_claiming_votes_or_minutes_behavior_historical_edition() -> None:
     docs = {
-        "README.md": (ROOT / "README.md").read_text(encoding="utf-8"),
-        "USER-MANUAL.md": (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8"),
-        "docs/index.html": (ROOT / "docs" / "index.html").read_text(encoding="utf-8"),
+        "README.md": (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8"),
+        "USER-MANUAL.md": (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.md").read_text(encoding="utf-8"),
+        "docs/index.html": (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "docs" / "index.html").read_text(encoding="utf-8"),
         "CHANGELOG.md": (ROOT / "CHANGELOG.md").read_text(encoding="utf-8"),
     }
 

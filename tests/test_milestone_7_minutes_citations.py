@@ -267,11 +267,11 @@ def test_minutes_draft_store_lists_recent_drafts() -> None:
     assert recent[0].id == second.id
 
 
-def test_docs_record_minutes_citation_scope_without_claiming_archive_or_ui_behavior() -> None:
+def test_docs_record_minutes_citation_scope_without_claiming_archive_or_ui_behavior_historical_edition() -> None:
     docs = {
-        "README.md": (ROOT / "README.md").read_text(encoding="utf-8"),
-        "USER-MANUAL.md": (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8"),
-        "docs/index.html": (ROOT / "docs" / "index.html").read_text(encoding="utf-8"),
+        "README.md": (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8"),
+        "USER-MANUAL.md": (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.md").read_text(encoding="utf-8"),
+        "docs/index.html": (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "docs" / "index.html").read_text(encoding="utf-8"),
         "CHANGELOG.md": (ROOT / "CHANGELOG.md").read_text(encoding="utf-8"),
     }
 

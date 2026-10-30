@@ -24,9 +24,9 @@ async def test_public_portal_renders_accessible_resident_shell() -> None:
     html = response.text
 
     assert "<main" in html
-    assert 'aria-label="Townlight Meetings public portal shell"' in html
+    assert 'aria-label="CivicMeetings public portal shell"' in html
     assert "Skip to public meeting records" in html
-    assert "Townlight Meetings Public Portal" in html
+    assert "CivicMeetings Public Portal" in html
     assert f"v{VERSION} API-direct public portal fallback" in html
     assert "Docker/nginx product path" in html
     assert "/public/meetings" in html
@@ -63,18 +63,18 @@ async def test_public_portal_stays_public_when_staff_mode_is_protected(monkeypat
         calendar = await client.get("/public/meetings")
 
     assert portal.status_code == 200
-    assert "Townlight Meetings Public Portal" in portal.text
+    assert "CivicMeetings Public Portal" in portal.text
     assert calendar.status_code == 200
 
 
-def test_public_portal_docs_and_browser_evidence_are_current() -> None:
+def test_public_portal_docs_and_browser_evidence_are_current_historical_edition() -> None:
     docs = "\n".join(
         [
-            (ROOT / "README.md").read_text(encoding="utf-8"),
-            (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8"),
-            (ROOT / "README.txt").read_text(encoding="utf-8"),
-            (ROOT / "USER-MANUAL.txt").read_text(encoding="utf-8"),
-            (ROOT / "docs" / "index.html").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.txt").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.txt").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "docs" / "index.html").read_text(encoding="utf-8"),
             (ROOT / "CHANGELOG.md").read_text(encoding="utf-8"),
         ]
     )

@@ -30,9 +30,9 @@ async def test_staff_ui_endpoint_renders_accessible_workflow_foundation() -> Non
     html = response.text
 
     assert "<main" in html
-    assert 'aria-label="Townlight Meetings staff workflow screens"' in html
+    assert 'aria-label="CivicMeetings staff workflow screens"' in html
     assert "Skip to workflow screens" in html
-    assert "Townlight Meetings Staff Workflow Screens" in html
+    assert "CivicMeetings Staff Workflow Screens" in html
     assert "Product cockpit" in html
     assert "Today's clerk desk" in html
     assert "This is the shift from foundation to product" in html
@@ -438,12 +438,12 @@ async def test_favicon_is_public_and_empty() -> None:
     assert response.text == ""
 
 
-def test_staff_ui_has_current_facing_docs_and_browser_qa_evidence() -> None:
+def test_staff_ui_has_current_facing_docs_and_browser_qa_evidence_historical_edition() -> None:
     docs = "\n".join(
         [
-            (ROOT / "README.md").read_text(encoding="utf-8"),
-            (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8"),
-            (ROOT / "docs" / "index.html").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "docs" / "index.html").read_text(encoding="utf-8"),
             (ROOT / "CHANGELOG.md").read_text(encoding="utf-8"),
         ]
     )

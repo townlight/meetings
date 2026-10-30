@@ -147,7 +147,7 @@ async def test_minutes_draft_api_requires_prompt_version_from_yaml_library() -> 
         rejected = await client.post(f"/meetings/{meeting_id}/minutes/drafts", json=payload)
         assert rejected.status_code == 422
         assert rejected.json()["detail"] == {
-            "message": "Minutes drafts must use a prompt version from the Townlight Meetings YAML prompt library.",
+            "message": "Minutes drafts must use a prompt version from the CivicMeetings YAML prompt library.",
             "fix": "Use prompt_version 'minutes_draft@0.1.0' or another version returned by the prompt library.",
         }
 
@@ -231,12 +231,12 @@ def test_prompt_eval_harness_uses_civiccore_resolver_not_standalone_rendering() 
     assert 'consumer_app=CONSUMER_APP' in library_text
 
 
-def test_docs_record_prompt_yaml_eval_scope_without_claiming_connectors_or_ui() -> None:
+def test_docs_record_prompt_yaml_eval_scope_without_claiming_connectors_or_ui_historical_edition() -> None:
     docs = "\n".join(
         [
-            (ROOT / "README.md").read_text(encoding="utf-8"),
-            (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8"),
-            (ROOT / "docs" / "index.html").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "docs" / "index.html").read_text(encoding="utf-8"),
             (ROOT / "CHANGELOG.md").read_text(encoding="utf-8"),
         ]
     ).lower()

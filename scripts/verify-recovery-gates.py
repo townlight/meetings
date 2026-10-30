@@ -25,6 +25,22 @@ def main() -> int:
         "USER-MANUAL.txt": _read("USER-MANUAL.txt"),
         "docs/index.html": _read("docs/index.html"),
     }
+    # Recovery-era warnings remain binding on that historical edition. The
+    # accepted signed Beta 1 has its own identity and explicitly bounded proof;
+    # requiring it to claim "not product-ready" would misdescribe that candidate.
+    for path, text in public_docs.items():
+        lowered = text.lower()
+        for phrase in ("townlight beta 1", "1.0.4", "agpl-3.0-only"):
+            if phrase not in lowered:
+                failures.append(f"{path} missing current candidate identity: {phrase}")
+        if path != "docs/index.html":
+            for phrase in (
+                "98bcdef11ebdf5c767f620c904ff49f85115fde3b5c23f62703b111e645aaf86",
+                "fresh install",
+            ):
+                if phrase not in lowered:
+                    failures.append(f"{path} missing accepted candidate boundary: {phrase}")
+
     required_truth = [
         "provisional",
         "recovery gates",
@@ -32,7 +48,8 @@ def main() -> int:
         "mock validation",
         "production deployment",
     ]
-    for path, text in public_docs.items():
+    for path in public_docs:
+        text = _read(f"docs/history/pre-townlight-beta-1/{path}")
         lowered = text.lower()
         for phrase in required_truth:
             if phrase not in lowered:

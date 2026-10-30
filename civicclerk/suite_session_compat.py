@@ -1,4 +1,4 @@
-"""Compatibility bridge for Townlight Core suite session bearer tokens."""
+"""Compatibility bridge for CivicCore suite session bearer tokens."""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ class SuiteSessionConfigError(RuntimeError):
 
 @dataclass(frozen=True)
 class SuiteSessionPrincipal:
-    """Validated Townlight Core suite session principal."""
+    """Validated CivicCore suite session principal."""
 
     subject: str
     roles: frozenset[str]
@@ -40,7 +40,7 @@ def issue_suite_session_token(
     session_id: str,
     expires_at: datetime | None = None,
 ) -> str:
-    """Issue a signed suite session token using the Townlight Core env contract."""
+    """Issue a signed suite session token using the CivicCore env contract."""
 
     signing_value = _suite_session_signing_value()
     now = datetime.now(UTC)

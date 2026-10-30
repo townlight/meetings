@@ -33,9 +33,9 @@ def test_version_surfaces_are_synchronized_to_v101() -> None:
 
     assert pyproject["project"]["version"] == "1.0.4"
     assert __version__ == "1.0.4"
-    assert "Current version: `1.0.4`" in current_docs
-    assert "Version: `1.0.4`" in current_docs
-    assert "v1.0.4" in current_docs
+    assert "civicclerk 1.0.4" in current_docs
+    assert "Townlight Beta 1" in current_docs
+    assert "AGPL-3.0-only" in current_docs
     assert "0.1.0.dev0" not in current_docs
     assert "## [1.0.4] - 2026-06-13" in changelog
     assert "## [1.0.0] - 2026-05-06" in changelog
@@ -65,15 +65,15 @@ def test_verify_release_script_exists_and_mentions_all_release_gates() -> None:
     ]:
         assert gate in text
 
-def test_release_workflow_and_docs_reference_v101_release() -> None:
+def test_release_workflow_and_docs_reference_v101_release_historical_edition() -> None:
     workflow = (ROOT / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
     docs = "\n".join(
         [
-            (ROOT / "README.md").read_text(encoding="utf-8"),
-            (ROOT / "README.txt").read_text(encoding="utf-8"),
-            (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8"),
-            (ROOT / "USER-MANUAL.txt").read_text(encoding="utf-8"),
-            (ROOT / "docs" / "index.html").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.txt").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.txt").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "docs" / "index.html").read_text(encoding="utf-8"),
             (ROOT / "CHANGELOG.md").read_text(encoding="utf-8"),
         ]
     ).lower()
@@ -95,14 +95,14 @@ def test_release_workflow_and_docs_reference_v101_release() -> None:
     assert "published `civiccore` 1.2.1 wheel from the `v1.2.1` release asset" in docs
 
 
-def test_docs_include_fresh_machine_install_and_smoke_check_contract() -> None:
+def test_docs_include_fresh_machine_install_and_smoke_check_contract_historical_edition() -> None:
     docs = "\n".join(
         [
-            (ROOT / "README.md").read_text(encoding="utf-8"),
-            (ROOT / "README.txt").read_text(encoding="utf-8"),
-            (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8"),
-            (ROOT / "USER-MANUAL.txt").read_text(encoding="utf-8"),
-            (ROOT / "docs" / "index.html").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.txt").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.txt").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "docs" / "index.html").read_text(encoding="utf-8"),
             (ROOT / "CHANGELOG.md").read_text(encoding="utf-8"),
         ]
     )

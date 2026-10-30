@@ -1,4 +1,4 @@
-"""Meeting lifecycle enforcement for Townlight Meetings.
+"""Meeting lifecycle enforcement for CivicMeetings.
 
 Milestone 4 establishes the meeting state machine and audit contract. Packet
 assembly, notice compliance, minutes drafting, and archival workflow remain
@@ -466,7 +466,7 @@ def _rejected(
 
 
 def verify_meeting_audit_entries(entries: list[dict[str, object]]) -> tuple[bool, int, str]:
-    """Verify meeting lifecycle audit entries with Townlight Core audit hashing."""
+    """Verify meeting lifecycle audit entries with CivicCore audit hashing."""
 
     persisted_entries: list[PersistedAuditLogEntry] = []
     for index, entry in enumerate(entries):

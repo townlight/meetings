@@ -149,14 +149,14 @@ def test_backup_restore_rehearsal_bash_wrapper_prints_expected_plan() -> None:
         assert expected in result.stdout
 
 
-def test_docs_reference_backup_restore_rehearsal_helper() -> None:
+def test_docs_reference_backup_restore_rehearsal_helper_historical_edition() -> None:
     docs = "\n".join(
         [
-            (ROOT / "README.md").read_text(encoding="utf-8"),
-            (ROOT / "README.txt").read_text(encoding="utf-8"),
-            (ROOT / "USER-MANUAL.md").read_text(encoding="utf-8"),
-            (ROOT / "USER-MANUAL.txt").read_text(encoding="utf-8"),
-            (ROOT / "docs" / "index.html").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.txt").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.md").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "USER-MANUAL.txt").read_text(encoding="utf-8"),
+            (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "docs" / "index.html").read_text(encoding="utf-8"),
             (ROOT / "CHANGELOG.md").read_text(encoding="utf-8"),
         ]
     )
