@@ -118,7 +118,7 @@ online() {
     run_step "verify-placeholder-imports" python scripts/check-townlight_core-placeholder-imports.py
     run_step "verify-release" bash scripts/verify-release.sh
     run_step "verify-townlight_core-freeze-provenance-fixtures" \
-        python scripts/verify-release-provenance.py --fixtures-dir /workspace/townlight_core-freeze/tests/fixtures/release_provenance
+        python scripts/verify-release-provenance.py --repo CivicSuite/civiccore --fixtures-dir /workspace/townlight_core-freeze/tests/fixtures/release_provenance
     download_townlight_core_freeze_assets
     run_step "sha256sums-townlight_core-freeze-assets" \
         bash -lc "cd '${EVIDENCE_DIR}/townlight_core-freeze-assets' && sha256sum -c SHA256SUMS.txt"
