@@ -164,9 +164,15 @@ if [[ -z "$proof_python" || ! -x "$proof_python" ]]; then
   find "$proof_venv" -maxdepth 3 -type f | sort >&2
   exit 1
 fi
-"$proof_python" -m pip install --quiet --upgrade pip
+"$proof_python" -m pip install --quiet --upgrade pip build
+core_source_args=()
+if [[ -d /workspace/townlight-core-candidate/.git ]]; then
+  core_source_args=(--core-source /workspace/townlight-core-candidate)
+fi
+"$proof_python" scripts/install-core-candidate.py "${core_source_args[@]}" --receipt "$proof_venv/core-candidate.json"
 "$proof_python" -m pip install --quiet "dist/townlight_meetings-${version}-py3-none-any.whl"
 "$proof_python" - <<'PY'
+from importlib.metadata import version
 from fastapi.testclient import TestClient
 from townlight_meetings.main import app
 
@@ -175,7 +181,7 @@ health = client.get("/health")
 assert health.status_code == 200, health.text
 payload = health.json()
 assert payload["status"] == "ok", payload
-assert payload["version"] == "1.0.4", payload
+assert payload["version"] == version("townlight-meetings"), payload
 staff = client.get("/staff")
 assert staff.status_code == 200, staff.text[:300]
 print("RUNTIME-INSTALL-PROOF: PASSED")
