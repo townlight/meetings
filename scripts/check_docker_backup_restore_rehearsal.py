@@ -38,11 +38,11 @@ class RehearsalConfig:
 
     @property
     def dump_path(self) -> Path:
-        return self.backup_root / "civicclerk-postgres.dump"
+        return self.backup_root / "townlight_meetings-postgres.dump"
 
     @property
     def manifest_path(self) -> Path:
-        return self.backup_root / "civicclerk-docker-backup-manifest.json"
+        return self.backup_root / "townlight_meetings-docker-backup-manifest.json"
 
     @property
     def verification_path(self) -> Path:
@@ -51,7 +51,7 @@ class RehearsalConfig:
     @property
     def restore_db(self) -> str:
         safe = re.sub(r"[^a-zA-Z0-9_]", "_", self.run_id).strip("_").lower() or "run"
-        return f"civicclerk_restore_{safe}"[:60]
+        return f"townlight_meetings_restore_{safe}"[:60]
 
 
 def main() -> int:
@@ -78,13 +78,13 @@ def main() -> int:
         project_directory=Path(args.project_directory),
         postgres_service=args.postgres_service,
         postgres_user=args.postgres_user
-        or os.environ.get("CIVICCLERK_POSTGRES_USER")
-        or env_values.get("CIVICCLERK_POSTGRES_USER")
-        or "civicclerk",
+        or os.environ.get("TOWNLIGHT_MEETINGS_POSTGRES_USER")
+        or env_values.get("TOWNLIGHT_MEETINGS_POSTGRES_USER")
+        or "townlight_meetings",
         postgres_db=args.postgres_db
-        or os.environ.get("CIVICCLERK_POSTGRES_DB")
-        or env_values.get("CIVICCLERK_POSTGRES_DB")
-        or "civicclerk",
+        or os.environ.get("TOWNLIGHT_MEETINGS_POSTGRES_DB")
+        or env_values.get("TOWNLIGHT_MEETINGS_POSTGRES_DB")
+        or "townlight_meetings",
         keep_restore_database=args.keep_restore_database,
     )
 
@@ -283,7 +283,7 @@ def _list_restored_application_tables(config: RehearsalConfig) -> list[str]:
 
 def _write_manifest(*, config: RehearsalConfig, restored_tables: list[str]) -> None:
     verification = {
-        "service": "civicclerk",
+        "service": "townlight_meetings",
         "checked_at": datetime.now(UTC).isoformat(),
         "restore_database": config.restore_db,
         "restored_application_tables": restored_tables,
@@ -291,7 +291,7 @@ def _write_manifest(*, config: RehearsalConfig, restored_tables: list[str]) -> N
     }
     config.verification_path.write_text(json.dumps(verification, indent=2, sort_keys=True), encoding="utf-8")
     manifest = {
-        "service": "civicclerk",
+        "service": "townlight_meetings",
         "created_at": datetime.now(UTC).isoformat(),
         "source": "docker-compose-postgres",
         "postgres_service": config.postgres_service,

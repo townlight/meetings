@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# CivicMeetings release gate.
+# Townlight Meetings release gate.
 set -euo pipefail
 
 choose_python() {
@@ -50,7 +50,7 @@ echo "==> secret scan"
 "$PYTHON" scripts/verify-secret-scan.py
 
 echo "==> placeholder imports"
-"$PYTHON" scripts/check-civiccore-placeholder-imports.py
+"$PYTHON" scripts/check-townlight_core-placeholder-imports.py
 
 echo "==> browser QA"
 "$PYTHON" scripts/verify-browser-qa.py
@@ -62,8 +62,8 @@ from __future__ import annotations
 import os
 import runpy
 
-os.environ["CIVICCORE_LLM_PROVIDER"] = "ollama"
-os.environ["CIVICCLERK_EVAL_OFFLINE"] = "1"
+os.environ["TOWNLIGHT_CORE_LLM_PROVIDER"] = "ollama"
+os.environ["TOWNLIGHT_MEETINGS_EVAL_OFFLINE"] = "1"
 os.environ["NO_NETWORK"] = "1"
 runpy.run_path("scripts/run-prompt-evals.py", run_name="__main__")
 PY
@@ -114,8 +114,8 @@ import tomllib
 dist = Path("dist")
 version = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
 artifacts = [
-    dist / f"civicclerk-{version}-py3-none-any.whl",
-    dist / f"civicclerk-{version}.tar.gz",
+    dist / f"townlight_meetings-{version}-py3-none-any.whl",
+    dist / f"townlight_meetings-{version}.tar.gz",
 ]
 missing = [str(path) for path in artifacts if not path.exists()]
 if missing:
@@ -165,10 +165,10 @@ if [[ -z "$proof_python" || ! -x "$proof_python" ]]; then
   exit 1
 fi
 "$proof_python" -m pip install --quiet --upgrade pip
-"$proof_python" -m pip install --quiet "dist/civicclerk-${version}-py3-none-any.whl"
+"$proof_python" -m pip install --quiet "dist/townlight_meetings-${version}-py3-none-any.whl"
 "$proof_python" - <<'PY'
 from fastapi.testclient import TestClient
-from civicclerk.main import app
+from townlight_meetings.main import app
 
 client = TestClient(app)
 health = client.get("/health")

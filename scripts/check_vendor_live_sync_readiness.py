@@ -1,4 +1,4 @@
-"""Check CivicMeetings vendor live-sync configuration without vendor network calls."""
+"""Check Townlight Meetings vendor live-sync configuration without vendor network calls."""
 
 from __future__ import annotations
 
@@ -10,8 +10,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from civicclerk.connectors import SUPPORTED_CONNECTORS
-from civicclerk.vendor_live_sync import (
+from townlight_meetings.connectors import SUPPORTED_CONNECTORS
+from townlight_meetings.vendor_live_sync import (
     CIRCUIT_OPEN_THRESHOLD,
     GRACE_PERIOD_CIRCUIT_OPEN_THRESHOLD,
     SUPPORTED_LIVE_SYNC_AUTH_METHODS,

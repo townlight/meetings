@@ -7,7 +7,7 @@ from random import Random
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk.main import app
+from townlight_meetings.main import app
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -43,7 +43,7 @@ def test_agenda_item_lifecycle_matrix_allows_only_canonical_edges(
     from_status: str,
     to_status: str,
 ) -> None:
-    from civicclerk.agenda_lifecycle import validate_agenda_item_transition
+    from townlight_meetings.agenda_lifecycle import validate_agenda_item_transition
 
     result = validate_agenda_item_transition(
         agenda_item_id="agenda-123",
@@ -66,7 +66,7 @@ def test_agenda_item_lifecycle_matrix_allows_only_canonical_edges(
 
 
 def test_agenda_item_lifecycle_generated_sequences_are_ordered_and_hash_chained() -> None:
-    from civicclerk.agenda_lifecycle import (
+    from townlight_meetings.agenda_lifecycle import (
         AgendaItemStore,
         verify_agenda_item_audit_entries,
     )
@@ -119,7 +119,7 @@ def test_agenda_item_lifecycle_generated_sequences_are_ordered_and_hash_chained(
 
 
 def test_agenda_item_terminal_status_refusal_has_correction_fix() -> None:
-    from civicclerk.agenda_lifecycle import validate_agenda_item_transition
+    from townlight_meetings.agenda_lifecycle import validate_agenda_item_transition
 
     result = validate_agenda_item_transition(
         agenda_item_id="agenda-terminal",
@@ -263,7 +263,7 @@ def test_docs_record_agenda_lifecycle_without_claiming_full_meeting_workflows_hi
         assert "meeting lifecycle enforcement shipped" not in lowered, path
 
 
-def test_docs_record_civiccore_verifiable_agenda_lifecycle_audit_hashes() -> None:
+def test_docs_record_townlight_core_verifiable_agenda_lifecycle_audit_hashes() -> None:
     docs = "\n".join(
         [
             (ROOT / "README.md").read_text(encoding="utf-8"),
@@ -274,5 +274,5 @@ def test_docs_record_civiccore_verifiable_agenda_lifecycle_audit_hashes() -> Non
         ]
     )
 
-    assert "CivicCore-verifiable" in docs
+    assert "Townlight Core-verifiable" in docs or "CivicCore-verifiable" in docs
     assert "persisted audit hash" in docs

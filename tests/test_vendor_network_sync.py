@@ -1,13 +1,15 @@
 from __future__ import annotations
 
+import sys
+
 import json
 import subprocess
 from datetime import UTC, datetime
 from pathlib import Path
 
-from civicclerk.vendor_network_sync import NETWORK_ENABLED_ENV_VAR, run_vendor_network_sync
-from civicclerk.vendor_live_sync import VendorSyncRunResult
-from civicclerk.vendor_sync_persistence import VendorSyncRepository
+from townlight_meetings.vendor_network_sync import NETWORK_ENABLED_ENV_VAR, run_vendor_network_sync
+from townlight_meetings.vendor_live_sync import VendorSyncRunResult
+from townlight_meetings.vendor_sync_persistence import VendorSyncRepository
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -197,7 +199,7 @@ def test_vendor_network_sync_records_actionable_failures_and_opens_circuit(tmp_p
 
 def test_vendor_network_sync_cli_print_only_is_safe() -> None:
     result = subprocess.run(
-        ["python", "scripts/run_vendor_live_sync.py", "--source-id", "example-source", "--print-only"],
+        [sys.executable, "scripts/run_vendor_live_sync.py", "--source-id", "example-source", "--print-only"],
         cwd=ROOT,
         check=False,
         capture_output=True,

@@ -5,10 +5,10 @@ from __future__ import annotations
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-import civicclerk.main as main_module
-from civicclerk.minutes import MinutesDraftRepository, MinutesDraftStore
-from civicclerk.motion_vote import MotionVoteRepository, MotionVoteStore
-from civicclerk.public_archive import (
+import townlight_meetings.main as main_module
+from townlight_meetings.minutes import MinutesDraftRepository, MinutesDraftStore
+from townlight_meetings.motion_vote import MotionVoteRepository, MotionVoteStore
+from townlight_meetings.public_archive import (
     PublicArchiveRepository,
     PublicArchiveStore,
     PublicCommentRepository,
@@ -17,9 +17,9 @@ from civicclerk.public_archive import (
 
 
 def test_getters_fall_back_to_in_memory_stores_without_env(monkeypatch) -> None:
-    monkeypatch.delenv("CIVICCLERK_MOTION_VOTE_DB_URL", raising=False)
-    monkeypatch.delenv("CIVICCLERK_MINUTES_DB_URL", raising=False)
-    monkeypatch.delenv("CIVICCLERK_PUBLIC_ARCHIVE_DB_URL", raising=False)
+    monkeypatch.delenv("TOWNLIGHT_MEETINGS_MOTION_VOTE_DB_URL", raising=False)
+    monkeypatch.delenv("TOWNLIGHT_MEETINGS_MINUTES_DB_URL", raising=False)
+    monkeypatch.delenv("TOWNLIGHT_MEETINGS_PUBLIC_ARCHIVE_DB_URL", raising=False)
 
     assert isinstance(main_module._get_motion_votes(), MotionVoteStore)
     assert isinstance(main_module._get_minutes_drafts(), MinutesDraftStore)
@@ -29,9 +29,9 @@ def test_getters_fall_back_to_in_memory_stores_without_env(monkeypatch) -> None:
 
 @pytest.mark.parametrize("blank", ["", "  "], ids=["empty", "whitespace"])
 def test_getters_treat_blank_env_as_unset(monkeypatch, blank) -> None:
-    monkeypatch.setenv("CIVICCLERK_MOTION_VOTE_DB_URL", blank)
-    monkeypatch.setenv("CIVICCLERK_MINUTES_DB_URL", blank)
-    monkeypatch.setenv("CIVICCLERK_PUBLIC_ARCHIVE_DB_URL", blank)
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_MOTION_VOTE_DB_URL", blank)
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_MINUTES_DB_URL", blank)
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_PUBLIC_ARCHIVE_DB_URL", blank)
 
     assert isinstance(main_module._get_motion_votes(), MotionVoteStore)
     assert isinstance(main_module._get_minutes_drafts(), MinutesDraftStore)
@@ -47,17 +47,17 @@ def test_legacy_getters_treat_blank_env_as_unset(monkeypatch, blank) -> None:
     have real store fallbacks a blank value used to bypass.
     """
 
-    monkeypatch.setenv("CIVICCLERK_AGENDA_ITEM_DB_URL", blank)
-    monkeypatch.setenv("CIVICCLERK_MEETING_DB_URL", blank)
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_AGENDA_ITEM_DB_URL", blank)
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_MEETING_DB_URL", blank)
 
     assert main_module._get_agenda_items() is main_module.agenda_items
     assert main_module._get_meeting_store() is main_module.meetings
 
 
 def test_getters_select_repositories_when_env_set(monkeypatch, tmp_path) -> None:
-    monkeypatch.setenv("CIVICCLERK_MOTION_VOTE_DB_URL", f"sqlite:///{tmp_path / 'mv.db'}")
-    monkeypatch.setenv("CIVICCLERK_MINUTES_DB_URL", f"sqlite:///{tmp_path / 'mn.db'}")
-    monkeypatch.setenv("CIVICCLERK_PUBLIC_ARCHIVE_DB_URL", f"sqlite:///{tmp_path / 'pa.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_MOTION_VOTE_DB_URL", f"sqlite:///{tmp_path / 'mv.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_MINUTES_DB_URL", f"sqlite:///{tmp_path / 'mn.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_PUBLIC_ARCHIVE_DB_URL", f"sqlite:///{tmp_path / 'pa.db'}")
 
     assert isinstance(main_module._get_motion_votes(), MotionVoteRepository)
     assert isinstance(main_module._get_minutes_drafts(), MinutesDraftRepository)
@@ -68,10 +68,10 @@ def test_getters_select_repositories_when_env_set(monkeypatch, tmp_path) -> None
 def test_getters_cache_one_repository_per_env_value(monkeypatch, tmp_path) -> None:
     """One repository instance per process per env value; env change resets the cache."""
     cases = [
-        ("CIVICCLERK_MOTION_VOTE_DB_URL", main_module._get_motion_votes, MotionVoteRepository, MotionVoteStore),
-        ("CIVICCLERK_MINUTES_DB_URL", main_module._get_minutes_drafts, MinutesDraftRepository, MinutesDraftStore),
-        ("CIVICCLERK_PUBLIC_ARCHIVE_DB_URL", main_module._get_public_archive, PublicArchiveRepository, PublicArchiveStore),
-        ("CIVICCLERK_PUBLIC_ARCHIVE_DB_URL", main_module._get_public_comments, PublicCommentRepository, PublicCommentStore),
+        ("TOWNLIGHT_MEETINGS_MOTION_VOTE_DB_URL", main_module._get_motion_votes, MotionVoteRepository, MotionVoteStore),
+        ("TOWNLIGHT_MEETINGS_MINUTES_DB_URL", main_module._get_minutes_drafts, MinutesDraftRepository, MinutesDraftStore),
+        ("TOWNLIGHT_MEETINGS_PUBLIC_ARCHIVE_DB_URL", main_module._get_public_archive, PublicArchiveRepository, PublicArchiveStore),
+        ("TOWNLIGHT_MEETINGS_PUBLIC_ARCHIVE_DB_URL", main_module._get_public_comments, PublicCommentRepository, PublicCommentStore),
     ]
     for index, (env_name, getter, repository_type, store_type) in enumerate(cases):
         monkeypatch.setenv(env_name, f"sqlite:///{tmp_path / f'cache_a_{index}.db'}")
@@ -89,8 +89,8 @@ def test_getters_cache_one_repository_per_env_value(monkeypatch, tmp_path) -> No
 
 
 async def test_motion_endpoints_use_db_when_env_set(monkeypatch, tmp_path) -> None:
-    monkeypatch.setenv("CIVICCLERK_MEETING_DB_URL", f"sqlite:///{tmp_path / 'meetings.db'}")
-    monkeypatch.setenv("CIVICCLERK_MOTION_VOTE_DB_URL", f"sqlite:///{tmp_path / 'mv.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_MEETING_DB_URL", f"sqlite:///{tmp_path / 'meetings.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_MOTION_VOTE_DB_URL", f"sqlite:///{tmp_path / 'mv.db'}")
     async with AsyncClient(transport=ASGITransport(app=main_module.app), base_url="http://testserver") as client:
         meeting = await client.post(
             "/meetings",
@@ -123,13 +123,13 @@ async def test_motion_endpoints_use_db_when_env_set(monkeypatch, tmp_path) -> No
 def test_demo_seed_is_idempotent_for_db_backed_workflow_stores(tmp_path) -> None:
     from datetime import UTC, datetime
 
-    from civicclerk.agenda_intake import AgendaIntakeRepository
-    from civicclerk.agenda_lifecycle import AgendaItemStore
-    from civicclerk.demo_seed import seed_demo_data
-    from civicclerk.meeting_body import MeetingBodyRepository
-    from civicclerk.meeting_lifecycle import MeetingStore
-    from civicclerk.notice_checklist import NoticeChecklistRepository
-    from civicclerk.packet_assembly import PacketAssemblyRepository
+    from townlight_meetings.agenda_intake import AgendaIntakeRepository
+    from townlight_meetings.agenda_lifecycle import AgendaItemStore
+    from townlight_meetings.demo_seed import seed_demo_data
+    from townlight_meetings.meeting_body import MeetingBodyRepository
+    from townlight_meetings.meeting_lifecycle import MeetingStore
+    from townlight_meetings.notice_checklist import NoticeChecklistRepository
+    from townlight_meetings.packet_assembly import PacketAssemblyRepository
 
     shared = f"sqlite:///{tmp_path / 'seed.db'}"
     kwargs = dict(
@@ -163,13 +163,13 @@ def test_demo_seed_split_env_does_not_duplicate_motion_or_minutes_records(tmp_pa
     the seed fresh meeting ids, so dedupe must key on demo content, not meeting id."""
     from datetime import UTC, datetime
 
-    from civicclerk.agenda_intake import AgendaIntakeRepository
-    from civicclerk.agenda_lifecycle import AgendaItemStore
-    from civicclerk.demo_seed import seed_demo_data
-    from civicclerk.meeting_body import MeetingBodyRepository
-    from civicclerk.meeting_lifecycle import MeetingStore
-    from civicclerk.notice_checklist import NoticeChecklistRepository
-    from civicclerk.packet_assembly import PacketAssemblyRepository
+    from townlight_meetings.agenda_intake import AgendaIntakeRepository
+    from townlight_meetings.agenda_lifecycle import AgendaItemStore
+    from townlight_meetings.demo_seed import seed_demo_data
+    from townlight_meetings.meeting_body import MeetingBodyRepository
+    from townlight_meetings.meeting_lifecycle import MeetingStore
+    from townlight_meetings.notice_checklist import NoticeChecklistRepository
+    from townlight_meetings.packet_assembly import PacketAssemblyRepository
 
     shared = f"sqlite:///{tmp_path / 'split-seed.db'}"
 
@@ -199,7 +199,7 @@ def test_demo_seed_split_env_does_not_duplicate_motion_or_minutes_records(tmp_pa
 
 
 def test_demo_seed_docstring_no_longer_claims_in_memory_only() -> None:
-    from civicclerk.demo_seed import seed_demo_data
+    from townlight_meetings.demo_seed import seed_demo_data
 
     doc = (seed_demo_data.__doc__ or "").lower()
     assert "in-memory, so they are seeded" not in doc

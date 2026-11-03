@@ -14,5 +14,5 @@ Checks:
 
 - Desktop viewport: 1440x1000.
 - Mobile-width viewport: 500x844.
-- User-visible copy mentions `scripts/start_backup_restore_rehearsal.ps1`, `scripts/start_backup_restore_rehearsal.sh`, `scripts/check_backup_restore_rehearsal.py`, `.backup-restore-rehearsal`, `backup/civicclerk-backup-manifest.json`, `CIVICCLERK_NOTICE_CHECKLIST_DB_URL`, and `CIVICCLERK_EXPORT_ROOT`.
+- User-visible copy mentions `scripts/start_backup_restore_rehearsal.ps1`, `scripts/start_backup_restore_rehearsal.sh`, `scripts/check_backup_restore_rehearsal.py`, `.backup-restore-rehearsal`, `backup/townlight_meetings-backup-manifest.json`, `TOWNLIGHT_MEETINGS_NOTICE_CHECKLIST_DB_URL`, and `TOWNLIGHT_MEETINGS_EXPORT_ROOT`.
 - Console/runtime risk: no page JavaScript was introduced in this docs-only change; the static HTML loaded under Chrome headless.

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import sys
+
 from hashlib import sha256
 from pathlib import Path
 import subprocess
@@ -7,7 +9,7 @@ import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "1.0.4"
+VERSION = "1.0.5"
 
 
 def _bundle_entries(version: str) -> tuple[str, ...]:
@@ -38,8 +40,8 @@ def _bundle_entries(version: str) -> tuple[str, ...]:
         "scripts/start_protected_demo_rehearsal.ps1",
         "scripts/start_protected_demo_rehearsal.sh",
         "scripts/local_trusted_header_proxy.py",
-        f"dist/civicclerk-{version}-py3-none-any.whl",
-        f"dist/civicclerk-{version}.tar.gz",
+        f"dist/townlight_meetings-{version}-py3-none-any.whl",
+        f"dist/townlight_meetings-{version}.tar.gz",
         "dist/SHA256SUMS.txt",
     )
 
@@ -47,8 +49,8 @@ def _bundle_entries(version: str) -> tuple[str, ...]:
 def _write_installer_inputs(tmp_path: Path) -> tuple[Path, Path]:
     dist_root = tmp_path / "dist"
     dist_root.mkdir()
-    wheel = dist_root / f"civicclerk-{VERSION}-py3-none-any.whl"
-    sdist = dist_root / f"civicclerk-{VERSION}.tar.gz"
+    wheel = dist_root / f"townlight_meetings-{VERSION}-py3-none-any.whl"
+    sdist = dist_root / f"townlight_meetings-{VERSION}.tar.gz"
     wheel.write_text("wheel\n", encoding="utf-8")
     sdist.write_text("sdist\n", encoding="utf-8")
     (dist_root / "SHA256SUMS.txt").write_text(
@@ -61,7 +63,7 @@ def _write_installer_inputs(tmp_path: Path) -> tuple[Path, Path]:
         + "\n",
         encoding="utf-8",
     )
-    bundle = dist_root / f"civicclerk-{VERSION}-release-handoff.zip"
+    bundle = dist_root / f"townlight_meetings-{VERSION}-release-handoff.zip"
     with zipfile.ZipFile(bundle, mode="w") as archive:
         for entry in _bundle_entries(VERSION):
             archive.writestr(entry, "test input\n")
@@ -73,7 +75,7 @@ def test_installer_readiness_passes_complete_handoff_inputs(tmp_path: Path) -> N
 
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/check_installer_readiness.py",
             "--dist-root",
             str(dist_root),
@@ -99,7 +101,7 @@ def test_installer_readiness_fails_without_handoff_bundle(tmp_path: Path) -> Non
 
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/check_installer_readiness.py",
             "--dist-root",
             str(dist_root),
@@ -120,11 +122,11 @@ def test_installer_readiness_fails_without_handoff_bundle(tmp_path: Path) -> Non
 
 def test_installer_readiness_fails_checksum_mismatch(tmp_path: Path) -> None:
     dist_root, bundle = _write_installer_inputs(tmp_path)
-    (dist_root / f"civicclerk-{VERSION}.tar.gz").write_text("tampered\n", encoding="utf-8")
+    (dist_root / f"townlight_meetings-{VERSION}.tar.gz").write_text("tampered\n", encoding="utf-8")
 
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/check_installer_readiness.py",
             "--dist-root",
             str(dist_root),
@@ -145,7 +147,7 @@ def test_installer_readiness_fails_checksum_mismatch(tmp_path: Path) -> None:
 def test_installer_readiness_print_only_documents_plan() -> None:
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/check_installer_readiness.py",
             "--print-only",
         ],

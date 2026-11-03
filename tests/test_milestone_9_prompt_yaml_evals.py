@@ -10,7 +10,7 @@ from pathlib import Path
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk.main import app
+from townlight_meetings.main import app
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -33,8 +33,8 @@ EXPECTED_PROMPTS = {
 
 
 @pytest.mark.asyncio
-async def test_all_spec_prompts_are_versioned_and_resolve_through_civiccore() -> None:
-    from civicclerk.prompt_library import (
+async def test_all_spec_prompts_are_versioned_and_resolve_through_townlight_core() -> None:
+    from townlight_meetings.prompt_library import (
         CONSUMER_APP,
         PromptLibraryError,
         list_prompt_ids,
@@ -74,7 +74,7 @@ async def test_all_spec_prompts_are_versioned_and_resolve_through_civiccore() ->
 
 
 def test_minutes_prompt_yaml_remains_renderable_and_actionable() -> None:
-    from civicclerk.prompt_library import load_prompt, render_prompt
+    from townlight_meetings.prompt_library import load_prompt, render_prompt
 
     prompt = load_prompt("minutes_draft")
 
@@ -100,14 +100,14 @@ def test_minutes_prompt_yaml_remains_renderable_and_actionable() -> None:
     assert "Every material sentence must include citations" in rendered
 
 
-def test_civiccore_prompt_resolver_import_does_not_pollute_civicclerk_metadata() -> None:
-    import civicclerk.prompt_library  # noqa: F401
-    from civicclerk import models
+def test_townlight_core_prompt_resolver_import_does_not_pollute_townlight_meetings_metadata() -> None:
+    import townlight_meetings.prompt_library  # noqa: F401
+    from townlight_meetings import models
 
     assert "prompt_templates" not in models.Base.metadata.tables
     assert "model_registry" not in models.Base.metadata.tables
     assert all(
-        table.schema in {None, "civicclerk", "public"}
+        table.schema in {None, "townlight_meetings", "public"}
         for table in models.Base.metadata.tables.values()
     )
 
@@ -147,7 +147,7 @@ async def test_minutes_draft_api_requires_prompt_version_from_yaml_library() -> 
         rejected = await client.post(f"/meetings/{meeting_id}/minutes/drafts", json=payload)
         assert rejected.status_code == 422
         assert rejected.json()["detail"] == {
-            "message": "Minutes drafts must use a prompt version from the CivicMeetings YAML prompt library.",
+            "message": "Minutes drafts must use a prompt version from the Townlight Meetings YAML prompt library.",
             "fix": "Use prompt_version 'minutes_draft@0.1.0' or another version returned by the prompt library.",
         }
 
@@ -159,8 +159,8 @@ async def test_minutes_draft_api_requires_prompt_version_from_yaml_library() -> 
 
 def test_prompt_eval_harness_runs_offline_with_ollama_provider_selected() -> None:
     env = os.environ.copy()
-    env["CIVICCORE_LLM_PROVIDER"] = "ollama"
-    env["CIVICCLERK_EVAL_OFFLINE"] = "1"
+    env["TOWNLIGHT_CORE_LLM_PROVIDER"] = "ollama"
+    env["TOWNLIGHT_MEETINGS_EVAL_OFFLINE"] = "1"
     env["NO_NETWORK"] = "1"
 
     result = subprocess.run(
@@ -183,11 +183,11 @@ def test_prompt_eval_harness_runs_offline_with_ollama_provider_selected() -> Non
 
 def test_prompt_eval_module_cli_runs_the_same_offline_gate() -> None:
     env = os.environ.copy()
-    env["CIVICCORE_LLM_PROVIDER"] = "ollama"
-    env["CIVICCLERK_EVAL_OFFLINE"] = "1"
+    env["TOWNLIGHT_CORE_LLM_PROVIDER"] = "ollama"
+    env["TOWNLIGHT_MEETINGS_EVAL_OFFLINE"] = "1"
 
     result = subprocess.run(
-        [sys.executable, "-m", "civicclerk.prompt_evals"],
+        [sys.executable, "-m", "townlight_meetings.prompt_evals"],
         cwd=ROOT,
         env=env,
         capture_output=True,
@@ -204,8 +204,8 @@ def test_ci_runs_prompt_eval_harness_before_merge() -> None:
     workflow = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
 
     assert "Run prompt eval harness" in workflow
-    assert "CIVICCORE_LLM_PROVIDER: ollama" in workflow
-    assert "CIVICCLERK_EVAL_OFFLINE: \"1\"" in workflow
+    assert "TOWNLIGHT_CORE_LLM_PROVIDER: ollama" in workflow
+    assert "TOWNLIGHT_MEETINGS_EVAL_OFFLINE: \"1\"" in workflow
     assert "python scripts/run-prompt-evals.py" in workflow
 
 
@@ -213,7 +213,7 @@ def test_policy_bearing_prompt_strings_live_only_in_yaml_not_runtime() -> None:
     yaml_text = "\n".join(path.read_text(encoding="utf-8") for path in (ROOT / "prompts").glob("*.yaml"))
     runtime_text = "\n".join(
         path.read_text(encoding="utf-8")
-        for path in (ROOT / "civicclerk").glob("*.py")
+        for path in (ROOT / "townlight_meetings").glob("*.py")
         if path.name not in {"prompt_library.py", "__init__.py"}
     )
 
@@ -222,9 +222,9 @@ def test_policy_bearing_prompt_strings_live_only_in_yaml_not_runtime() -> None:
         assert phrase not in runtime_text
 
 
-def test_prompt_eval_harness_uses_civiccore_resolver_not_standalone_rendering() -> None:
-    eval_text = (ROOT / "civicclerk" / "prompt_evals.py").read_text(encoding="utf-8")
-    library_text = (ROOT / "civicclerk" / "prompt_library.py").read_text(encoding="utf-8")
+def test_prompt_eval_harness_uses_townlight_core_resolver_not_standalone_rendering() -> None:
+    eval_text = (ROOT / "townlight_meetings" / "prompt_evals.py").read_text(encoding="utf-8")
+    library_text = (ROOT / "townlight_meetings" / "prompt_library.py").read_text(encoding="utf-8")
 
     assert "resolve_prompt_template_sync" in eval_text
     assert "resolve_template(" in library_text

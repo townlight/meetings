@@ -10,8 +10,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from civicclerk.connector_import_sync import ImportAttempt, run_import_sync
-from civicclerk.connectors import SUPPORTED_CONNECTORS
+from townlight_meetings.connector_import_sync import ImportAttempt, run_import_sync
+from townlight_meetings.connectors import SUPPORTED_CONNECTORS
 
 
 def _print_report(attempts: list[ImportAttempt], output_path: Path | None) -> int:

@@ -4,8 +4,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from civicclerk.vendor_network_sync import NETWORK_ENABLED_ENV_VAR
-from civicclerk.worker import (
+from townlight_meetings.vendor_network_sync import NETWORK_ENABLED_ENV_VAR
+from townlight_meetings.worker import (
     VENDOR_NETWORK_SYNC_DB_URL_ENV_VAR,
     VENDOR_NETWORK_SYNC_REPORT_DIR_ENV_VAR,
     VENDOR_NETWORK_SYNC_SCHEDULE_ENABLED_ENV_VAR,
@@ -69,7 +69,7 @@ def test_scheduled_vendor_network_sync_runs_configured_sources(monkeypatch, tmp_
         calls.append(kwargs)
         return FakeVendorNetworkReport(source_id=kwargs["source_id"])
 
-    monkeypatch.setattr("civicclerk.worker.run_vendor_network_sync", fake_run_vendor_network_sync)
+    monkeypatch.setattr("townlight_meetings.worker.run_vendor_network_sync", fake_run_vendor_network_sync)
     monkeypatch.setenv(VENDOR_NETWORK_SYNC_SCHEDULE_ENABLED_ENV_VAR, "true")
     monkeypatch.setenv(NETWORK_ENABLED_ENV_VAR, "true")
     monkeypatch.setenv(VENDOR_NETWORK_SYNC_SOURCE_IDS_ENV_VAR, "source-1,source/2")
@@ -86,8 +86,8 @@ def test_scheduled_vendor_network_sync_runs_configured_sources(monkeypatch, tmp_
     assert result["report_dir"] == str(tmp_path / "reports")
     assert [call["source_id"] for call in calls] == ["source-1", "source/2"]
     assert [call["auth_secret_env"] for call in calls] == [
-        "CIVICCLERK_VENDOR_SECRET_SOURCE_1",
-        "CIVICCLERK_VENDOR_SECRET_SOURCE_2",
+        "TOWNLIGHT_MEETINGS_VENDOR_SECRET_SOURCE_1",
+        "TOWNLIGHT_MEETINGS_VENDOR_SECRET_SOURCE_2",
     ]
     assert [call["output_path"] for call in calls] == [
         tmp_path / "reports" / "source-1.json",

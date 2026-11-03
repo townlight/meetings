@@ -7,12 +7,12 @@ from pathlib import Path
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy.exc import SQLAlchemyError
 
-import civicclerk.main as main_module
-from civicclerk.main import app
+import townlight_meetings.main as main_module
+from townlight_meetings.main import app
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "1.0.4"
+VERSION = "1.0.5"
 
 
 async def test_staff_ui_endpoint_renders_accessible_workflow_foundation() -> None:
@@ -30,9 +30,9 @@ async def test_staff_ui_endpoint_renders_accessible_workflow_foundation() -> Non
     html = response.text
 
     assert "<main" in html
-    assert 'aria-label="CivicMeetings staff workflow screens"' in html
+    assert 'aria-label="Townlight Meetings staff workflow screens"' in html
     assert "Skip to workflow screens" in html
-    assert "CivicMeetings Staff Workflow Screens" in html
+    assert "Townlight Meetings Staff Workflow Screens" in html
     assert "Product cockpit" in html
     assert "Today's clerk desk" in html
     assert "This is the shift from foundation to product" in html
@@ -62,9 +62,9 @@ async def test_staff_ui_endpoint_renders_accessible_workflow_foundation() -> Non
     assert "scripts/local_trusted_header_proxy.py" in html
     assert "127.0.0.1/32" in html
     assert "/staff/session" in html
-    assert "CIVICCLERK_STAFF_SSO_PRINCIPAL_HEADER" in html
-    assert "CIVICCLERK_STAFF_SSO_ROLES_HEADER" in html
-    assert "CIVICCLERK_STAFF_SSO_TRUSTED_PROXIES" in html
+    assert "TOWNLIGHT_MEETINGS_STAFF_SSO_PRINCIPAL_HEADER" in html
+    assert "TOWNLIGHT_MEETINGS_STAFF_SSO_ROLES_HEADER" in html
+    assert "TOWNLIGHT_MEETINGS_STAFF_SSO_TRUSTED_PROXIES" in html
     assert "/agenda-intake" in html
     assert "Department submission queue" in html
     assert "/meetings/{id}/packet-assemblies" in html
@@ -157,7 +157,7 @@ async def test_staff_ui_endpoint_renders_accessible_workflow_foundation() -> Non
     for api_path in [
         "/agenda-intake",
         "/agenda-intake/{id}/review",
-        "CIVICCLERK_AGENDA_INTAKE_DB_URL",
+        "TOWNLIGHT_MEETINGS_AGENDA_INTAKE_DB_URL",
         "/meetings/{id}/packet-assemblies",
         "/packet-assemblies/{id}/finalize",
         "/meetings/{id}/packet-snapshots",
@@ -182,7 +182,7 @@ async def test_staff_ui_endpoint_renders_accessible_workflow_foundation() -> Non
 
 
 async def test_staff_product_cockpit_uses_live_agenda_intake_counts(monkeypatch, tmp_path) -> None:
-    monkeypatch.setenv("CIVICCLERK_AGENDA_INTAKE_DB_URL", f"sqlite:///{tmp_path / 'staff-cockpit.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_AGENDA_INTAKE_DB_URL", f"sqlite:///{tmp_path / 'staff-cockpit.db'}")
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         ready_item = await client.post(
             "/agenda-intake",
@@ -223,19 +223,19 @@ async def test_staff_product_cockpit_uses_live_agenda_intake_counts(monkeypatch,
 
 
 async def test_staff_product_cockpit_handles_unavailable_intake_store(monkeypatch) -> None:
-    monkeypatch.setenv("CIVICCLERK_AGENDA_INTAKE_DB_URL", "sqlite:///Z:/missing/civicclerk.db")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_AGENDA_INTAKE_DB_URL", "sqlite:///Z:/missing/townlight_meetings.db")
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         response = await client.get("/staff")
 
     assert response.status_code == 200
     assert "Agenda intake queue is unavailable" in response.text
-    assert "check CIVICCLERK_AGENDA_INTAKE_DB_URL" in response.text
+    assert "check TOWNLIGHT_MEETINGS_AGENDA_INTAKE_DB_URL" in response.text
     assert "reload the staff desk" in response.text
-    assert "Check CIVICCLERK_AGENDA_INTAKE_DB_URL and database reachability" in response.text
+    assert "Check TOWNLIGHT_MEETINGS_AGENDA_INTAKE_DB_URL and database reachability" in response.text
 
 
 async def test_staff_packet_panel_uses_live_packet_assembly_rows(monkeypatch, tmp_path) -> None:
-    monkeypatch.setenv("CIVICCLERK_PACKET_ASSEMBLY_DB_URL", f"sqlite:///{tmp_path / 'staff-packets.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_PACKET_ASSEMBLY_DB_URL", f"sqlite:///{tmp_path / 'staff-packets.db'}")
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         meeting = await client.post(
             "/meetings",
@@ -269,17 +269,17 @@ async def test_staff_packet_panel_uses_live_packet_assembly_rows(monkeypatch, tm
 
 
 async def test_staff_packet_panel_handles_unavailable_packet_store(monkeypatch) -> None:
-    monkeypatch.setenv("CIVICCLERK_PACKET_ASSEMBLY_DB_URL", "sqlite:///Z:/missing/packet-assembly.db")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_PACKET_ASSEMBLY_DB_URL", "sqlite:///Z:/missing/packet-assembly.db")
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         response = await client.get("/staff")
 
     assert response.status_code == 200
     assert "Packet assembly store unavailable" in response.text
-    assert "Check CIVICCLERK_PACKET_ASSEMBLY_DB_URL and database reachability" in response.text
+    assert "Check TOWNLIGHT_MEETINGS_PACKET_ASSEMBLY_DB_URL and database reachability" in response.text
 
 
 async def test_staff_notice_panel_uses_live_notice_rows(monkeypatch, tmp_path) -> None:
-    monkeypatch.setenv("CIVICCLERK_NOTICE_CHECKLIST_DB_URL", f"sqlite:///{tmp_path / 'staff-notices.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_NOTICE_CHECKLIST_DB_URL", f"sqlite:///{tmp_path / 'staff-notices.db'}")
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         meeting = await client.post(
             "/meetings",
@@ -313,13 +313,13 @@ async def test_staff_notice_panel_uses_live_notice_rows(monkeypatch, tmp_path) -
 
 
 async def test_staff_notice_panel_handles_unavailable_notice_store(monkeypatch) -> None:
-    monkeypatch.setenv("CIVICCLERK_NOTICE_CHECKLIST_DB_URL", "sqlite:///Z:/missing/notice-checklist.db")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_NOTICE_CHECKLIST_DB_URL", "sqlite:///Z:/missing/notice-checklist.db")
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         response = await client.get("/staff")
 
     assert response.status_code == 200
     assert "Notice checklist store unavailable" in response.text
-    assert "Check CIVICCLERK_NOTICE_CHECKLIST_DB_URL and database reachability" in response.text
+    assert "Check TOWNLIGHT_MEETINGS_NOTICE_CHECKLIST_DB_URL and database reachability" in response.text
 
 
 async def test_staff_meeting_outcomes_panel_uses_live_outcome_rows() -> None:
@@ -413,7 +413,7 @@ async def test_staff_outcomes_panel_handles_unavailable_motion_store(monkeypatch
 
     assert response.status_code == 200
     assert "Meeting outcomes store unavailable" in response.text
-    assert "Check CIVICCLERK_MOTION_VOTE_DB_URL and database reachability" in response.text
+    assert "Check TOWNLIGHT_MEETINGS_MOTION_VOTE_DB_URL and database reachability" in response.text
 
 
 async def test_staff_minutes_panel_handles_unavailable_minutes_store(monkeypatch) -> None:
@@ -427,7 +427,7 @@ async def test_staff_minutes_panel_handles_unavailable_minutes_store(monkeypatch
 
     assert response.status_code == 200
     assert "Minutes drafts store unavailable" in response.text
-    assert "Check CIVICCLERK_MINUTES_DB_URL and database reachability" in response.text
+    assert "Check TOWNLIGHT_MEETINGS_MINUTES_DB_URL and database reachability" in response.text
 
 
 async def test_favicon_is_public_and_empty() -> None:
@@ -479,7 +479,7 @@ def test_local_trusted_header_proxy_helper_is_shipped() -> None:
     assert helper.exists()
     text = helper.read_text(encoding="utf-8")
     assert "Loopback-only trusted-header proxy rehearsal helper for Townlight Meetings." in text
-    assert "CIVICCLERK_LOCAL_PROXY_UPSTREAM" in text
+    assert "TOWNLIGHT_MEETINGS_LOCAL_PROXY_UPSTREAM" in text
     assert "X-Forwarded-For" not in text
 
 

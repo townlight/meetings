@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import sys
+
 import json
 from pathlib import Path
 import subprocess
@@ -10,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_connector_sync_readiness_passes_builtin_payloads_without_network() -> None:
     result = subprocess.run(
-        ["python", "scripts/check_connector_sync_readiness.py"],
+        [sys.executable, "scripts/check_connector_sync_readiness.py"],
         cwd=ROOT,
         check=False,
         capture_output=True,
@@ -33,7 +35,7 @@ def test_connector_sync_readiness_rejects_bad_payload_dir(tmp_path: Path) -> Non
 
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/check_connector_sync_readiness.py",
             "--connector",
             "granicus",
@@ -55,7 +57,7 @@ def test_connector_sync_readiness_rejects_bad_payload_dir(tmp_path: Path) -> Non
 def test_connector_sync_readiness_validates_future_source_guards() -> None:
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/check_connector_sync_readiness.py",
             "--connector",
             "legistar",
@@ -75,7 +77,7 @@ def test_connector_sync_readiness_validates_future_source_guards() -> None:
 
 def test_connector_sync_readiness_print_only_documents_no_live_sync_claim() -> None:
     result = subprocess.run(
-        ["python", "scripts/check_connector_sync_readiness.py", "--print-only"],
+        [sys.executable, "scripts/check_connector_sync_readiness.py", "--print-only"],
         cwd=ROOT,
         check=False,
         capture_output=True,

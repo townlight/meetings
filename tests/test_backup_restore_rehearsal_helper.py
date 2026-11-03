@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import sys
+
 import json
 import shutil
 import subprocess
@@ -20,7 +22,7 @@ def _wsl_bash_service_unavailable(output: str) -> bool:
 def test_backup_restore_rehearsal_verifier_creates_and_verifies_restored_stores(tmp_path: Path) -> None:
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/check_backup_restore_rehearsal.py",
             "--rehearsal-root",
             str(tmp_path),
@@ -37,9 +39,9 @@ def test_backup_restore_rehearsal_verifier_creates_and_verifies_restored_stores(
     assert result.returncode == 0, result.stdout + result.stderr
     assert "BACKUP-RESTORE-REHEARSAL: PASSED" in result.stdout
     run_root = tmp_path / "contract-run"
-    manifest_path = run_root / "backup" / "civicclerk-backup-manifest.json"
+    manifest_path = run_root / "backup" / "townlight_meetings-backup-manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    assert manifest["service"] == "civicclerk"
+    assert manifest["service"] == "townlight_meetings"
     assert len(manifest["stores"]) == 5
     assert (run_root / "restored-data" / "agenda-intake.db").exists()
     assert (run_root / "restored-exports" / "backup-restore-rehearsal-packet" / "manifest.json").exists()
@@ -48,7 +50,7 @@ def test_backup_restore_rehearsal_verifier_creates_and_verifies_restored_stores(
 def test_backup_restore_rehearsal_verifier_prints_operator_plan(tmp_path: Path) -> None:
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/check_backup_restore_rehearsal.py",
             "--rehearsal-root",
             str(tmp_path),
@@ -69,13 +71,13 @@ def test_backup_restore_rehearsal_verifier_prints_operator_plan(tmp_path: Path) 
     assert result.returncode == 0, result.stdout + result.stderr
     for expected in [
         "Townlight Meetings backup/restore rehearsal",
-        "Backup manifest: backup/civicclerk-backup-manifest.json",
-        "CIVICCLERK_AGENDA_INTAKE_DB_URL=",
-        "CIVICCLERK_AGENDA_ITEM_DB_URL=",
-        "CIVICCLERK_MEETING_DB_URL=",
-        "CIVICCLERK_PACKET_ASSEMBLY_DB_URL=",
-        "CIVICCLERK_NOTICE_CHECKLIST_DB_URL=",
-        "CIVICCLERK_EXPORT_ROOT=",
+        "Backup manifest: backup/townlight_meetings-backup-manifest.json",
+        "TOWNLIGHT_MEETINGS_AGENDA_INTAKE_DB_URL=",
+        "TOWNLIGHT_MEETINGS_AGENDA_ITEM_DB_URL=",
+        "TOWNLIGHT_MEETINGS_MEETING_DB_URL=",
+        "TOWNLIGHT_MEETINGS_PACKET_ASSEMBLY_DB_URL=",
+        "TOWNLIGHT_MEETINGS_NOTICE_CHECKLIST_DB_URL=",
+        "TOWNLIGHT_MEETINGS_EXPORT_ROOT=",
         "If a check fails:",
     ]:
         assert expected in result.stdout
@@ -111,7 +113,7 @@ def test_backup_restore_rehearsal_powershell_wrapper_prints_expected_plan() -> N
         "Townlight Meetings backup/restore rehearsal profile",
         "Run id: print-plan",
         "Python verifier: python scripts/check_backup_restore_rehearsal.py",
-        "Backup manifest: backup\\civicclerk-backup-manifest.json",
+        "Backup manifest: backup\\townlight_meetings-backup-manifest.json",
         "Restored stores: restored-data\\*.db",
         "Fix path:",
     ]:
@@ -142,7 +144,7 @@ def test_backup_restore_rehearsal_bash_wrapper_prints_expected_plan() -> None:
         "Townlight Meetings backup/restore rehearsal profile",
         "Run id: print-plan",
         "Python verifier: python scripts/check_backup_restore_rehearsal.py",
-        "Backup manifest: backup/civicclerk-backup-manifest.json",
+        "Backup manifest: backup/townlight_meetings-backup-manifest.json",
         "Restored stores: restored-data/*.db",
         "Fix path:",
     ]:
@@ -166,7 +168,7 @@ def test_docs_reference_backup_restore_rehearsal_helper_historical_edition() -> 
         "scripts/start_backup_restore_rehearsal.sh",
         "scripts/check_backup_restore_rehearsal.py",
         ".backup-restore-rehearsal",
-        "civicclerk-backup-manifest.json",
+        "civicclerk-backup-manifest.json",  # Historical receipt identity.
         "CIVICCLERK_NOTICE_CHECKLIST_DB_URL",
     ]:
         assert expected in docs

@@ -1,7 +1,7 @@
 ## Milestone 13 Staff UI Protected-Mode QA
 
 - URL checked: `http://127.0.0.1:8891/staff` returned the current staff dashboard with `Product cockpit` and `Today's clerk desk`
-- Screenshot render source: the same `civicclerk.staff_ui.render_staff_dashboard()` HTML saved as a local browser fixture for deterministic desktop/mobile capture
+- Screenshot render source: the same `townlight_meetings.staff_ui.render_staff_dashboard()` HTML saved as a local browser fixture for deterministic desktop/mobile capture
 - Auth mode checked: `open` readiness shell with trusted-header deployment guidance rendered
 - Product cockpit checked: `Product cockpit`, `Today's clerk desk`, `Items ready for clerk review`, `Live workflow actions`, `Silent dead ends`, `Go-live checks`, and the `1. Intake` / `2. Build` / `3. Publish` lane render before the workflow forms
 - Live cockpit count checked: `/staff` reads the agenda intake queue and renders `Live agenda intake queue is empty; submit a department item to start the clerk desk.` when no intake records exist

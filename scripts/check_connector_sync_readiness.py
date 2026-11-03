@@ -1,4 +1,4 @@
-"""Check CivicMeetings connector inputs for future live-sync work without networking."""
+"""Check Townlight Meetings connector inputs for future live-sync work without networking."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from civicclerk.connectors import (
+from townlight_meetings.connectors import (
     ConnectorImportError,
     SUPPORTED_CONNECTORS,
     import_meeting_payload,
@@ -140,7 +140,7 @@ def build_checks(
                 Check(
                     status="PASS",
                     name="source URL",
-                    message="source URL host passed shared CivicCore validation.",
+                    message="source URL host passed shared TownlightCore validation.",
                     fix="Keep credentials out of URLs and store them in deployment secrets.",
                 )
             )
@@ -162,7 +162,7 @@ def build_checks(
                 Check(
                     status="PASS",
                     name="ODBC connection string",
-                    message="ODBC host passed shared CivicCore validation.",
+                    message="ODBC host passed shared TownlightCore validation.",
                     fix="Keep passwords out of checked-in command lines and docs.",
                 )
             )

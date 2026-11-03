@@ -3,8 +3,8 @@ from __future__ import annotations
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk.main import app
-from civicclerk.meeting_body import MeetingBodyRepository
+from townlight_meetings.main import app
+from townlight_meetings.meeting_body import MeetingBodyRepository
 
 
 def test_meeting_body_repository_persists_crud_without_hard_delete(tmp_path) -> None:
@@ -34,7 +34,7 @@ def test_meeting_body_repository_persists_crud_without_hard_delete(tmp_path) -> 
 @pytest.mark.asyncio
 async def test_api_meeting_body_crud_uses_configured_database(monkeypatch, tmp_path) -> None:
     db_url = f"sqlite:///{tmp_path / 'api-meeting-bodies.db'}"
-    monkeypatch.setenv("CIVICCLERK_MEETING_BODY_DB_URL", db_url)
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_MEETING_BODY_DB_URL", db_url)
 
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         created = await client.post(

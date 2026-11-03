@@ -4,8 +4,8 @@ from datetime import UTC, datetime, timedelta
 
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk.main import app
-from civicclerk.notice_checklist import NoticeChecklistRepository, NoticeChecklistStatus
+from townlight_meetings.main import app
+from townlight_meetings.notice_checklist import NoticeChecklistRepository, NoticeChecklistStatus
 
 
 def test_notice_checklist_records_persist_warnings_and_audit(tmp_path) -> None:
@@ -102,7 +102,7 @@ def test_notice_checklist_repository_lists_recent_records(tmp_path) -> None:
 
 
 async def test_api_notice_checklist_create_list_and_attach_proof(monkeypatch, tmp_path) -> None:
-    monkeypatch.setenv("CIVICCLERK_NOTICE_CHECKLIST_DB_URL", f"sqlite:///{tmp_path / 'api-notice.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_NOTICE_CHECKLIST_DB_URL", f"sqlite:///{tmp_path / 'api-notice.db'}")
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         meeting = await client.post(
             "/meetings",
@@ -147,7 +147,7 @@ async def test_api_notice_checklist_create_list_and_attach_proof(monkeypatch, tm
 
 
 async def test_api_notice_posting_proof_unknown_record_is_actionable(monkeypatch, tmp_path) -> None:
-    monkeypatch.setenv("CIVICCLERK_NOTICE_CHECKLIST_DB_URL", f"sqlite:///{tmp_path / 'api-notice.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_NOTICE_CHECKLIST_DB_URL", f"sqlite:///{tmp_path / 'api-notice.db'}")
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         response = await client.post(
             "/notice-checklists/missing/posting-proof",

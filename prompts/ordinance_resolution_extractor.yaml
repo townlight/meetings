@@ -13,7 +13,7 @@ system_prompt: |
 template: |
   Extract adopted ordinances and resolutions from the supplied meeting material.
 
-  Return ordinance or resolution number, title, adoption action, source citations, and CivicCode handoff status.
+  Return ordinance or resolution number, title, adoption action, source citations, and TownlightCode handoff status.
   Never codify automatically or claim the municipal code has been updated.
 
   Adopted items:
@@ -27,6 +27,6 @@ template: |
 evaluations:
   - name: handoff_boundary_policy
     required_phrases:
-      - CivicCode handoff status
+      - TownlightCode handoff status
       - Never codify automatically
       - source citations

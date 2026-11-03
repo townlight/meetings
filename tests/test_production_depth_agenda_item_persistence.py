@@ -3,13 +3,13 @@ from __future__ import annotations
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk.agenda_lifecycle import AgendaItemRepository
-from civicclerk.main import app
+from townlight_meetings.agenda_lifecycle import AgendaItemRepository
+from townlight_meetings.main import app
 
 
 def test_native_create_actor_survives_reopening_both_repositories(tmp_path):
-    from civicclerk.meeting_lifecycle import MeetingStore, verify_meeting_audit_entries
-    from civicclerk.agenda_lifecycle import verify_agenda_item_audit_entries
+    from townlight_meetings.meeting_lifecycle import MeetingStore, verify_meeting_audit_entries
+    from townlight_meetings.agenda_lifecycle import verify_agenda_item_audit_entries
     url = f"sqlite:///{tmp_path / 'native-intake.db'}"
     actor = "synthetic-native-actor"
     meetings = MeetingStore(db_url=url)
@@ -56,7 +56,7 @@ def test_agenda_item_records_persist_status_and_audit_entries(tmp_path) -> None:
 @pytest.mark.asyncio
 async def test_api_agenda_items_use_configured_database(monkeypatch, tmp_path) -> None:
     db_url = f"sqlite:///{tmp_path / 'api-agenda-items.db'}"
-    monkeypatch.setenv("CIVICCLERK_AGENDA_ITEM_DB_URL", db_url)
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_AGENDA_ITEM_DB_URL", db_url)
 
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         created = await client.post(
@@ -85,8 +85,8 @@ async def test_api_agenda_items_use_configured_database(monkeypatch, tmp_path) -
     assert persisted.status == "SUBMITTED"
     assert persisted.audit_entries[-1]["reason"] == "transition allowed"
 def test_accepted_agenda_assignment_uses_one_parent_and_preserves_audit(tmp_path):
-    from civicclerk.meeting_lifecycle import MeetingStore
-    from civicclerk.agenda_lifecycle import AgendaItemRepository, verify_agenda_item_audit_entries
+    from townlight_meetings.meeting_lifecycle import MeetingStore
+    from townlight_meetings.agenda_lifecycle import AgendaItemRepository, verify_agenda_item_audit_entries
     url = f"sqlite:///{tmp_path / 'connected.db'}"
     meetings = MeetingStore(db_url=url)
     meeting = meetings.create(title="Synthetic council", meeting_type="regular", actor="clerk")

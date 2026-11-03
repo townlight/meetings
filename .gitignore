@@ -16,3 +16,4 @@ docs/playwright-report/
 frontend/test-results/
 
 .agent-runs/
+.qa/

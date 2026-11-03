@@ -39,7 +39,7 @@
         "mobile": false
       },
       "screenshot": "docs/screenshots/cc4-member-success-desktop.png",
-      "title": "CivicClerk Staff Workspace",
+      "title": "TownlightMeetings Staff Workspace",
       "consoleErrors": 0,
       "consoleEvents": 3,
       "exceptions": 0,
@@ -73,7 +73,7 @@
         "mobile": true
       },
       "screenshot": "docs/screenshots/cc4-member-success-mobile.png",
-      "title": "CivicClerk Staff Workspace",
+      "title": "TownlightMeetings Staff Workspace",
       "consoleErrors": 0,
       "consoleEvents": 3,
       "exceptions": 0,
@@ -104,7 +104,7 @@
         "mobile": false
       },
       "screenshot": "docs/screenshots/cc4-member-state-loading.png",
-      "title": "CivicClerk Staff Workspace",
+      "title": "TownlightMeetings Staff Workspace",
       "consoleErrors": 0,
       "consoleEvents": 3,
       "exceptions": 0,
@@ -134,7 +134,7 @@
         "mobile": false
       },
       "screenshot": "docs/screenshots/cc4-member-state-empty.png",
-      "title": "CivicClerk Staff Workspace",
+      "title": "TownlightMeetings Staff Workspace",
       "consoleErrors": 0,
       "consoleEvents": 3,
       "exceptions": 0,
@@ -164,7 +164,7 @@
         "mobile": false
       },
       "screenshot": "docs/screenshots/cc4-member-state-error.png",
-      "title": "CivicClerk Staff Workspace",
+      "title": "TownlightMeetings Staff Workspace",
       "consoleErrors": 0,
       "consoleEvents": 3,
       "exceptions": 0,
@@ -193,7 +193,7 @@
         "mobile": false
       },
       "screenshot": "docs/screenshots/cc4-member-state-partial.png",
-      "title": "CivicClerk Staff Workspace",
+      "title": "TownlightMeetings Staff Workspace",
       "consoleErrors": 0,
       "consoleEvents": 3,
       "exceptions": 0,
@@ -223,7 +223,7 @@
         "mobile": false
       },
       "screenshot": "docs/screenshots/cc4-public-success-desktop.png",
-      "title": "CivicClerk Staff Workspace",
+      "title": "TownlightMeetings Staff Workspace",
       "consoleErrors": 0,
       "consoleEvents": 3,
       "exceptions": 0,
@@ -255,7 +255,7 @@
         "mobile": true
       },
       "screenshot": "docs/screenshots/cc4-public-success-mobile.png",
-      "title": "CivicClerk Staff Workspace",
+      "title": "TownlightMeetings Staff Workspace",
       "consoleErrors": 0,
       "consoleEvents": 3,
       "exceptions": 0,
@@ -285,7 +285,7 @@
         "mobile": false
       },
       "screenshot": "docs/screenshots/cc4-public-state-loading.png",
-      "title": "CivicClerk Staff Workspace",
+      "title": "TownlightMeetings Staff Workspace",
       "consoleErrors": 0,
       "consoleEvents": 3,
       "exceptions": 0,
@@ -315,7 +315,7 @@
         "mobile": false
       },
       "screenshot": "docs/screenshots/cc4-public-state-empty.png",
-      "title": "CivicClerk Staff Workspace",
+      "title": "TownlightMeetings Staff Workspace",
       "consoleErrors": 0,
       "consoleEvents": 3,
       "exceptions": 0,
@@ -345,7 +345,7 @@
         "mobile": false
       },
       "screenshot": "docs/screenshots/cc4-public-state-error.png",
-      "title": "CivicClerk Staff Workspace",
+      "title": "TownlightMeetings Staff Workspace",
       "consoleErrors": 0,
       "consoleEvents": 3,
       "exceptions": 0,
@@ -375,7 +375,7 @@
         "mobile": false
       },
       "screenshot": "docs/screenshots/cc4-public-state-partial.png",
-      "title": "CivicClerk Staff Workspace",
+      "title": "TownlightMeetings Staff Workspace",
       "consoleErrors": 0,
       "consoleEvents": 3,
       "exceptions": 0,
@@ -405,7 +405,7 @@
         "mobile": false
       },
       "screenshot": "docs/screenshots/cc4-public-comment-closed-refusal.png",
-      "title": "CivicClerk Staff Workspace",
+      "title": "TownlightMeetings Staff Workspace",
       "consoleErrors": 0,
       "consoleEvents": 3,
       "exceptions": 0,
@@ -436,7 +436,7 @@
         "mobile": false
       },
       "screenshot": "docs/screenshots/cc4-public-closed-session-blocked.png",
-      "title": "CivicClerk Staff Workspace",
+      "title": "TownlightMeetings Staff Workspace",
       "consoleErrors": 0,
       "consoleEvents": 3,
       "exceptions": 0,
@@ -466,7 +466,7 @@
         "mobile": false
       },
       "screenshot": "docs/screenshots/cc4-agenda-routing-signoff-desktop.png",
-      "title": "CivicClerk Staff Workspace",
+      "title": "TownlightMeetings Staff Workspace",
       "consoleErrors": 0,
       "consoleEvents": 3,
       "exceptions": 0,
@@ -498,7 +498,7 @@
         "mobile": false
       },
       "screenshot": "docs/screenshots/cc4-outcomes-seconded-recusal-desktop.png",
-      "title": "CivicClerk Staff Workspace",
+      "title": "TownlightMeetings Staff Workspace",
       "consoleErrors": 0,
       "consoleEvents": 3,
       "exceptions": 0,
@@ -530,7 +530,7 @@
         "mobile": false
       },
       "screenshot": "docs/screenshots/cc4-meeting-cancel-danger-desktop.png",
-      "title": "CivicClerk Staff Workspace",
+      "title": "TownlightMeetings Staff Workspace",
       "consoleErrors": 0,
       "consoleEvents": 3,
       "exceptions": 0,

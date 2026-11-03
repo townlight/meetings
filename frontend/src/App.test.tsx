@@ -711,7 +711,7 @@ describe("Townlight Meetings staff workspace", () => {
               fix: "Keep adversarial mocks as regression coverage.",
               contracts: [
                 {
-                  id: "civicrecords-search",
+                  id: "townlight_records-search",
                   label: "Townlight Records search bridge",
                   status: "ready",
                   mode: "suite-module-live-wire",
@@ -1207,7 +1207,7 @@ describe("Townlight Meetings staff workspace", () => {
     window.history.replaceState({}, "", "/?page=sync&state=error&source=demo");
     const errorRender = render(<App />);
     expect(screen.getByRole("heading", { name: "Could not load vendor sync" })).toBeInTheDocument();
-    expect(screen.getByText(/CIVICCLERK_VENDOR_SYNC_DB_URL/)).toBeInTheDocument();
+    expect(screen.getByText(/TOWNLIGHT_MEETINGS_VENDOR_SYNC_DB_URL/)).toBeInTheDocument();
 
     errorRender.unmount();
     window.history.replaceState({}, "", "/?page=sync&state=partial&source=demo");

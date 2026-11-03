@@ -1,5 +1,5 @@
 param(
-    [string]$Version = "1.0.4",
+    [string]$Version = "1.0.5",
     [string]$OutputPath = "",
     [switch]$PrintOnly
 )
@@ -8,12 +8,12 @@ $ErrorActionPreference = "Stop"
 
 $RepoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $DistRoot = Join-Path $RepoRoot "dist"
-$WheelPath = Join-Path $DistRoot "civicclerk-$Version-py3-none-any.whl"
-$SdistPath = Join-Path $DistRoot "civicclerk-$Version.tar.gz"
+$WheelPath = Join-Path $DistRoot "townlight_meetings-$Version-py3-none-any.whl"
+$SdistPath = Join-Path $DistRoot "townlight_meetings-$Version.tar.gz"
 $ChecksumsPath = Join-Path $DistRoot "SHA256SUMS.txt"
 
 if (-not $OutputPath) {
-    $OutputPath = Join-Path $DistRoot "civicclerk-$Version-release-handoff.zip"
+    $OutputPath = Join-Path $DistRoot "townlight_meetings-$Version-release-handoff.zip"
 }
 
 $BundleFiles = @(
@@ -43,8 +43,8 @@ $BundleFiles = @(
     "scripts/start_protected_demo_rehearsal.ps1",
     "scripts/start_protected_demo_rehearsal.sh",
     "scripts/local_trusted_header_proxy.py",
-    "dist/civicclerk-$Version-py3-none-any.whl",
-    "dist/civicclerk-$Version.tar.gz",
+    "dist/townlight_meetings-$Version-py3-none-any.whl",
+    "dist/townlight_meetings-$Version.tar.gz",
     "dist/SHA256SUMS.txt"
 )
 

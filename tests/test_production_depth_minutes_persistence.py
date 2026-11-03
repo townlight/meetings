@@ -6,8 +6,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from uuid import uuid4
 
-from civicclerk import minutes as minutes_module
-from civicclerk.minutes import (
+from townlight_meetings import minutes as minutes_module
+from townlight_meetings.minutes import (
     MinutesDraftRepository,
     MinutesSentence,
     MinutesValidationError,
@@ -198,13 +198,13 @@ def test_same_timestamp_drafts_preserve_insertion_order(tmp_path, monkeypatch) -
 def test_migration_0013_adds_model_and_posted_at_and_extends_chain() -> None:
     path = (
         ROOT
-        / "civicclerk"
+        / "townlight_meetings"
         / "migrations"
         / "versions"
-        / "civicclerk_0013_minutes_model_posted.py"
+        / "townlight_meetings_0013_minutes_model_posted.py"
     )
-    assert path.exists(), "Missing migration: civicclerk_0013_minutes_model_posted.py"
+    assert path.exists(), "Missing migration: townlight_meetings_0013_minutes_model_posted.py"
     text = path.read_text(encoding="utf-8")
-    assert 'revision = "civicclerk_0013_minutes_model"' in text
-    assert 'down_revision = "civicclerk_0012_action_actor"' in text
+    assert 'revision = "townlight_meetings_0013"' in text
+    assert 'down_revision = "townlight_meetings_0012"' in text
     assert '"model"' in text and '"posted_at"' in text and '"minutes"' in text

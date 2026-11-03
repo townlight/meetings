@@ -6,8 +6,8 @@ from pathlib import Path
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk.main import app
-from civicclerk.meeting_lifecycle import MeetingScheduleUpdateError, MeetingStore
+from townlight_meetings.main import app
+from townlight_meetings.meeting_lifecycle import MeetingScheduleUpdateError, MeetingStore
 
 
 def test_meeting_store_persists_schedule_fields_and_edit_audit(tmp_path: Path) -> None:
@@ -71,12 +71,12 @@ async def test_api_creates_and_updates_scheduled_meeting_with_body_and_location(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
 ) -> None:
-    import civicclerk.main as main_module
+    import townlight_meetings.main as main_module
 
     db_url = f"sqlite+pysqlite:///{tmp_path / 'api-scheduling.db'}"
     body_db_url = f"sqlite+pysqlite:///{tmp_path / 'api-scheduling-bodies.db'}"
-    monkeypatch.setenv("CIVICCLERK_MEETING_DB_URL", db_url)
-    monkeypatch.setenv("CIVICCLERK_MEETING_BODY_DB_URL", body_db_url)
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_MEETING_DB_URL", db_url)
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_MEETING_BODY_DB_URL", body_db_url)
     main_module._meeting_store = None
     main_module._meeting_db_url = None
     main_module._meeting_body_repository = None
@@ -141,10 +141,10 @@ async def test_api_rejects_missing_or_inactive_meeting_body(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
 ) -> None:
-    import civicclerk.main as main_module
+    import townlight_meetings.main as main_module
 
-    monkeypatch.setenv("CIVICCLERK_MEETING_DB_URL", f"sqlite+pysqlite:///{tmp_path / 'body-guard-meetings.db'}")
-    monkeypatch.setenv("CIVICCLERK_MEETING_BODY_DB_URL", f"sqlite+pysqlite:///{tmp_path / 'body-guard-bodies.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_MEETING_DB_URL", f"sqlite+pysqlite:///{tmp_path / 'body-guard-meetings.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_MEETING_BODY_DB_URL", f"sqlite+pysqlite:///{tmp_path / 'body-guard-bodies.db'}")
     main_module._meeting_store = None
     main_module._meeting_db_url = None
     main_module._meeting_body_repository = None

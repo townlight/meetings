@@ -1,16 +1,16 @@
 from __future__ import annotations
 
-"""Live-boundary contract tests for CivicMeetings integration depth declarations."""
+"""Live-boundary contract tests for Townlight Meetings integration depth declarations."""
 
-from civicclerk.integration_contracts import integration_contracts, integration_readiness_payload
+from townlight_meetings.integration_contracts import integration_contracts, integration_readiness_payload
 
 
 def test_declared_integration_contracts_require_live_or_in_process_proof() -> None:
     contracts = {contract.id: contract for contract in integration_contracts()}
 
     assert set(contracts) == {
-        "civicrecords-search",
-        "civiccode-handoff",
+        "townlight_records-search",
+        "townlight_code-handoff",
         "codification-export",
         "cms-posting",
         "vendor-live-api-adapters",

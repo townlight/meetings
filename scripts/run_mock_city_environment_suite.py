@@ -1,4 +1,4 @@
-"""Run the reusable CivicSuite mock-city environment contract suite."""
+"""Run the reusable Townlight mock-city environment contract suite."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from civicclerk.mock_city_environment import (
+from townlight_meetings.mock_city_environment import (
     MOCK_CITY_NAME,
     mock_city_backup_retention_contract,
     mock_city_hostile_fixtures,

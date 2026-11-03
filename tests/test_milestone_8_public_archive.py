@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk.main import app
+from townlight_meetings.main import app
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -278,8 +278,8 @@ async def test_permission_aware_archive_search_for_staff_roles() -> None:
         )
 
     assert underprivileged.status_code == 503
-    assert underprivileged.json()["detail"]["message"] == "CivicMeetings archive search staff access auth is not configured."
-    assert "CIVICCLERK_AUTH_TOKEN_ROLES" in underprivileged.json()["detail"]["fix"]
+    assert underprivileged.json()["detail"]["message"] == "Townlight Meetings archive search staff access auth is not configured."
+    assert "TOWNLIGHT_MEETINGS_AUTH_TOKEN_ROLES" in underprivileged.json()["detail"]["fix"]
     assert permitted.status_code == 503
 
 
@@ -288,7 +288,7 @@ async def test_archive_search_requires_allowed_bearer_role_for_closed_session_vi
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setenv(
-        "CIVICCLERK_AUTH_TOKEN_ROLES",
+        "TOWNLIGHT_MEETINGS_AUTH_TOKEN_ROLES",
         '{"staff-token": ["meeting_editor"], "archive-reader-token": ["archive_reader"]}',
     )
 

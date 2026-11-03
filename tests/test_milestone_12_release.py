@@ -1,4 +1,4 @@
-"""Milestone 12+ v1.0.4 release contract."""
+"""Current release identity and preserved historical release contracts."""
 
 from __future__ import annotations
 
@@ -7,8 +7,8 @@ from pathlib import Path
 
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk import __version__
-from civicclerk.main import app
+from townlight_meetings import __version__
+from townlight_meetings.main import app
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -18,7 +18,7 @@ def _bash_service_unavailable(output: str) -> bool:
     return "Bash/Service/" in output.replace("\x00", "")
 
 
-def test_version_surfaces_are_synchronized_to_v101() -> None:
+def test_current_version_surfaces_are_synchronized() -> None:
     pyproject = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
     current_docs = "\n".join(
         [
@@ -31,9 +31,9 @@ def test_version_surfaces_are_synchronized_to_v101() -> None:
     )
     changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
 
-    assert pyproject["project"]["version"] == "1.0.4"
-    assert __version__ == "1.0.4"
-    assert "civicclerk 1.0.4" in current_docs
+    assert pyproject["project"]["version"] == "1.0.5"
+    assert __version__ == "1.0.5"
+    assert "townlight-meetings 1.0.5" in current_docs
     assert "Townlight Beta 1" in current_docs
     assert "AGPL-3.0-only" in current_docs
     assert "0.1.0.dev0" not in current_docs
@@ -46,7 +46,7 @@ async def test_health_endpoint_reports_release_version() -> None:
         response = await client.get("/health")
 
     assert response.status_code == 200
-    assert response.json()["version"] == "1.0.4"
+    assert response.json()["version"] == "1.0.5"
 
 
 def test_verify_release_script_exists_and_mentions_all_release_gates() -> None:
@@ -57,7 +57,7 @@ def test_verify_release_script_exists_and_mentions_all_release_gates() -> None:
     for gate in [
         "-m pytest",
         "bash scripts/verify-docs.sh",
-        "scripts/check-civiccore-placeholder-imports.py",
+        "scripts/check-townlight_core-placeholder-imports.py",
         "scripts/verify-browser-qa.py",
         "scripts/run-prompt-evals.py",
         "-m build",
@@ -90,7 +90,7 @@ def test_release_workflow_and_docs_reference_v101_release_historical_edition() -
     assert "contents: write" in workflow
     assert "gh release create" in workflow
     assert "dist/*" in workflow
-    assert "townlight/core/releases/download/v1.2.1/civiccore-1.2.1-py3-none-any.whl" in workflow
+    assert "python scripts/install-core-candidate.py" in workflow
     assert "townlight meetings v1.0.4" in docs
     assert "published `civiccore` 1.2.1 wheel from the `v1.2.1` release asset" in docs
 
@@ -173,10 +173,10 @@ def test_protected_demo_rehearsal_script_prints_expected_plan() -> None:
     output = result.stdout
     for expected in [
         "Protected demo rehearsal profile",
-        "CIVICCLERK_STAFF_AUTH_MODE=trusted_header",
-        "CIVICCLERK_STAFF_SSO_TRUSTED_PROXIES=127.0.0.1/32",
-        "CIVICCLERK_LOCAL_PROXY_UPSTREAM=http://127.0.0.1:8877",
-        "App command: python -m uvicorn civicclerk.main:app --host 127.0.0.1 --port 8877",
+        "TOWNLIGHT_MEETINGS_STAFF_AUTH_MODE=trusted_header",
+        "TOWNLIGHT_MEETINGS_STAFF_SSO_TRUSTED_PROXIES=127.0.0.1/32",
+        "TOWNLIGHT_MEETINGS_LOCAL_PROXY_UPSTREAM=http://127.0.0.1:8877",
+        "App command: python -m uvicorn townlight_meetings.main:app --host 127.0.0.1 --port 8877",
         "Proxy command: python scripts/local_trusted_header_proxy.py",
         "Smoke check: GET http://127.0.0.1:8877/health",
         "Readiness check: GET http://127.0.0.1:8877/staff/auth-readiness",
@@ -222,13 +222,14 @@ def test_fresh_install_rehearsal_script_prints_expected_plan() -> None:
         "Create venv: python -m venv",
         "Upgrade pip:",
         "Install wheel:",
-        "Set CIVICCLERK_STAFF_AUTH_MODE=protected",
+        "Install exact Core wheel first:",
+        "Set TOWNLIGHT_MEETINGS_STAFF_AUTH_MODE=protected",
         "App command:",
-        "python.exe -m uvicorn civicclerk.main:app --host 127.0.0.1 --port 8776",
+        "python.exe -m uvicorn townlight_meetings.main:app --host 127.0.0.1 --port 8776",
         "Smoke check: GET http://127.0.0.1:8776/health",
         "Readiness check: GET http://127.0.0.1:8776/staff/auth-readiness",
         "Browser check: open http://127.0.0.1:8776/staff",
-        "Expected health: {\"status\":\"ok\",\"service\":\"civicclerk\",\"version\":\"1.0.4\",\"civiccore\":\"1.2.1\"}",
+        "Expected health: {\"status\":\"ok\",\"service\":\"townlight_meetings\",\"version\":\"1.0.5\",\"townlight_core\":\"1.3.0.dev2\"}",
         "If the wheel is missing, build it first with: python -m build",
         "If port 8776 is already in use, stop the existing process or rerun with -AppPort set to an available port.",
         "pass -KeepServer to keep it running",
@@ -275,14 +276,15 @@ def test_fresh_install_rehearsal_bash_script_prints_expected_plan() -> None:
         "Create venv:",
         "Upgrade pip:",
         "Install wheel:",
-        "Export CIVICCLERK_STAFF_AUTH_MODE=protected",
+        "Install exact Core wheel first:",
+        "Export TOWNLIGHT_MEETINGS_STAFF_AUTH_MODE=protected",
         "App command:",
         ".fresh-install-rehearsal/.venv/",
-        " -m uvicorn civicclerk.main:app --host 127.0.0.1 --port 8776",
+        " -m uvicorn townlight_meetings.main:app --host 127.0.0.1 --port 8776",
         "Smoke check: GET http://127.0.0.1:8776/health",
         "Readiness check: GET http://127.0.0.1:8776/staff/auth-readiness",
         "Browser check: open http://127.0.0.1:8776/staff",
-        "Expected health: {\"status\":\"ok\",\"service\":\"civicclerk\",\"version\":\"1.0.4\",\"civiccore\":\"1.2.1\"}",
+        "Expected health: {\"status\":\"ok\",\"service\":\"townlight_meetings\",\"version\":\"1.0.5\",\"townlight_core\":\"1.3.0.dev2\"}",
         "If the wheel is missing, build it first with: python -m build",
         "If port 8776 is already in use, stop the existing process or rerun with --app-port set to an available port.",
         "pass --keep-server to keep it running",
@@ -321,10 +323,10 @@ def test_release_handoff_bundle_script_prints_expected_plan() -> None:
     output = result.stdout
     for expected in [
         "Townlight Meetings release handoff bundle",
-        "Version: 1.0.4",
-        "civicclerk-1.0.4-release-handoff.zip",
-        "dist/civicclerk-1.0.4-py3-none-any.whl",
-        "dist/civicclerk-1.0.4.tar.gz",
+        "Version: 1.0.5",
+        "townlight_meetings-1.0.5-release-handoff.zip",
+        "dist/townlight_meetings-1.0.5-py3-none-any.whl",
+        "dist/townlight_meetings-1.0.5.tar.gz",
         "dist/SHA256SUMS.txt",
         "scripts/check_installer_readiness.py",
         "scripts/check_enterprise_installer_signing.py",
@@ -381,10 +383,10 @@ def test_release_handoff_bundle_bash_script_prints_expected_plan() -> None:
     output = result.stdout
     for expected in [
         "Townlight Meetings release handoff bundle",
-        "Version: 1.0.4",
-        "civicclerk-1.0.4-release-handoff.zip",
-        "dist/civicclerk-1.0.4-py3-none-any.whl",
-        "dist/civicclerk-1.0.4.tar.gz",
+        "Version: 1.0.5",
+        "townlight_meetings-1.0.5-release-handoff.zip",
+        "dist/townlight_meetings-1.0.5-py3-none-any.whl",
+        "dist/townlight_meetings-1.0.5.tar.gz",
         "dist/SHA256SUMS.txt",
         "scripts/check_installer_readiness.py",
         "scripts/check_enterprise_installer_signing.py",
@@ -441,10 +443,10 @@ def test_protected_demo_rehearsal_bash_script_prints_expected_plan() -> None:
     output = result.stdout
     for expected in [
         "Protected demo rehearsal profile",
-        "Export CIVICCLERK_STAFF_AUTH_MODE=trusted_header",
-        "Export CIVICCLERK_STAFF_SSO_TRUSTED_PROXIES=127.0.0.1/32",
-        "Export CIVICCLERK_LOCAL_PROXY_UPSTREAM=http://127.0.0.1:8877",
-        "App command: python -m uvicorn civicclerk.main:app --host 127.0.0.1 --port 8877",
+        "Export TOWNLIGHT_MEETINGS_STAFF_AUTH_MODE=trusted_header",
+        "Export TOWNLIGHT_MEETINGS_STAFF_SSO_TRUSTED_PROXIES=127.0.0.1/32",
+        "Export TOWNLIGHT_MEETINGS_LOCAL_PROXY_UPSTREAM=http://127.0.0.1:8877",
+        "App command: python -m uvicorn townlight_meetings.main:app --host 127.0.0.1 --port 8877",
         "Proxy command: python scripts/local_trusted_header_proxy.py",
         "Smoke check: GET http://127.0.0.1:8877/health",
         "Readiness check: GET http://127.0.0.1:8877/staff/auth-readiness",

@@ -1,4 +1,4 @@
-"""Summarize CivicMeetings readiness using adversarial mock validation."""
+"""Summarize Townlight Meetings readiness using adversarial mock validation."""
 
 from __future__ import annotations
 
@@ -12,8 +12,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from civicclerk import __version__
-from civicclerk.mock_city_environment import (
+from townlight_meetings import __version__
+from townlight_meetings.mock_city_environment import (
     MOCK_CITY_NAME,
     run_mock_city_backup_retention_suite,
     run_mock_city_contract_suite,
@@ -56,7 +56,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--bundle",
         default="",
-        help="Release handoff zip to verify. Defaults to dist/civicclerk-<version>-release-handoff.zip.",
+        help="Release handoff zip to verify. Defaults to dist/townlight_meetings-<version>-release-handoff.zip.",
     )
     parser.add_argument("--output", help="Optional JSON report path.")
     parser.add_argument(
@@ -208,7 +208,7 @@ def _display(path: Path) -> str:
 def _payload(checks: list[Check]) -> dict[str, object]:
     developer_ready = all(check.status == "PASS" for check in checks)
     return {
-        "product": "CivicMeetings",
+        "product": "Townlight Meetings",
         "version": __version__,
         "developer_ready": developer_ready,
         "external_dependencies_pending": False,
@@ -257,7 +257,7 @@ def _print_plan(version: str, dist_root: Path, bundle_path: Path) -> None:
 def main() -> int:
     args = parse_args()
     dist_root = Path(args.dist_root)
-    bundle_path = Path(args.bundle) if args.bundle else dist_root / f"civicclerk-{args.version}-release-handoff.zip"
+    bundle_path = Path(args.bundle) if args.bundle else dist_root / f"townlight_meetings-{args.version}-release-handoff.zip"
     if args.print_only:
         _print_plan(args.version, dist_root, bundle_path)
         return 0

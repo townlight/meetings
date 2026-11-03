@@ -4,13 +4,13 @@ from pathlib import Path
 
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk.main import app
-from civicclerk.packet_notice import PacketExportError, PacketSource, PacketStore
-from civiccore import __version__ as CIVICCORE_VERSION
-from civiccore.exports import validate_bundle
+from townlight_meetings.main import app
+from townlight_meetings.packet_notice import PacketExportError, PacketSource, PacketStore
+from townlight_core import __version__ as TOWNLIGHT_CORE_VERSION
+from townlight_core.exports import validate_bundle
 
 
-def test_packet_export_bundle_uses_civiccore_v03_manifest_and_audit(tmp_path: Path) -> None:
+def test_packet_export_bundle_uses_townlight_core_v03_manifest_and_audit(tmp_path: Path) -> None:
     store = PacketStore()
     store.create_snapshot(
         meeting_id="meeting-123",
@@ -37,8 +37,8 @@ def test_packet_export_bundle_uses_civiccore_v03_manifest_and_audit(tmp_path: Pa
     )
 
     manifest = validate_bundle(result.bundle_path)
-    assert manifest.module_name == "civicclerk"
-    assert manifest.civiccore_version == CIVICCORE_VERSION
+    assert manifest.module_name == "townlight_meetings"
+    assert manifest.townlight_core_version == TOWNLIGHT_CORE_VERSION
     assert sorted(file.path for file in manifest.generated_files) == [
         "notices.json",
         "packet.json",
@@ -81,7 +81,7 @@ def test_public_packet_export_rejects_closed_session_sources(tmp_path: Path) -> 
 
 
 async def test_api_creates_valid_packet_export_bundle(tmp_path: Path, monkeypatch) -> None:
-    monkeypatch.setenv("CIVICCLERK_EXPORT_ROOT", str(tmp_path))
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_EXPORT_ROOT", str(tmp_path))
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         created = await client.post(
             "/meetings",
@@ -119,14 +119,14 @@ async def test_api_creates_valid_packet_export_bundle(tmp_path: Path, monkeypatc
 
     assert exported.status_code == 201
     payload = exported.json()
-    assert payload["civiccore_version"] == CIVICCORE_VERSION
+    assert payload["townlight_core_version"] == TOWNLIGHT_CORE_VERSION
     assert payload["generated_files"] == ["packet.json", "provenance.json", "notices.json"]
     assert Path(payload["bundle_path"]) == tmp_path / "api-export"
     validate_bundle(payload["bundle_path"])
 
 
 async def test_api_rejects_closed_session_source_in_public_export(tmp_path: Path, monkeypatch) -> None:
-    monkeypatch.setenv("CIVICCLERK_EXPORT_ROOT", str(tmp_path))
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_EXPORT_ROOT", str(tmp_path))
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         created = await client.post(
             "/meetings",
@@ -166,7 +166,7 @@ async def test_api_rejects_closed_session_source_in_public_export(tmp_path: Path
 
 
 async def test_api_rejects_absolute_or_parent_packet_export_paths(tmp_path: Path, monkeypatch) -> None:
-    monkeypatch.setenv("CIVICCLERK_EXPORT_ROOT", str(tmp_path))
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_EXPORT_ROOT", str(tmp_path))
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         created = await client.post(
             "/meetings",
@@ -213,4 +213,4 @@ async def test_api_rejects_absolute_or_parent_packet_export_paths(tmp_path: Path
     assert absolute.status_code == 422
     assert traversal.status_code == 422
     assert root.status_code == 422
-    assert "CIVICCLERK_EXPORT_ROOT" in absolute.json()["detail"]["message"]
+    assert "TOWNLIGHT_MEETINGS_EXPORT_ROOT" in absolute.json()["detail"]["message"]

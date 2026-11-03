@@ -1,4 +1,4 @@
-"""Verify CivicMeetings recovery gates that prevent release-status overclaiming."""
+"""Verify Townlight Meetings recovery gates that prevent release-status overclaiming."""
 
 from __future__ import annotations
 

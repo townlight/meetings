@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk.main import app
+from townlight_meetings.main import app
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -54,7 +54,7 @@ CONNECTOR_PAYLOADS = {
 def test_connector_imports_normalize_meeting_payloads_with_source_provenance(
     connector_name: str,
 ) -> None:
-    from civicclerk.connectors import SUPPORTED_CONNECTORS, import_meeting_payload
+    from townlight_meetings.connectors import SUPPORTED_CONNECTORS, import_meeting_payload
 
     assert connector_name in SUPPORTED_CONNECTORS
 
@@ -83,7 +83,7 @@ def test_connector_imports_normalize_meeting_payloads_with_source_provenance(
 def test_connector_imports_are_local_first_and_do_not_require_outbound_network(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    from civicclerk.connectors import import_meeting_payload
+    from townlight_meetings.connectors import import_meeting_payload
 
     def blocked_network(*_: object, **__: object) -> None:
         raise AssertionError("connector import attempted outbound network access")
@@ -99,7 +99,7 @@ def test_connector_imports_are_local_first_and_do_not_require_outbound_network(
 
 
 def test_connector_runtime_validation_helpers_are_available_for_future_live_sync() -> None:
-    from civicclerk.connectors import validate_odbc_connection_string, validate_url_host
+    from townlight_meetings.connectors import validate_odbc_connection_string, validate_url_host
 
     validate_url_host("https://records.vendor.example/api")
     validate_odbc_connection_string("Server=db.public.example.com;Database=clerk")
@@ -112,7 +112,7 @@ def test_connector_runtime_validation_helpers_are_available_for_future_live_sync
 
 
 def test_connector_import_failures_are_actionable() -> None:
-    from civicclerk.connectors import ConnectorImportError, import_meeting_payload
+    from townlight_meetings.connectors import ConnectorImportError, import_meeting_payload
 
     with pytest.raises(ConnectorImportError) as exc_info:
         import_meeting_payload(

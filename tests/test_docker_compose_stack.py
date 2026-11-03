@@ -16,29 +16,29 @@ def test_docker_compose_stack_declares_real_runtime_services() -> None:
     assert "ollama/ollama:latest" in compose
     assert "postgresql+psycopg2://" in compose
     for variable in (
-        "CIVICCLERK_STAFF_OIDC_AUTHORIZATION_URL",
-        "CIVICCLERK_STAFF_OIDC_TOKEN_URL",
-        "CIVICCLERK_STAFF_OIDC_CLIENT_ID",
-        "CIVICCLERK_STAFF_OIDC_CLIENT_SECRET",
-        "CIVICCLERK_STAFF_OIDC_REDIRECT_URI",
-        "CIVICCLERK_STAFF_OIDC_SESSION_COOKIE_SECRET",
-        "CIVICCLERK_STAFF_AUTH_TOKEN_ROLES",
-        "CIVICCLERK_STAFF_SSO_TRUSTED_PROXIES",
-        "CIVICCLERK_CONNECTOR_SYNC_ENABLED",
-        "CIVICCLERK_CONNECTOR_SYNC_PAYLOAD_DIR",
-        "CIVICCLERK_CONNECTOR_SYNC_LEDGER_PATH",
-        "CIVICCLERK_CONNECTOR_SYNC_INTERVAL_SECONDS",
-        "CIVICCLERK_VENDOR_SYNC_DB_URL",
-        "CIVICCLERK_VENDOR_NETWORK_SYNC_ENABLED",
-        "CIVICCLERK_VENDOR_NETWORK_SYNC_SCHEDULE_ENABLED",
-        "CIVICCLERK_VENDOR_NETWORK_SYNC_SOURCE_IDS",
-        "CIVICCLERK_VENDOR_NETWORK_SYNC_REPORT_DIR",
+        "TOWNLIGHT_MEETINGS_STAFF_OIDC_AUTHORIZATION_URL",
+        "TOWNLIGHT_MEETINGS_STAFF_OIDC_TOKEN_URL",
+        "TOWNLIGHT_MEETINGS_STAFF_OIDC_CLIENT_ID",
+        "TOWNLIGHT_MEETINGS_STAFF_OIDC_CLIENT_SECRET",
+        "TOWNLIGHT_MEETINGS_STAFF_OIDC_REDIRECT_URI",
+        "TOWNLIGHT_MEETINGS_STAFF_OIDC_SESSION_COOKIE_SECRET",
+        "TOWNLIGHT_MEETINGS_STAFF_AUTH_TOKEN_ROLES",
+        "TOWNLIGHT_MEETINGS_STAFF_SSO_TRUSTED_PROXIES",
+        "TOWNLIGHT_MEETINGS_CONNECTOR_SYNC_ENABLED",
+        "TOWNLIGHT_MEETINGS_CONNECTOR_SYNC_PAYLOAD_DIR",
+        "TOWNLIGHT_MEETINGS_CONNECTOR_SYNC_LEDGER_PATH",
+        "TOWNLIGHT_MEETINGS_CONNECTOR_SYNC_INTERVAL_SECONDS",
+        "TOWNLIGHT_MEETINGS_VENDOR_SYNC_DB_URL",
+        "TOWNLIGHT_MEETINGS_VENDOR_NETWORK_SYNC_ENABLED",
+        "TOWNLIGHT_MEETINGS_VENDOR_NETWORK_SYNC_SCHEDULE_ENABLED",
+        "TOWNLIGHT_MEETINGS_VENDOR_NETWORK_SYNC_SOURCE_IDS",
+        "TOWNLIGHT_MEETINGS_VENDOR_NETWORK_SYNC_REPORT_DIR",
     ):
         assert variable in compose
     assert '"psycopg2-binary>=2.9.0,<3.0.0"' in pyproject
-    assert "uvicorn\", \"civicclerk.main:app\"" in (ROOT / "Dockerfile.backend").read_text(encoding="utf-8")
-    assert "celery -A civicclerk.worker worker" in compose
-    assert "celery -A civicclerk.worker beat" in compose
+    assert "uvicorn\", \"townlight_meetings.main:app\"" in (ROOT / "Dockerfile.backend").read_text(encoding="utf-8")
+    assert "celery -A townlight_meetings.worker worker" in compose
+    assert "celery -A townlight_meetings.worker beat" in compose
     assert "wget -qO- http://127.0.0.1/" in compose
     worker_service = compose.split("  worker:", 1)[1].split("  beat:", 1)[0]
     beat_service = compose.split("  beat:", 1)[1].split("  frontend:", 1)[0]
@@ -61,13 +61,13 @@ def test_docker_compose_stack_declares_real_runtime_services() -> None:
 def test_docker_env_example_is_safe_for_local_rehearsal_only() -> None:
     example = (ROOT / "docs" / "examples" / "docker.env.example").read_text(encoding="utf-8")
 
-    assert "CIVICCLERK_POSTGRES_PASSWORD=change-this-before-shared-use" in example
-    assert "CIVICCLERK_STAFF_AUTH_MODE=protected" in example
+    assert "TOWNLIGHT_MEETINGS_POSTGRES_PASSWORD=change-this-before-shared-use" in example
+    assert "TOWNLIGHT_MEETINGS_STAFF_AUTH_MODE=protected" in example
     assert "Do not commit a real .env file" in example
 
 
 def test_celery_worker_module_has_healthcheck_task() -> None:
-    from civicclerk.worker import healthcheck
+    from townlight_meetings.worker import healthcheck
 
     assert healthcheck.run() == "ok"
 

@@ -1,15 +1,13 @@
-<a id="civicmeetings-agent-instructions"></a>
+<a id="townlight-meetings-agent-instructions"></a>
 
 # Townlight Meetings Agent Instructions
 
 ## Governing Workflow
 
-Use Agent Pipeline for all productization work. The retired `coder-ui-qa-test`
-skill is no longer authoritative for this repository.
-
-Pipeline work must preserve evidence in `.agent-runs/<run-id>/` when a run is
-active, follow the scoped manifest/scope-lock, and run the repo's own gates
-before push or merge.
+Scott's bounded completion contract governs. Legacy pipeline profiles apply
+only when explicitly invoked; they do not authorize delegation, added scope or
+repeated gates. Preserve repository-required CI, meaningful affected checks,
+actual installed acceptance and historical evidence.
 
 ## Project Purpose
 
@@ -23,13 +21,30 @@ public posting, public archives, and Townlight Core-backed integration contracts
   workers where applicable.
 - Frontend: React, Vite, TypeScript.
 - Runtime: Docker Compose, local-first deployment.
-- Shared platform dependency: Townlight Core, currently pinned to the published
-  Townlight Core v1.0.1 release wheel unless a scoped pipeline run changes it.
+- Distribution/import: `townlight-meetings` / `townlight_meetings`, version1.0.5.
+- Shared platform dependency: `townlight-core==1.3.0.dev2`. The exact source
+  commit is in `config/core-source.json`; `scripts/install-core-candidate.py`
+  builds its local wheel for clean source CI. Never invent a renamed historical
+  release asset or fall back to a moving branch/package-index name.
+
+Catalog, exemptions and scaffold are implemented Core contracts in the pinned
+candidate. Original CO-7 placeholder ADRs describe their historical freeze.
+Use the actual pinned API and owning-product authorization boundaries; a shared
+contract does not grant cross-product authority. The selected Windows native
+composition and standalone React/Docker application remain distinct deployments.
+Meetings does not add catalog, exemption or scaffold consumers in this migration;
+its existing dependency-boundary checker remains in force.
+
+The coordinated candidate supports fresh databases/profiles only and refuses
+existing unmarked city data. No in-place upgrade or old import shim is provided.
+The sole approved old active identifier is `%LOCALAPPDATA%\CivicSuite` for that
+profile path. Historical ADRs/receipts retain original names and bytes. Do not
+call this candidate installed, accepted or published on source tests alone.
 
 ## Operating Priorities
 
 - Productize Townlight Meetings as part of the Townlight starter set with Townlight Core
-  and Townlight Records AI.
+  and Townlight Records.
 - Keep Townlight Core as the shared base tech. Townlight Meetings may depend on Townlight Core;
   Townlight Core must not depend on Townlight Meetings.
 - Preserve honest public status language. Do not promote provisional or

@@ -1,6 +1,6 @@
 # Milestone 11 Browser QA Checklist
 
-Status: complete for the CivicClerk documentation and state-fixture surfaces.
+Status: complete for the Townlight Meetings documentation and state-fixture surfaces.
 
 ## Rendered States Checked
 

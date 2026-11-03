@@ -1,4 +1,4 @@
-"""Generate the published CivicMeetings OpenAPI artifact."""
+"""Generate the published Townlight Meetings OpenAPI artifact."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from civicclerk.main import app
+from townlight_meetings.main import app
 
 
 OUTPUT = ROOT / "docs" / "api" / "openapi.json"

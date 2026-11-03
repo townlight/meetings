@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk.agenda_intake import AgendaIntakeRepository, AgendaReadinessStatus
-from civicclerk.main import app
+from townlight_meetings.agenda_intake import AgendaIntakeRepository, AgendaReadinessStatus
+from townlight_meetings.main import app
 
 
 def test_agenda_intake_queue_persists_across_repository_instances(tmp_path) -> None:
@@ -86,7 +86,7 @@ def test_staff_review_rejects_unknown_intake_item(tmp_path) -> None:
 
 
 async def test_api_agenda_intake_submit_list_and_review(monkeypatch, tmp_path) -> None:
-    monkeypatch.setenv("CIVICCLERK_AGENDA_INTAKE_DB_URL", f"sqlite:///{tmp_path / 'api-intake.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_AGENDA_INTAKE_DB_URL", f"sqlite:///{tmp_path / 'api-intake.db'}")
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         submitted = await client.post(
             "/agenda-intake",
@@ -125,7 +125,7 @@ async def test_api_agenda_intake_submit_list_and_review(monkeypatch, tmp_path) -
 
 
 async def test_api_agenda_intake_review_unknown_item_is_actionable(monkeypatch, tmp_path) -> None:
-    monkeypatch.setenv("CIVICCLERK_AGENDA_INTAKE_DB_URL", f"sqlite:///{tmp_path / 'api-intake.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_AGENDA_INTAKE_DB_URL", f"sqlite:///{tmp_path / 'api-intake.db'}")
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         response = await client.post(
             "/agenda-intake/missing/review",
@@ -144,8 +144,8 @@ async def test_api_agenda_intake_promotes_ready_item_to_agenda_lifecycle(
     monkeypatch,
     tmp_path,
 ) -> None:
-    monkeypatch.setenv("CIVICCLERK_AGENDA_INTAKE_DB_URL", f"sqlite:///{tmp_path / 'api-promote-intake.db'}")
-    monkeypatch.setenv("CIVICCLERK_AGENDA_ITEM_DB_URL", f"sqlite:///{tmp_path / 'api-promote-agenda.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_AGENDA_INTAKE_DB_URL", f"sqlite:///{tmp_path / 'api-promote-intake.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_AGENDA_ITEM_DB_URL", f"sqlite:///{tmp_path / 'api-promote-agenda.db'}")
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         submitted = await client.post(
             "/agenda-intake",
@@ -202,8 +202,8 @@ async def test_api_agenda_intake_promotes_ready_item_to_agenda_lifecycle(
 
 
 async def test_api_agenda_intake_promote_requires_ready_review(monkeypatch, tmp_path) -> None:
-    monkeypatch.setenv("CIVICCLERK_AGENDA_INTAKE_DB_URL", f"sqlite:///{tmp_path / 'api-promote-blocked-intake.db'}")
-    monkeypatch.setenv("CIVICCLERK_AGENDA_ITEM_DB_URL", f"sqlite:///{tmp_path / 'api-promote-blocked-agenda.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_AGENDA_INTAKE_DB_URL", f"sqlite:///{tmp_path / 'api-promote-blocked-intake.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_AGENDA_ITEM_DB_URL", f"sqlite:///{tmp_path / 'api-promote-blocked-agenda.db'}")
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         submitted = await client.post(
             "/agenda-intake",

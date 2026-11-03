@@ -7,10 +7,10 @@ from datetime import UTC, datetime, timedelta
 
 import jwt
 import pytest
-from civiccore.security import looks_like_placeholder
+from townlight_core.security import looks_like_placeholder
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk.main import (
+from townlight_meetings.main import (
     STAFF_AUTH_OIDC_AUTHORIZATION_URL_ENV_VAR,
     STAFF_AUTH_OIDC_ALGORITHMS_ENV_VAR,
     STAFF_AUTH_OIDC_AUDIENCE_ENV_VAR,
@@ -43,7 +43,7 @@ from civicclerk.main import (
 
 
 @pytest.mark.asyncio
-@pytest.mark.uses_civicclerk_default_staff_mode
+@pytest.mark.uses_townlight_meetings_default_staff_mode
 async def test_default_staff_mode_is_protected() -> None:
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         response = await client.get("/staff/session")
@@ -67,16 +67,16 @@ async def test_open_mode_still_reports_local_rehearsal_access(monkeypatch: pytes
         "roles": ["open_access"],
         "message": "Staff workflow access is running in local open mode.",
         "fix": (
-            "Set CIVICCLERK_STAFF_AUTH_MODE=bearer and configure "
-            "CIVICCLERK_STAFF_AUTH_TOKEN_ROLES, switch to "
-            "CIVICCLERK_STAFF_AUTH_MODE=trusted_header behind a trusted reverse proxy, "
-            "or use CIVICCLERK_STAFF_AUTH_MODE=oidc with municipal OIDC settings."
+            "Set TOWNLIGHT_MEETINGS_STAFF_AUTH_MODE=bearer and configure "
+            "TOWNLIGHT_MEETINGS_STAFF_AUTH_TOKEN_ROLES, switch to "
+            "TOWNLIGHT_MEETINGS_STAFF_AUTH_MODE=trusted_header behind a trusted reverse proxy, "
+            "or use TOWNLIGHT_MEETINGS_STAFF_AUTH_MODE=oidc with municipal OIDC settings."
         ),
     }
 
 
 @pytest.mark.asyncio
-@pytest.mark.uses_civicclerk_default_staff_mode
+@pytest.mark.uses_townlight_meetings_default_staff_mode
 async def test_staff_auth_readiness_reports_protected_mode_by_default() -> None:
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         response = await client.get("/staff/auth-readiness")
@@ -90,7 +90,7 @@ async def test_staff_auth_readiness_reports_protected_mode_by_default() -> None:
 
 
 @pytest.mark.asyncio
-@pytest.mark.uses_civicclerk_default_staff_mode
+@pytest.mark.uses_townlight_meetings_default_staff_mode
 async def test_default_staff_mode_denies_anonymous_write_endpoints() -> None:
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         responses = [
@@ -264,7 +264,7 @@ async def test_oidc_mode_readiness_requires_provider_configuration(
     assert "session_probe" not in response.json()
 
 
-def test_oidc_placeholder_detection_uses_civiccore_security_helper() -> None:
+def test_oidc_placeholder_detection_uses_townlight_core_security_helper() -> None:
     assert looks_like_placeholder("<tenant-id>") is True
     assert looks_like_placeholder("replace-with-real-issuer") is True
     assert looks_like_placeholder("https://login.example.gov/brookfield/v2.0") is False
@@ -382,7 +382,7 @@ async def test_oidc_login_redirect_sets_state_cookie(monkeypatch: pytest.MonkeyP
     assert response.headers["location"].startswith("https://login.example.gov/authorize?")
     parsed = urllib.parse.urlparse(response.headers["location"])
     query = urllib.parse.parse_qs(parsed.query)
-    assert query["client_id"] == ["civicclerk-client"]
+    assert query["client_id"] == ["townlight_meetings-client"]
     assert query["redirect_uri"] == ["https://clerk.example.gov/staff/oidc/callback"]
     assert query["response_type"] == ["code"]
     assert query["scope"] == ["openid profile email"]
@@ -399,7 +399,7 @@ async def test_oidc_callback_sets_browser_session_cookie(
 ) -> None:
     token = _configure_oidc_browser(monkeypatch, roles=["clerk_admin", "meeting_editor"])
 
-    from civicclerk import main as main_module
+    from townlight_meetings import main as main_module
 
     observed: dict[str, str] = {}
 
@@ -447,9 +447,9 @@ async def test_oidc_callback_prefers_access_token_when_id_token_has_client_audie
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     access_token = _configure_oidc_browser(monkeypatch, roles=["clerk_admin"])
-    id_token = _make_oidc_token(roles=["clerk_admin"], audience="civicclerk-client")
+    id_token = _make_oidc_token(roles=["clerk_admin"], audience="townlight_meetings-client")
 
-    from civicclerk import main as main_module
+    from townlight_meetings import main as main_module
 
     monkeypatch.setattr(
         main_module,
@@ -709,7 +709,7 @@ async def test_trusted_header_mode_readiness_requires_proxy_allowlist(
     assert "docs/examples/trusted-header-nginx.conf" in response.json()["fix"]
     assert response.json()["reverse_proxy_reference"]["path"] == "docs/examples/trusted-header-nginx.conf"
     assert response.json()["local_proxy_rehearsal"]["script_path"] == "scripts/local_trusted_header_proxy.py"
-    assert response.json()["local_proxy_rehearsal"]["proxy_env"]["CIVICCLERK_LOCAL_PROXY_UPSTREAM"] == "http://127.0.0.1:8000"
+    assert response.json()["local_proxy_rehearsal"]["proxy_env"]["TOWNLIGHT_MEETINGS_LOCAL_PROXY_UPSTREAM"] == "http://127.0.0.1:8000"
     assert "localhost rehearsal only" in response.json()["local_proxy_rehearsal"]["warnings"][0]
     assert "session_probe" not in response.json()
     assert "write_probe" not in response.json()
@@ -790,7 +790,7 @@ async def test_invalid_staff_auth_mode_returns_actionable_503(monkeypatch: pytes
         )
 
     assert response.status_code == 503
-    assert response.json()["detail"]["message"] == "CivicMeetings staff auth mode is invalid."
+    assert response.json()["detail"]["message"] == "Townlight Meetings staff auth mode is invalid."
     assert STAFF_AUTH_MODE_ENV_VAR in response.json()["detail"]["fix"]
 
 
@@ -816,7 +816,7 @@ def _clear_oidc_env(monkeypatch: pytest.MonkeyPatch) -> None:
 def _configure_oidc(monkeypatch: pytest.MonkeyPatch, *, roles: list[str]) -> str:
     secret = "brookfield-oidc-test-secret-with-32-bytes"
     issuer = "https://login.example.gov/brookfield/v2.0"
-    audience = "api://civicclerk"
+    audience = "api://townlight_meetings"
     key_id = "brookfield-key-1"
     monkeypatch.setenv(STAFF_AUTH_MODE_ENV_VAR, STAFF_OIDC_MODE)
     monkeypatch.setenv(STAFF_AUTH_OIDC_PROVIDER_ENV_VAR, "Brookfield Entra ID")
@@ -867,7 +867,7 @@ def _configure_oidc_browser(monkeypatch: pytest.MonkeyPatch, *, roles: list[str]
     token = _configure_oidc(monkeypatch, roles=roles)
     monkeypatch.setenv(STAFF_AUTH_OIDC_AUTHORIZATION_URL_ENV_VAR, "https://login.example.gov/authorize")
     monkeypatch.setenv(STAFF_AUTH_OIDC_TOKEN_URL_ENV_VAR, "https://login.example.gov/token")
-    monkeypatch.setenv(STAFF_AUTH_OIDC_CLIENT_ID_ENV_VAR, "civicclerk-client")
+    monkeypatch.setenv(STAFF_AUTH_OIDC_CLIENT_ID_ENV_VAR, "townlight_meetings-client")
     monkeypatch.setenv(STAFF_AUTH_OIDC_CLIENT_SECRET_ENV_VAR, "browser-client-secret")
     monkeypatch.setenv(
         STAFF_AUTH_OIDC_REDIRECT_URI_ENV_VAR,

@@ -6,7 +6,7 @@
       "name": "success-desktop",
       "url": "http://127.0.0.1:5193/?page=sync&state=success&source=demo",
       "viewport": "1440x1100",
-      "screenshot": "C:\\Users\\scott\\OneDrive\\Desktop\\Claude\\civicclerk\\docs\\screenshots\\react-vendor-sync-success-desktop.png",
+      "screenshot": "C:\\Users\\scott\\OneDrive\\Desktop\\Claude\\townlight_meetings\\docs\\screenshots\\react-vendor-sync-success-desktop.png",
       "focusedAfterTab": "button D Dashboard",
       "expectedText": [
         "See connector health before it affects clerk work.",
@@ -20,7 +20,7 @@
       "name": "empty-desktop",
       "url": "http://127.0.0.1:5193/?page=sync&state=empty&source=demo",
       "viewport": "1440x900",
-      "screenshot": "C:\\Users\\scott\\OneDrive\\Desktop\\Claude\\civicclerk\\docs\\screenshots\\react-vendor-sync-empty-desktop.png",
+      "screenshot": "C:\\Users\\scott\\OneDrive\\Desktop\\Claude\\townlight_meetings\\docs\\screenshots\\react-vendor-sync-empty-desktop.png",
       "focusedAfterTab": "button D Dashboard",
       "expectedText": [
         "No vendor sync data yet",
@@ -32,11 +32,11 @@
       "name": "error-desktop",
       "url": "http://127.0.0.1:5193/?page=sync&state=error&source=demo",
       "viewport": "1440x900",
-      "screenshot": "C:\\Users\\scott\\OneDrive\\Desktop\\Claude\\civicclerk\\docs\\screenshots\\react-vendor-sync-error-desktop.png",
+      "screenshot": "C:\\Users\\scott\\OneDrive\\Desktop\\Claude\\townlight_meetings\\docs\\screenshots\\react-vendor-sync-error-desktop.png",
       "focusedAfterTab": "button D Dashboard",
       "expectedText": [
         "Could not load vendor sync",
-        "CIVICCLERK_VENDOR_SYNC_DB_URL"
+        "TOWNLIGHT_MEETINGS_VENDOR_SYNC_DB_URL"
       ],
       "consoleErrors": []
     },
@@ -44,7 +44,7 @@
       "name": "partial-desktop",
       "url": "http://127.0.0.1:5193/?page=sync&state=partial&source=demo",
       "viewport": "1440x900",
-      "screenshot": "C:\\Users\\scott\\OneDrive\\Desktop\\Claude\\civicclerk\\docs\\screenshots\\react-vendor-sync-partial-desktop.png",
+      "screenshot": "C:\\Users\\scott\\OneDrive\\Desktop\\Claude\\townlight_meetings\\docs\\screenshots\\react-vendor-sync-partial-desktop.png",
       "focusedAfterTab": "button D Dashboard",
       "expectedText": [
         "vendor sync is partially available",
@@ -56,7 +56,7 @@
       "name": "success-mobile",
       "url": "http://127.0.0.1:5193/?page=sync&state=success&source=demo",
       "viewport": "390x1200",
-      "screenshot": "C:\\Users\\scott\\OneDrive\\Desktop\\Claude\\civicclerk\\docs\\screenshots\\react-vendor-sync-success-mobile.png",
+      "screenshot": "C:\\Users\\scott\\OneDrive\\Desktop\\Claude\\townlight_meetings\\docs\\screenshots\\react-vendor-sync-success-mobile.png",
       "focusedAfterTab": "button D Dashboard",
       "expectedText": [
         "See connector health before it affects clerk work.",

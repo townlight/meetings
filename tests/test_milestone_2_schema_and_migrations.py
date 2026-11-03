@@ -12,6 +12,7 @@ import pytest
 from alembic import command
 from alembic.config import Config
 from sqlalchemy import ForeignKeyConstraint, create_engine, text
+from sqlalchemy.engine import make_url
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -177,7 +178,7 @@ REQUIRED_COLUMNS = {
         "ordinance_number",
         "title",
         "adopted_at",
-        "civiccode_handoff_status",
+        "townlight_code_handoff_status",
         "document_ref",
         "created_at",
         "updated_at",
@@ -231,95 +232,95 @@ CC5_EVOLVED_COLUMNS = {
 }
 
 PLACEHOLDER_TARGET_PREFIXES = {
-    "civiccore.auth",
-    "civiccore.rbac",
-    "civiccore.ingestion",
-    "civiccore.notifications",
-    "civiccore.exemptions",
-    "civiccore.onboarding",
-    "civiccore.catalog",
+    "townlight_core.auth",
+    "townlight_core.rbac",
+    "townlight_core.ingestion",
+    "townlight_core.notifications",
+    "townlight_core.exemptions",
+    "townlight_core.onboarding",
+    "townlight_core.catalog",
 }
 
 
 def model_module():
     try:
-        return importlib.import_module("civicclerk.models")
+        return importlib.import_module("townlight_meetings.models")
     except ModuleNotFoundError as exc:
-        pytest.fail(f"civicclerk.models must exist for Milestone 2 schema work: {exc}")
+        pytest.fail(f"townlight_meetings.models must exist for Milestone 2 schema work: {exc}")
 
 
 def migration_path() -> Path:
-    return ROOT / "civicclerk" / "migrations" / "versions" / "civicclerk_0001_schema.py"
+    return ROOT / "townlight_meetings" / "migrations" / "versions" / "townlight_meetings_0001_schema.py"
 
 
 def agenda_intake_migration_path() -> Path:
-    return ROOT / "civicclerk" / "migrations" / "versions" / "civicclerk_0002_agenda_intake_queue.py"
+    return ROOT / "townlight_meetings" / "migrations" / "versions" / "townlight_meetings_0002_agenda_intake_queue.py"
 
 
 def packet_assembly_migration_path() -> Path:
-    return ROOT / "civicclerk" / "migrations" / "versions" / "civicclerk_0003_packet_assembly_records.py"
+    return ROOT / "townlight_meetings" / "migrations" / "versions" / "townlight_meetings_0003_packet_assembly_records.py"
 
 
 def notice_checklist_migration_path() -> Path:
-    return ROOT / "civicclerk" / "migrations" / "versions" / "civicclerk_0004_notice_checklist_records.py"
+    return ROOT / "townlight_meetings" / "migrations" / "versions" / "townlight_meetings_0004_notice_checklist_records.py"
 
 
 def meeting_records_migration_path() -> Path:
-    return ROOT / "civicclerk" / "migrations" / "versions" / "civicclerk_0005_meeting_records.py"
+    return ROOT / "townlight_meetings" / "migrations" / "versions" / "townlight_meetings_0005_meeting_records.py"
 
 
 def agenda_item_lifecycle_records_migration_path() -> Path:
     return (
         ROOT
-        / "civicclerk"
+        / "townlight_meetings"
         / "migrations"
         / "versions"
-        / "civicclerk_0006_agenda_item_lifecycle_records.py"
+        / "townlight_meetings_0006_agenda_item_lifecycle_records.py"
     )
 
 
 def vendor_sync_persistence_migration_path() -> Path:
     return (
         ROOT
-        / "civicclerk"
+        / "townlight_meetings"
         / "migrations"
         / "versions"
-        / "civicclerk_0009_vendor_sync_persistence.py"
+        / "townlight_meetings_0009_vendor_sync_persistence.py"
     )
 
 
 def data_model_completion_migration_path() -> Path:
     return (
         ROOT
-        / "civicclerk"
+        / "townlight_meetings"
         / "migrations"
         / "versions"
-        / "civicclerk_0011_data_model_completion.py"
+        / "townlight_meetings_0011_data_model_completion.py"
     )
 
 
 def test_canonical_table_models_exist_and_no_tables_are_missing_or_extra() -> None:
     models = model_module()
     metadata = models.Base.metadata
-    civicclerk_tables = {
-        table.fullname for table in metadata.tables.values() if table.schema == "civicclerk"
+    townlight_meetings_tables = {
+        table.fullname for table in metadata.tables.values() if table.schema == "townlight_meetings"
     }
 
-    assert sorted(civicclerk_tables) == sorted(f"civicclerk.{name}" for name in CANONICAL_TABLES)
+    assert sorted(townlight_meetings_tables) == sorted(f"townlight_meetings.{name}" for name in CANONICAL_TABLES)
 
 
-def test_models_use_civicclerk_schema_and_civiccore_shared_base() -> None:
+def test_models_use_townlight_meetings_schema_and_townlight_core_shared_base() -> None:
     models = model_module()
-    civiccore_db = importlib.import_module("civiccore.db")
+    townlight_core_db = importlib.import_module("townlight_core.db")
 
-    assert models.Base is civiccore_db.Base
+    assert models.Base is townlight_core_db.Base
     for table_name in CANONICAL_TABLES:
-        table = models.Base.metadata.tables[f"civicclerk.{table_name}"]
-        assert table.schema == "civicclerk"
+        table = models.Base.metadata.tables[f"townlight_meetings.{table_name}"]
+        assert table.schema == "townlight_meetings"
 
 
 def test_models_do_not_declare_a_competing_sqlalchemy_base() -> None:
-    model_files = list((ROOT / "civicclerk").glob("**/*.py"))
+    model_files = list((ROOT / "townlight_meetings").glob("**/*.py"))
     offenders: list[str] = []
     for path in model_files:
         tree = ast.parse(path.read_text(encoding="utf-8"))
@@ -338,11 +339,11 @@ def test_each_canonical_table_has_required_foundation_columns() -> None:
     models = model_module()
 
     for table_name, expected_columns in REQUIRED_COLUMNS.items():
-        table = models.Base.metadata.tables[f"civicclerk.{table_name}"]
+        table = models.Base.metadata.tables[f"townlight_meetings.{table_name}"]
         assert expected_columns <= set(table.columns.keys()), table_name
 
 
-def test_no_foreign_keys_target_civiccore_placeholder_packages_or_unreleased_shared_tables() -> None:
+def test_no_foreign_keys_target_townlight_core_placeholder_packages_or_unreleased_shared_tables() -> None:
     models = model_module()
 
     for table in models.Base.metadata.tables.values():
@@ -352,16 +353,16 @@ def test_no_foreign_keys_target_civiccore_placeholder_packages_or_unreleased_sha
             for element in constraint.elements:
                 target = str(element.target_fullname)
                 assert not any(target.startswith(prefix) for prefix in PLACEHOLDER_TARGET_PREFIXES)
-                assert not target.startswith("civiccore."), (
-                    "CivicMeetings may only FK into CivicCore tables that exist in v0.3.0; "
+                assert not target.startswith("townlight_core."), (
+                    "CivicMeetings may only FK into TownlightCore tables that exist in v0.3.0; "
                     f"unexpected target: {target}"
                 )
 
 
-def test_alembic_scaffold_exists_for_civicclerk_schema_chain() -> None:
+def test_alembic_scaffold_exists_for_townlight_meetings_schema_chain() -> None:
     expected = [
-        ROOT / "civicclerk" / "migrations" / "alembic.ini",
-        ROOT / "civicclerk" / "migrations" / "env.py",
+        ROOT / "townlight_meetings" / "migrations" / "alembic.ini",
+        ROOT / "townlight_meetings" / "migrations" / "env.py",
         migration_path(),
         agenda_intake_migration_path(),
         packet_assembly_migration_path(),
@@ -376,17 +377,17 @@ def test_alembic_scaffold_exists_for_civicclerk_schema_chain() -> None:
         assert path.exists(), f"Missing migration scaffold file: {path.relative_to(ROOT)}"
 
 
-def test_alembic_env_runs_civiccore_baseline_first_and_uses_separate_version_table() -> None:
-    env_py = ROOT / "civicclerk" / "migrations" / "env.py"
-    assert env_py.exists(), "civicclerk migrations env.py must exist."
+def test_alembic_env_runs_townlight_core_baseline_first_and_uses_separate_version_table() -> None:
+    env_py = ROOT / "townlight_meetings" / "migrations" / "env.py"
+    assert env_py.exists(), "townlight_meetings migrations env.py must exist."
     text = env_py.read_text(encoding="utf-8")
 
-    assert "civiccore.migrations.runner" in text
+    assert "townlight_core.migrations.runner" in text
     assert "upgrade_to_head" in text
     assert "_database_url()" in text
-    assert "_run_civiccore_migrations(section[\"sqlalchemy.url\"])" in text
+    assert "_run_townlight_core_migrations(section[\"sqlalchemy.url\"])" in text
     assert "subprocess.run" in text
-    assert "version_table=\"alembic_version_civicclerk\"" in text or "version_table = \"alembic_version_civicclerk\"" in text
+    assert "version_table=\"alembic_version_townlight_meetings\"" in text or "version_table = \"alembic_version_townlight_meetings\"" in text
     assert "target_metadata = Base.metadata" in text
 
 
@@ -394,39 +395,43 @@ def test_alembic_command_upgrades_real_pgvector_database(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Run the actual operator migration path against disposable Postgres."""
-    name = f"civicclerk-m2-{uuid.uuid4().hex[:12]}"
-    docker_host = os.environ.get("CIVICCLERK_DOCKER_HOST_ADDRESS", "127.0.0.1")
-    subprocess.run(
-        [
-            "docker",
-            "run",
-            "--name",
-            name,
-            "-e",
-            "POSTGRES_PASSWORD=postgres",
-            "-e",
-            "POSTGRES_USER=postgres",
-            "-e",
-            "POSTGRES_DB=civicclerk_test",
-            "-p",
-            "5432",
-            "-d",
-            "pgvector/pgvector:pg17",
-        ],
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-
-    try:
-        mapped = subprocess.run(
-            ["docker", "port", name, "5432/tcp"],
+    name = f"townlight_meetings-m2-{uuid.uuid4().hex[:12]}"
+    docker_host = os.environ.get("TOWNLIGHT_MEETINGS_DOCKER_HOST_ADDRESS", "127.0.0.1")
+    external_url = os.environ.get("TOWNLIGHT_MEETINGS_TEST_DATABASE_URL")
+    if external_url:
+        target = make_url(external_url)
+        assert target.host in {"127.0.0.1", "localhost"}
+        assert target.database and target.database.startswith("townlight_meetings_") and target.database.endswith("_test")
+        with create_engine(external_url).connect() as connection:
+            assert connection.execute(text(
+                "SELECT count(*) FROM information_schema.tables WHERE table_schema NOT IN ('pg_catalog', 'information_schema')"
+            )).scalar_one() == 0, "External migration test requires a new empty disposable database"
+    else:
+        subprocess.run(
+            [
+                "docker", "run", "--name", name,
+                "-e", "POSTGRES_PASSWORD=postgres",
+                "-e", "POSTGRES_USER=postgres",
+                "-e", "POSTGRES_DB=townlight_meetings_test",
+                "-p", "5432", "-d", "pgvector/pgvector:pg17",
+            ],
             check=True,
             capture_output=True,
             text=True,
-        ).stdout.strip()
-        port = mapped.rsplit(":", maxsplit=1)[-1]
-        db_url = f"postgresql+psycopg2://postgres:postgres@{docker_host}:{port}/civicclerk_test"
+        )
+
+    try:
+        if external_url:
+            db_url = external_url
+        else:
+            mapped = subprocess.run(
+                ["docker", "port", name, "5432/tcp"],
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+            port = mapped.rsplit(":", maxsplit=1)[-1]
+            db_url = f"postgresql+psycopg2://postgres:postgres@{docker_host}:{port}/townlight_meetings_test"
         engine = create_engine(db_url)
 
         deadline = time.monotonic() + 30
@@ -441,17 +446,17 @@ def test_alembic_command_upgrades_real_pgvector_database(
                 time.sleep(1)
 
         monkeypatch.setenv("DATABASE_URL", db_url)
-        cfg = Config(str(ROOT / "civicclerk" / "migrations" / "alembic.ini"))
+        cfg = Config(str(ROOT / "townlight_meetings" / "migrations" / "alembic.ini"))
 
-        command.upgrade(cfg, "civicclerk_0016_archive_indexes")
-        command.upgrade(cfg, "civicclerk_0016_archive_indexes")
+        command.upgrade(cfg, "townlight_meetings_0016")
+        command.upgrade(cfg, "townlight_meetings_0016")
 
         with engine.connect() as connection:
-            civiccore_revision = connection.execute(
-                text("select version_num from alembic_version_civiccore")
+            townlight_core_revision = connection.execute(
+                text("select version_num from alembic_version_townlight_core")
             ).scalar_one()
-            civicclerk_revision = connection.execute(
-                text("select version_num from alembic_version_civicclerk")
+            townlight_meetings_revision = connection.execute(
+                text("select version_num from alembic_version_townlight_meetings")
             ).scalar_one()
             packet_version_columns = set(
                 connection.execute(
@@ -459,7 +464,7 @@ def test_alembic_command_upgrades_real_pgvector_database(
                         """
                         select column_name
                         from information_schema.columns
-                        where table_schema = 'civicclerk'
+                        where table_schema = 'townlight_meetings'
                           and table_name = 'packet_versions'
                         """
                     )
@@ -471,29 +476,29 @@ def test_alembic_command_upgrades_real_pgvector_database(
                         """
                         select constraint_name
                         from information_schema.table_constraints
-                        where table_schema = 'civicclerk'
+                        where table_schema = 'townlight_meetings'
                           and table_name = 'packet_versions'
                         """
                     )
                 ).scalars()
             )
-            civicclerk_tables = set(
+            townlight_meetings_tables = set(
                 connection.execute(
                     text(
                         """
                         select table_name
                         from information_schema.tables
-                        where table_schema = 'civicclerk'
+                        where table_schema = 'townlight_meetings'
                         """
                     )
                 ).scalars()
             )
 
-        assert civiccore_revision == "civiccore_0003_local_task_queue"
-        assert civicclerk_revision == "civicclerk_0016_archive_indexes"
+        assert townlight_core_revision == "townlight_core_0009"
+        assert townlight_meetings_revision == "townlight_meetings_0016"
         assert {"agenda_item_ids", "snapshot_hash", "actor"} <= packet_version_columns
         assert "uq_packet_versions_meeting_version" in packet_version_constraints
-        assert civicclerk_tables == set(CANONICAL_TABLES) | {
+        assert townlight_meetings_tables == set(CANONICAL_TABLES) | {
             "agenda_item_lifecycle_records",
             "agenda_intake_queue",
             "meeting_records",
@@ -505,10 +510,10 @@ def test_alembic_command_upgrades_real_pgvector_database(
             "vendor_sync_sources",
         }
 
-        command.downgrade(cfg, "civicclerk_0010_vendor_cursor")
+        command.downgrade(cfg, "townlight_meetings_0010")
         with engine.connect() as connection:
             downgraded_revision = connection.execute(
-                text("select version_num from alembic_version_civicclerk")
+                text("select version_num from alembic_version_townlight_meetings")
             ).scalar_one()
             downgraded_packet_columns = set(
                 connection.execute(
@@ -516,19 +521,19 @@ def test_alembic_command_upgrades_real_pgvector_database(
                         """
                         select column_name
                         from information_schema.columns
-                        where table_schema = 'civicclerk'
+                        where table_schema = 'townlight_meetings'
                           and table_name = 'packet_versions'
                         """
                     )
                 ).scalars()
             )
-        assert downgraded_revision == "civicclerk_0010_vendor_cursor"
+        assert downgraded_revision == "townlight_meetings_0010"
         assert "snapshot_hash" not in downgraded_packet_columns
 
         command.upgrade(cfg, "head")
         with engine.connect() as connection:
             reupgraded_revision = connection.execute(
-                text("select version_num from alembic_version_civicclerk")
+                text("select version_num from alembic_version_townlight_meetings")
             ).scalar_one()
             reupgraded_packet_columns = set(
                 connection.execute(
@@ -536,39 +541,40 @@ def test_alembic_command_upgrades_real_pgvector_database(
                         """
                         select column_name
                         from information_schema.columns
-                        where table_schema = 'civicclerk'
+                        where table_schema = 'townlight_meetings'
                           and table_name = 'packet_versions'
                         """
                     )
                 ).scalars()
             )
-        assert reupgraded_revision == "civicclerk_0021_sources"
+        assert reupgraded_revision == "townlight_meetings_0021"
         assert {"agenda_item_ids", "snapshot_hash", "actor"} <= reupgraded_packet_columns
 
         with pytest.raises(RuntimeError, match="recover forward"):
-            command.downgrade(cfg, "civicclerk_0010_vendor_cursor")
+            command.downgrade(cfg, "townlight_meetings_0010")
 
         with engine.connect() as conn:
             post_refusal_revision = conn.execute(
-                text("SELECT version_num FROM alembic_version_civicclerk")
+                text("SELECT version_num FROM alembic_version_townlight_meetings")
             ).scalar_one()
-        assert post_refusal_revision == "civicclerk_0021_sources"
+        assert post_refusal_revision == "townlight_meetings_0021"
     finally:
-        subprocess.run(["docker", "rm", "-f", name], check=False, capture_output=True, text=True)
+        if not external_url:
+            subprocess.run(["docker", "rm", "-f", name], check=False, capture_output=True, text=True)
 
 
 def test_first_migration_declares_revision_and_creates_all_canonical_tables_idempotently() -> None:
-    assert migration_path().exists(), "civicclerk_0001_schema migration must exist."
+    assert migration_path().exists(), "townlight_meetings_0001_schema migration must exist."
     text = migration_path().read_text(encoding="utf-8")
 
-    assert 'revision = "civicclerk_0001_schema"' in text
+    assert 'revision = "townlight_meetings_0001"' in text
     assert "down_revision = None" in text
     assert "idempotent_create_table" in text
-    assert 'op.execute("CREATE SCHEMA IF NOT EXISTS civicclerk")' in text
+    assert 'op.execute("CREATE SCHEMA IF NOT EXISTS townlight_meetings")' in text
 
     for table_name in CANONICAL_TABLES:
         assert f'"{table_name}"' in text or f"'{table_name}'" in text
-        assert 'schema="civicclerk"' in text or "schema='civicclerk'" in text
+        assert 'schema="townlight_meetings"' in text or "schema='townlight_meetings'" in text
 
 
 def test_migration_table_list_matches_model_metadata() -> None:
@@ -576,7 +582,7 @@ def test_migration_table_list_matches_model_metadata() -> None:
     text = migration_path().read_text(encoding="utf-8")
 
     model_tables = {
-        table.name for table in models.Base.metadata.tables.values() if table.schema == "civicclerk"
+        table.name for table in models.Base.metadata.tables.values() if table.schema == "townlight_meetings"
     }
     for table_name in model_tables:
         assert f'"{table_name}"' in text or f"'{table_name}'" in text
@@ -585,20 +591,20 @@ def test_migration_table_list_matches_model_metadata() -> None:
 def test_agenda_intake_migration_declares_persistent_queue_table() -> None:
     text = agenda_intake_migration_path().read_text(encoding="utf-8")
 
-    assert 'revision = "civicclerk_0002_intake_queue"' in text
-    assert 'down_revision = "civicclerk_0001_schema"' in text
+    assert 'revision = "townlight_meetings_0002"' in text
+    assert 'down_revision = "townlight_meetings_0001"' in text
     assert "idempotent_create_table" in text
     assert '"agenda_intake_queue"' in text
     assert '"last_audit_hash"' in text
     assert "postgresql.JSONB()" in text
-    assert 'schema="civicclerk"' in text
+    assert 'schema="townlight_meetings"' in text
 
 
 def test_packet_assembly_migration_declares_persistent_records_table() -> None:
     text = packet_assembly_migration_path().read_text(encoding="utf-8")
 
-    assert 'revision = "civicclerk_0003_packet_asm"' in text
-    assert 'down_revision = "civicclerk_0002_intake_queue"' in text
+    assert 'revision = "townlight_meetings_0003"' in text
+    assert 'down_revision = "townlight_meetings_0002"' in text
     assert "idempotent_create_table" in text
     assert '"packet_assembly_records"' in text
     assert '"packet_snapshot_id"' in text
@@ -606,80 +612,80 @@ def test_packet_assembly_migration_declares_persistent_records_table() -> None:
     assert '"citations"' in text
     assert '"last_audit_hash"' in text
     assert "postgresql.JSONB()" in text
-    assert 'schema="civicclerk"' in text
+    assert 'schema="townlight_meetings"' in text
 
 
 def test_notice_checklist_migration_declares_persistent_records_table() -> None:
     text = notice_checklist_migration_path().read_text(encoding="utf-8")
 
-    assert 'revision = "civicclerk_0004_notice_ck"' in text
-    assert 'down_revision = "civicclerk_0003_packet_asm"' in text
+    assert 'revision = "townlight_meetings_0004"' in text
+    assert 'down_revision = "townlight_meetings_0003"' in text
     assert "idempotent_create_table" in text
     assert '"notice_checklist_records"' in text
     assert '"warnings"' in text
     assert '"posting_proof"' in text
     assert '"last_audit_hash"' in text
     assert "postgresql.JSONB()" in text
-    assert 'schema="civicclerk"' in text
+    assert 'schema="townlight_meetings"' in text
 
 
 def test_meeting_records_migration_declares_persistent_records_table() -> None:
     text = meeting_records_migration_path().read_text(encoding="utf-8")
 
-    assert 'revision = "civicclerk_0005_meetings"' in text
-    assert 'down_revision = "civicclerk_0004_notice_ck"' in text
+    assert 'revision = "townlight_meetings_0005"' in text
+    assert 'down_revision = "townlight_meetings_0004"' in text
     assert "idempotent_create_table" in text
     assert '"meeting_records"' in text
     assert '"meeting_type"' in text
     assert '"scheduled_start"' in text
     assert '"audit_entries"' in text
     assert "postgresql.JSONB()" in text
-    assert 'schema="civicclerk"' in text
+    assert 'schema="townlight_meetings"' in text
 
 
 def test_agenda_item_lifecycle_records_migration_declares_persistent_records_table() -> None:
     text = agenda_item_lifecycle_records_migration_path().read_text(encoding="utf-8")
 
-    assert 'revision = "civicclerk_0006_agenda_items"' in text
-    assert 'down_revision = "civicclerk_0005_meetings"' in text
+    assert 'revision = "townlight_meetings_0006"' in text
+    assert 'down_revision = "townlight_meetings_0005"' in text
     assert "idempotent_create_table" in text
     assert '"agenda_item_lifecycle_records"' in text
     assert '"department_name"' in text
     assert '"audit_entries"' in text
     assert "postgresql.JSONB()" in text
-    assert 'schema="civicclerk"' in text
+    assert 'schema="townlight_meetings"' in text
 
 
 def test_vendor_sync_persistence_migration_declares_source_run_and_failure_tables() -> None:
     text = vendor_sync_persistence_migration_path().read_text(encoding="utf-8")
 
-    assert 'revision = "civicclerk_0009_vendor_sync"' in text
-    assert 'down_revision = "civicclerk_0008_intake_promotion"' in text
+    assert 'revision = "townlight_meetings_0009"' in text
+    assert 'down_revision = "townlight_meetings_0008"' in text
     assert "idempotent_create_table" in text
     assert '"vendor_sync_sources"' in text
     assert '"vendor_sync_run_log"' in text
     assert '"vendor_sync_failures"' in text
     assert '"consecutive_failure_count"' in text
     assert '"sync_paused_reason"' in text
-    assert 'schema="civicclerk"' in text
+    assert 'schema="townlight_meetings"' in text
 
 
 def test_vendor_sync_cursor_migration_declares_success_cursor_column() -> None:
-    text = (ROOT / "civicclerk" / "migrations" / "versions" / "civicclerk_0010_vendor_sync_cursor.py").read_text(
+    text = (ROOT / "townlight_meetings" / "migrations" / "versions" / "townlight_meetings_0010_vendor_sync_cursor.py").read_text(
         encoding="utf-8"
     )
 
-    assert 'revision = "civicclerk_0010_vendor_cursor"' in text
-    assert 'down_revision = "civicclerk_0009_vendor_sync"' in text
+    assert 'revision = "townlight_meetings_0010"' in text
+    assert 'down_revision = "townlight_meetings_0009"' in text
     assert '"last_success_cursor_at"' in text
-    assert 'schema="civicclerk"' in text
+    assert 'schema="townlight_meetings"' in text
 
 
 def test_data_model_completion_migration_declares_reversible_cc5_contract() -> None:
     text = data_model_completion_migration_path().read_text(encoding="utf-8")
 
-    assert 'revision = "civicclerk_0011_data_model"' in text
-    assert 'down_revision = "civicclerk_0010_vendor_cursor"' in text
+    assert 'revision = "townlight_meetings_0011"' in text
+    assert 'down_revision = "townlight_meetings_0010"' in text
     for table_name, column_names in CC5_EVOLVED_COLUMNS.items():
         if not column_names:
             continue
@@ -696,7 +702,7 @@ def test_data_model_completion_migration_declares_reversible_cc5_contract() -> N
 
 def test_packet_versions_are_versioned_per_meeting_by_schema_contract() -> None:
     models = model_module()
-    table = models.Base.metadata.tables["civicclerk.packet_versions"]
+    table = models.Base.metadata.tables["townlight_meetings.packet_versions"]
 
     unique_constraints = {
         constraint.name: tuple(column.name for column in constraint.columns)
@@ -709,19 +715,19 @@ def test_packet_versions_are_versioned_per_meeting_by_schema_contract() -> None:
 
 def test_motion_vote_canonical_tables_preserve_append_only_correction_contract() -> None:
     models = model_module()
-    motions = models.Base.metadata.tables["civicclerk.motions"]
-    votes = models.Base.metadata.tables["civicclerk.votes"]
+    motions = models.Base.metadata.tables["townlight_meetings.motions"]
+    votes = models.Base.metadata.tables["townlight_meetings.votes"]
 
     assert {"correction_of_id", "correction_reason", "immutable_hash", "seconded_by"} <= set(motions.columns.keys())
     assert {"correction_of_id", "correction_reason", "immutable_hash", "actor"} <= set(votes.columns.keys())
     assert any(
-        element.target_fullname == "civicclerk.motions.id"
+        element.target_fullname == "townlight_meetings.motions.id"
         for constraint in motions.foreign_key_constraints
         for element in constraint.elements
         if element.parent.name == "correction_of_id"
     )
     assert any(
-        element.target_fullname == "civicclerk.votes.id"
+        element.target_fullname == "townlight_meetings.votes.id"
         for constraint in votes.foreign_key_constraints
         for element in constraint.elements
         if element.parent.name == "correction_of_id"
@@ -730,9 +736,9 @@ def test_motion_vote_canonical_tables_preserve_append_only_correction_contract()
 
 def test_closed_session_material_has_staff_only_acl_schema_contract() -> None:
     models = model_module()
-    closed_sessions = models.Base.metadata.tables["civicclerk.closed_sessions"]
-    staff_reports = models.Base.metadata.tables["civicclerk.staff_reports"]
-    transcripts = models.Base.metadata.tables["civicclerk.transcripts"]
+    closed_sessions = models.Base.metadata.tables["townlight_meetings.closed_sessions"]
+    staff_reports = models.Base.metadata.tables["townlight_meetings.staff_reports"]
+    transcripts = models.Base.metadata.tables["townlight_meetings.transcripts"]
 
     for table in [closed_sessions, staff_reports, transcripts]:
         assert {"sensitivity_label", "staff_acl_roles"} <= set(table.columns.keys())
@@ -741,7 +747,7 @@ def test_closed_session_material_has_staff_only_acl_schema_contract() -> None:
 
 def test_public_comment_schema_matches_live_public_comment_intake_contract() -> None:
     models = model_module()
-    public_comments = models.Base.metadata.tables["civicclerk.public_comments"]
+    public_comments = models.Base.metadata.tables["townlight_meetings.public_comments"]
 
     assert {
         "public_record_id",
@@ -753,13 +759,13 @@ def test_public_comment_schema_matches_live_public_comment_intake_contract() -> 
     } <= set(public_comments.columns.keys())
 
 
-def test_civiccore_document_and_search_extraction_boundary_is_documented() -> None:
-    public_archive = (ROOT / "civicclerk" / "public_archive.py").read_text(encoding="utf-8")
+def test_townlight_core_document_and_search_extraction_boundary_is_documented() -> None:
+    public_archive = (ROOT / "townlight_meetings" / "public_archive.py").read_text(encoding="utf-8")
     adr = (ROOT / "docs" / "adr" / "civicclerk-adr-0006.md").read_text(encoding="utf-8").lower()
 
-    assert "from civiccore.search import" in public_archive
+    assert "from townlight_core.search import" in public_archive
     assert "status: accepted" in adr
-    assert "civiccore 1.2.0 ships search helpers" in adr
+    assert "civiccore 1.2.0 ships search helpers" in adr  # Original historical ADR.
     assert "shared ingestion/document-chunk primitives" in adr
     assert "module-local until its own release train migrates" in adr
     assert "document_ref" in adr
@@ -785,10 +791,10 @@ def test_cc5_docs_claims_registry_maps_data_model_claims_to_tests_historical_edi
     landing = (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "docs" / "index.html").read_text(encoding="utf-8")
 
     assert "### CC-5 data model claims registry" in readme
-    assert "civicclerk_0011_data_model" in readme
+    assert "civicclerk_0011" in readme
     assert "test_packet_versions_are_versioned_per_meeting_by_schema_contract" in readme
     assert "test_civiccore_document_and_search_extraction_boundary_is_documented" in readme
     for text in [manual, changelog, landing]:
         assert "CC-5" in text
-        assert "civicclerk_0011_data_model" in text
+        assert "civicclerk_0011" in text
         assert "closed-session ACL" in text

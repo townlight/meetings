@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk.main import app
-from civicclerk.packet_assembly import PacketAssemblyRepository, PacketAssemblyStatus
+from townlight_meetings.main import app
+from townlight_meetings.packet_assembly import PacketAssemblyRepository, PacketAssemblyStatus
 
 
 def _source_refs() -> list[dict]:
@@ -109,8 +109,8 @@ def test_packet_assembly_repository_lists_recent_records(tmp_path) -> None:
 
 
 async def test_api_packet_assembly_create_list_finalize_and_export(monkeypatch, tmp_path) -> None:
-    monkeypatch.setenv("CIVICCLERK_PACKET_ASSEMBLY_DB_URL", f"sqlite:///{tmp_path / 'api-assembly.db'}")
-    monkeypatch.setenv("CIVICCLERK_EXPORT_ROOT", str(tmp_path / "exports"))
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_PACKET_ASSEMBLY_DB_URL", f"sqlite:///{tmp_path / 'api-assembly.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_EXPORT_ROOT", str(tmp_path / "exports"))
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         meeting = await client.post(
             "/meetings",
@@ -157,7 +157,7 @@ async def test_api_packet_assembly_create_list_finalize_and_export(monkeypatch, 
 
 
 async def test_api_packet_assembly_finalize_unknown_record_is_actionable(monkeypatch, tmp_path) -> None:
-    monkeypatch.setenv("CIVICCLERK_PACKET_ASSEMBLY_DB_URL", f"sqlite:///{tmp_path / 'api-assembly.db'}")
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_PACKET_ASSEMBLY_DB_URL", f"sqlite:///{tmp_path / 'api-assembly.db'}")
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         response = await client.post(
             "/packet-assemblies/missing/finalize",

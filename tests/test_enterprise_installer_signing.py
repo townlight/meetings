@@ -7,7 +7,7 @@ import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "1.0.4"
+VERSION = "1.0.5"
 
 
 def test_enterprise_installer_signing_print_only_explains_inputs() -> None:
@@ -21,15 +21,15 @@ def test_enterprise_installer_signing_print_only_explains_inputs() -> None:
 
     assert result.returncode == 0, result.stdout + result.stderr
     assert "Townlight Meetings downstream installer signing readiness" in result.stdout
-    assert "CIVICCLERK_SIGNTOOL_PATH" in result.stdout
-    assert "CIVICCLERK_SIGNING_CERT_SHA1" in result.stdout
-    assert "CIVICCLERK_SIGNING_PFX_PASSWORD_ENV" in result.stdout
+    assert "TOWNLIGHT_MEETINGS_SIGNTOOL_PATH" in result.stdout
+    assert "TOWNLIGHT_MEETINGS_SIGNING_CERT_SHA1" in result.stdout
+    assert "TOWNLIGHT_MEETINGS_SIGNING_PFX_PASSWORD_ENV" in result.stdout
     assert "No secrets are printed" in result.stdout
     assert "does not sign the public Townlight installer" in result.stdout
 
 
 def test_enterprise_installer_signing_fails_actionably_without_cert_inputs(tmp_path: Path) -> None:
-    artifact = tmp_path / f"CivicMeetings-{VERSION}-Setup.exe"
+    artifact = tmp_path / f"Townlight Meetings-{VERSION}-Setup.exe"
     artifact.write_bytes(b"unsigned installer")
     env = os.environ.copy()
     env["PATH"] = str(tmp_path)
@@ -53,16 +53,16 @@ def test_enterprise_installer_signing_fails_actionably_without_cert_inputs(tmp_p
 
 
 def test_enterprise_installer_signing_passes_with_redacted_certificate_contract(tmp_path: Path) -> None:
-    artifact = tmp_path / f"CivicMeetings-{VERSION}-Setup.exe"
+    artifact = tmp_path / f"Townlight Meetings-{VERSION}-Setup.exe"
     artifact.write_bytes(b"unsigned installer")
     signtool = tmp_path / "signtool.exe"
     signtool.write_text("fake signtool for readiness check\n", encoding="utf-8")
     env = os.environ.copy()
     env.update(
         {
-            "CIVICCLERK_SIGNTOOL_PATH": str(signtool),
-            "CIVICCLERK_SIGNING_CERT_SHA1": "00ABCDEF",
-            "CIVICCLERK_SIGNING_TIMESTAMP_URL": "https://timestamp.example.test",
+            "TOWNLIGHT_MEETINGS_SIGNTOOL_PATH": str(signtool),
+            "TOWNLIGHT_MEETINGS_SIGNING_CERT_SHA1": "00ABCDEF",
+            "TOWNLIGHT_MEETINGS_SIGNING_TIMESTAMP_URL": "https://timestamp.example.test",
         }
     )
 
@@ -77,6 +77,6 @@ def test_enterprise_installer_signing_passes_with_redacted_certificate_contract(
 
     assert result.returncode == 0, result.stdout + result.stderr
     assert "signing_ready=true" in result.stdout
-    assert "CIVICCLERK_SIGNING_CERT_SHA1 is set" in result.stdout
+    assert "TOWNLIGHT_MEETINGS_SIGNING_CERT_SHA1 is set" in result.stdout
     assert "00ABCDEF" not in result.stdout
     assert "ENTERPRISE-INSTALLER-SIGNING: PASSED" in result.stdout

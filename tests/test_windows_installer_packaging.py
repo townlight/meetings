@@ -13,7 +13,7 @@ def _read(path: str) -> str:
 def test_windows_installer_source_files_exist() -> None:
     for path in [
         "install.ps1",
-        "installer/windows/civicclerk.iss",
+        "installer/windows/townlight_meetings.iss",
         "installer/windows/build-installer.sh",
         "installer/windows/launch-install.ps1",
         "installer/windows/launch-start.ps1",
@@ -27,7 +27,7 @@ def test_install_script_creates_env_from_docker_template_and_starts_stack() -> N
     script = _read("install.ps1")
 
     assert "docs\\examples\\docker.env.example" in script
-    assert "CIVICCLERK_POSTGRES_PASSWORD=change-this-before-shared-use" in script
+    assert "TOWNLIGHT_MEETINGS_POSTGRES_PASSWORD=change-this-before-shared-use" in script
     assert "RandomNumberGenerator" in script
     assert ".GetBytes($bytes)" in script
     assert "docker compose up -d --build" in script
@@ -36,7 +36,7 @@ def test_install_script_creates_env_from_docker_template_and_starts_stack() -> N
     assert "http://127.0.0.1:$apiPort/health" in script
     assert "http://127.0.0.1:$webPort/" in script
     assert "$response.StatusCode -ge 200 -and $response.StatusCode -lt 400" in script
-    assert "CIVICCLERK_DEMO_SEED" in script
+    assert "TOWNLIGHT_MEETINGS_DEMO_SEED" in script
     assert "WARNING: Open staff auth allows anonymous writes" in script
 
 
@@ -47,14 +47,14 @@ def test_launcher_scripts_have_actionable_failure_paths() -> None:
 
     assert "Install Docker Desktop for Windows" in prereq
     assert "Docker Desktop is not running" in prereq
-    assert "Run the 'Install or Repair CivicMeetings' shortcut first" in start
+    assert "Run the 'Install or Repair Townlight Meetings' shortcut first" in start
     assert "docker compose up -d" in start
     assert "prereq-check.ps1" in launch_install
     assert "install.ps1" in launch_install
 
 
 def test_inno_setup_requires_version_and_bundles_product_sources() -> None:
-    iss = _read("installer/windows/civicclerk.iss")
+    iss = _read("installer/windows/townlight_meetings.iss")
 
     assert "#error MyAppVersion must be supplied" in iss
     assert "InitializeSetup" in iss
@@ -63,11 +63,11 @@ def test_inno_setup_requires_version_and_bundles_product_sources() -> None:
     assert "small free open-source project" in iss
     assert "More info" in iss
     assert "Run anyway" in iss
-    assert "official CivicSuite release source" in iss
-    assert "OutputBaseFilename=CivicMeetings-{#MyAppVersion}-Setup" in iss
+    assert "official Townlight release source" in iss
+    assert "OutputBaseFilename=Townlight Meetings-{#MyAppVersion}-Setup" in iss
     assert "PrivilegesRequired=lowest" in iss
-    assert "Install or Repair CivicMeetings" in iss
-    assert "Start CivicMeetings" in iss
+    assert "Install or Repair Townlight Meetings" in iss
+    assert "Start Townlight Meetings" in iss
     assert "docker-compose.yml" in iss
     assert "Dockerfile.backend" in iss
     assert "frontend\\*" in iss
@@ -80,7 +80,7 @@ def test_inno_setup_requires_version_and_bundles_product_sources() -> None:
 def test_build_script_resolves_version_and_checks_required_sources() -> None:
     build = _read("installer/windows/build-installer.sh")
 
-    assert "CIVICCLERK_VERSION" in build
+    assert "TOWNLIGHT_MEETINGS_VERSION" in build
     assert "python3" in build
     assert "py -3" in build
     assert "pyproject.toml" in build
@@ -90,13 +90,13 @@ def test_build_script_resolves_version_and_checks_required_sources() -> None:
     assert "Inno Setup compiler was not found" in build
     assert "/mnt/c/Users/${USER:-scott}/AppData/Local/Programs/Inno Setup 6/ISCC.exe" in build
     assert "wslpath -w" in build
-    assert "CivicMeetings-$APP_VERSION-Setup.exe" in build
+    assert "Townlight Meetings-$APP_VERSION-Setup.exe" in build
     assert "public Windows installers are unsigned" in build
-    assert "CIVICCLERK_SIGN_INSTALLER" in build
-    assert "CIVICCLERK_SIGNTOOL_PATH" in build
-    assert "CIVICCLERK_SIGNING_CERT_SHA1" in build
-    assert "CIVICCLERK_SIGNING_PFX_PASSWORD_ENV" in build
-    assert "CIVICCLERK_SIGNING_TIMESTAMP_URL" in build
+    assert "TOWNLIGHT_MEETINGS_SIGN_INSTALLER" in build
+    assert "TOWNLIGHT_MEETINGS_SIGNTOOL_PATH" in build
+    assert "TOWNLIGHT_MEETINGS_SIGNING_CERT_SHA1" in build
+    assert "TOWNLIGHT_MEETINGS_SIGNING_PFX_PASSWORD_ENV" in build
+    assert "TOWNLIGHT_MEETINGS_SIGNING_TIMESTAMP_URL" in build
 
 
 def test_enterprise_installer_signing_readiness_helper_documents_non_secret_contract() -> None:
@@ -105,11 +105,11 @@ def test_enterprise_installer_signing_readiness_helper_documents_non_secret_cont
     assert "Townlight Meetings downstream installer signing readiness" in script
     assert "optional downstream" in script
     assert "public Townlight installer" in script
-    assert "CIVICCLERK_SIGNTOOL_PATH" in script
-    assert "CIVICCLERK_SIGNING_CERT_SHA1" in script
-    assert "CIVICCLERK_SIGNING_PFX" in script
-    assert "CIVICCLERK_SIGNING_PFX_PASSWORD_ENV" in script
-    assert "CIVICCLERK_SIGNING_TIMESTAMP_URL" in script
+    assert "TOWNLIGHT_MEETINGS_SIGNTOOL_PATH" in script
+    assert "TOWNLIGHT_MEETINGS_SIGNING_CERT_SHA1" in script
+    assert "TOWNLIGHT_MEETINGS_SIGNING_PFX" in script
+    assert "TOWNLIGHT_MEETINGS_SIGNING_PFX_PASSWORD_ENV" in script
+    assert "TOWNLIGHT_MEETINGS_SIGNING_TIMESTAMP_URL" in script
     assert "No secrets are printed" in script
 
 
@@ -130,8 +130,8 @@ def test_installer_docs_do_not_overclaim_production_auth_or_data_deletion() -> N
     assert "More info" in docs
     assert "Run anyway" in docs
     assert "official Townlight" in docs
-    assert "CIVICCLERK_STAFF_AUTH_MODE=protected" in docs
+    assert "TOWNLIGHT_MEETINGS_STAFF_AUTH_MODE=protected" in docs
     assert "single-workstation rehearsal" in docs
     assert "bearer, OIDC, or trusted-header" in docs
     assert "Docker volumes are preserved" in docs
-    assert "CIVICCLERK_DEMO_SEED=1" in docs
+    assert "TOWNLIGHT_MEETINGS_DEMO_SEED=1" in docs

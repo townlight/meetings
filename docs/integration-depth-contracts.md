@@ -7,7 +7,7 @@ validation. Adversarial mock checks remain useful regression coverage, but they
 are not labeled as release-depth proof for Townlight Records, Townlight Code, city CMS
 adapters, codification adapters, or live agenda-vendor tenants.
 
-<a id="civicrecords-search-bridge"></a>
+<a id="townlight_records-search-bridge"></a>
 
 ## Townlight Records Search Bridge
 
@@ -29,7 +29,7 @@ Operator path: configure the Townlight Records base URL and token in deployment
 settings, validate the live or in-process boundary, then keep adversarial search
 checks as regression coverage.
 
-<a id="civiccode-adopted-action-handoff"></a>
+<a id="townlight_code-adopted-action-handoff"></a>
 
 ## Townlight Code Adopted-Action Handoff
 
@@ -46,10 +46,10 @@ If Townlight Code is absent, Townlight Meetings stores handoffs locally as
 `READY_FOR_CODE_OR_LEGAL_REVIEW` and keeps a file-export path available until
 Townlight Code is reachable.
 
-Operator path: configure `CIVICCODE_INTAKE_URL` and the suite bearer value
+Operator path: configure `TOWNLIGHT_CODE_INTAKE_URL` and the suite bearer value
 Townlight Code expects. New ordinance/resolution handoffs emit immediately to the
 configured Townlight Code intake endpoint with `Authorization: Bearer ...` and
-`X-CivicSuite-Session-Actor` audit context. Failed or unconfigured handoffs
+`X-Townlight-Session-Actor` audit context. Failed or unconfigured handoffs
 remain visible on the local record as `EMIT_FAILED` or
 `EMIT_SKIPPED_UNCONFIGURED`; operators can retry with
 `POST /meetings/{meeting_id}/ordinance-resolution-handoff/retry`.

@@ -5,7 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from civicclerk.mock_city_environment import (
+from townlight_meetings.mock_city_environment import (
     MOCK_CITY_NAME,
     mock_city_backup_retention_hostile_fixtures,
     mock_city_hostile_fixtures,

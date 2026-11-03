@@ -8,8 +8,8 @@ from random import Random
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk.main import app
-from civicclerk.meeting_lifecycle import MeetingStore
+from townlight_meetings.main import app
+from townlight_meetings.meeting_lifecycle import MeetingStore
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -52,7 +52,7 @@ def test_meeting_lifecycle_matrix_allows_only_canonical_edges(
     from_status: str,
     to_status: str,
 ) -> None:
-    from civicclerk.meeting_lifecycle import validate_meeting_transition
+    from townlight_meetings.meeting_lifecycle import validate_meeting_transition
 
     result = validate_meeting_transition(
         meeting_id="meeting-123",
@@ -81,7 +81,7 @@ def test_meeting_lifecycle_matrix_allows_only_canonical_edges(
 
 
 def test_meeting_lifecycle_generated_sequences_are_ordered_and_hash_chained() -> None:
-    from civicclerk.meeting_lifecycle import (
+    from townlight_meetings.meeting_lifecycle import (
         CANCELLED_STATUS,
         VALID_TRANSITIONS,
         verify_meeting_audit_entries,
@@ -149,7 +149,7 @@ def test_meeting_lifecycle_generated_sequences_are_ordered_and_hash_chained() ->
 
 
 def test_meeting_terminal_status_refusal_has_replacement_fix() -> None:
-    from civicclerk.meeting_lifecycle import validate_meeting_transition
+    from townlight_meetings.meeting_lifecycle import validate_meeting_transition
 
     result = validate_meeting_transition(
         meeting_id="meeting-terminal",
@@ -170,7 +170,7 @@ def test_meeting_terminal_status_refusal_has_replacement_fix() -> None:
 def test_emergency_and_special_meetings_require_statutory_basis_for_notice(
     meeting_type: str,
 ) -> None:
-    from civicclerk.meeting_lifecycle import validate_meeting_transition
+    from townlight_meetings.meeting_lifecycle import validate_meeting_transition
 
     rejected = validate_meeting_transition(
         meeting_id="meeting-123",
@@ -204,7 +204,7 @@ def test_emergency_and_special_meetings_require_statutory_basis_for_notice(
 def test_emergency_and_special_meeting_type_casing_cannot_bypass_notice_basis(
     meeting_type: str,
 ) -> None:
-    from civicclerk.meeting_lifecycle import validate_meeting_transition
+    from townlight_meetings.meeting_lifecycle import validate_meeting_transition
 
     result = validate_meeting_transition(
         meeting_id="meeting-123",
@@ -222,7 +222,7 @@ def test_emergency_and_special_meeting_type_casing_cannot_bypass_notice_basis(
 
 
 def test_closed_executive_session_requires_statutory_basis_before_in_progress() -> None:
-    from civicclerk.meeting_lifecycle import validate_meeting_transition
+    from townlight_meetings.meeting_lifecycle import validate_meeting_transition
 
     rejected = validate_meeting_transition(
         meeting_id="meeting-123",
@@ -255,7 +255,7 @@ def test_closed_executive_session_requires_statutory_basis_before_in_progress() 
 def test_closed_executive_meeting_type_casing_cannot_bypass_session_basis(
     meeting_type: str,
 ) -> None:
-    from civicclerk.meeting_lifecycle import validate_meeting_transition
+    from townlight_meetings.meeting_lifecycle import validate_meeting_transition
 
     result = validate_meeting_transition(
         meeting_id="meeting-123",
@@ -519,10 +519,10 @@ async def test_api_uses_configured_meeting_database_for_records_and_audit(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
 ) -> None:
-    import civicclerk.main as main_module
+    import townlight_meetings.main as main_module
 
     db_url = f"sqlite+pysqlite:///{tmp_path / 'api-meetings.db'}"
-    monkeypatch.setenv("CIVICCLERK_MEETING_DB_URL", db_url)
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_MEETING_DB_URL", db_url)
     main_module._meeting_store = None
     main_module._meeting_db_url = None
 

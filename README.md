@@ -1,14 +1,14 @@
-> **Townlight Beta 1 release:** [signed Windows installer, exact owned source, documentation and acceptance](https://github.com/townlight/townlight/releases/tag/townlight-beta-1). [Online manual](https://townlight.github.io/manuals/meetings.html). This retained manual edition describes the accepted candidate before publication; distribution has changed, component versions and signed bytes have not.
+> **Prepared naming, Access and Notice candidate — 2 November 2026.** Build, signing, installed acceptance and publication remain pending. Earlier signed releases and receipts apply only to their identified artifacts.
 
 # Townlight Meetings
 
-**Townlight Beta 1** · Existing component versions retained · AGPL-3.0-only
+**Townlight Beta 1** · Naming candidate; component versions advanced · AGPL-3.0-only
 
 Meetings supports clerk preparation and the retained proceedings of a meeting: agenda items, packets, motions, votes, supplied transcript material, minutes decisions and archives. It supplies canonical meeting and agenda context to Station.
 
 ## Start here
 
-Staff should use the operating manual. Administrators should read first-run, configuration and recovery before changing a deployment. Developers should read the exact API/schema reference and matching source companion. This edition accompanies Townlight Beta 1; use the release link above for the signed candidate and exact source/documentation archives.
+Staff should use the operating manual. Administrators should read first-run, configuration and recovery before changing a deployment. Developers should read the exact API/schema reference and matching source companion. This edition describes the prepared source candidate; obtain its installer only after signing and installed acceptance identify the exact artifact.
 
 - [Operating manual](docs/beta-1/manuals/meetings.html) · [Printable PDF](docs/beta-1/pdf/Townlight-Meetings-Manual-Beta-1.pdf) · [Editable Word manual](docs/beta-1/docx/Townlight-Meetings-Manual-Beta-1.docx)
 - [API and data dictionary](docs/beta-1/api/meetings.html) · [OpenAPI JSON](docs/beta-1/api/meetings-openapi.json)
@@ -18,17 +18,15 @@ Staff should use the operating manual. Administrators should read first-run, con
 
 | Identity | Value |
 | --- | --- |
-| Public documentation identity | Townlight Beta 1 |
-| Installer version | 1.6.0.1 |
-| Product component | civicclerk 1.0.4 |
-| Native desktop source version | 1.6.0-1 |
-| Candidate MSI SHA256 | `98bcdef11ebdf5c767f620c904ff49f85115fde3b5c23f62703b111e645aaf86` |
-| Corresponding-source SHA256 | `84a23e1297e42d17b16cfc9e51b2dd78bc46414c0de8ad7ebd2466c1a409d06b` |
-| Current owned software license | AGPL-3.0-only |
-| Supported acceptance profile | Windows x64 fresh install; inspections-preview; separate Station configuration |
+| Documentation | Townlight Beta 1 naming, Access and Notice candidate |
+| Intended installer version | 1.7.0.1; build and acceptance pending |
+| Native desktop source version | 1.7.0-1 |
+| Product component | townlight-meetings 1.0.5 |
+| Principal import package | townlight_meetings |
+| Candidate hashes | Pending build, signing and installed acceptance |
+| License | AGPL-3.0-only |
 
-
-“Townlight Beta 1” identifies this coordinated beta delivery. It does not renumber the installer, native binary, Python packages or historical receipts. Component versions may differ. This documentation is a later companion to unchanged signed bytes, not a rebuilt installer. Historical release pages and manuals describe their own versions and are not the download instructions for this private candidate.
+Use a fresh profile and empty database. Existing unmarked city data is refused before initialization; no in-place upgrade is supported. Preserve the existing `%LOCALAPPDATA%\CivicSuite` profile, data and recovery material. Historical releases retain their original identities.
 
 ## What staff can do
 
@@ -66,7 +64,7 @@ Versioned saves use expected prior revision identifiers where defined. Reopen an
 
 ### Capacity and platform statements
 
-This beta has synthetic single-profile workflow evidence. It does not have a published benchmark for concurrent staff capacity, minimum RAM/CPU, large-source limits or a field SLA. Do not turn a developer machine’s specification into a supported minimum. Installer size is 2,092,122,112 bytes before installation; allow additional disk for extracted runtime, database, originals, exports, media and backups. Select equipment/storage after sizing those actual workloads.
+This beta has synthetic single-profile workflow evidence. It does not have a published benchmark for concurrent staff capacity, minimum RAM/CPU, large-source limits or a field SLA. Do not turn a developer machine’s specification into a supported minimum. The new installer size remains pending its build;  allow additional disk for extracted runtime, database, originals, exports, media and backups. Select equipment/storage after sizing those actual workloads.
 
 The exact [runtime payload lock](docs/beta-1/reference/runtime-payload-lock.json) records pinned files, sizes and hashes. The [component metadata](docs/beta-1/reference/component-metadata.json) records shipped dependency declarations. These references are more precise than a manually copied dependency list. Third-party and historical license notices must accompany their matching payloads.
 
@@ -82,8 +80,8 @@ The exact [runtime payload lock](docs/beta-1/reference/runtime-payload-lock.json
 ## Setup and operation
 
 1. Obtain the identified signed private candidate and its corresponding-source companion from the beta coordinator. The landing pages in this documentation are not an installer download service.
-2. On the intended fresh Windows test installation, verify the MSI hash and publisher signature before installing. Preserve unrelated profiles and recovery material. This candidate has fresh-install acceptance; historical in-place upgrades are unverified.
-3. Launch Townlight under the intended named Windows account. Choose the storage folders. Select **Townlight Inspections candidate** (`inspections-preview`) for all eight desktop products. A narrower default selection will not expose all workspaces.
+2. On the intended fresh Windows test installation, verify the MSI hash and publisher signature before installing. Preserve unrelated profiles and recovery material. Installed acceptance for this source candidate remains pending; no in-place legacy upgrade is supported.
+3. Launch Townlight under the intended named Windows account. Choose the storage folders. Select **Townlight Inspections candidate** (`inspections-preview`) for the bounded desktop composition, including Access and Notice. A narrower default selection will not expose all workspaces.
 4. Enter the city profile, time zone and contacts. Create the first named local administrator, sign in and choose protected backup storage. **Continue without local AI** is valid for the deterministic workflows.
 5. Run Health Check and wait for readiness. Open Townlight. In System Health select **Finish Records Migration** to activate the canonical Python/PostgreSQL runtime. Do not fabricate migration receipts or seed accounts.
 6. Create named staff through Settings. Import authorized sources using each product’s source library. All examples in this package are synthetic; they are not municipal authority.
@@ -92,9 +90,9 @@ The exact [runtime payload lock](docs/beta-1/reference/runtime-payload-lock.json
 ## Configuration
 ### Native deployment configuration
 
-Use Setup, Settings and System Health for supported staff operation. Administrators provision folders, backup storage, named accounts and the city profile. Select `inspections-preview` for the full eight-workspace desktop. Station remains a separate service boundary. Do not use a standalone product’s demo server as a substitute for the installed workspace.
+Use Setup, Settings and System Health for supported staff operation. Administrators provision folders, backup storage, named accounts and the city profile. Select `inspections-preview` for the bounded desktop composition, including Access and Notice. Station remains a separate service boundary. Do not use a standalone product’s demo server as a substitute for the installed workspace.
 
-Technical deployments use `TOWNLIGHT_PRODUCT_PROFILE`, `TOWNLIGHT_PROFILE_ROOT`, `DATABASE_URL`, `CIVICSUITE_RUNTIME_PORT`, `PORTAL_MODE` and the runtime-managed secret files. Treat database URLs and native session proofs as secrets. The installed native domain runtime explicitly refuses non-loopback binding. `PORTAL_MODE=private` is the accepted posture; changing it does not by itself commission an internet portal, authentication provider or reverse proxy.
+Technical deployments use `TOWNLIGHT_PRODUCT_PROFILE`, `TOWNLIGHT_PROFILE_ROOT`, `DATABASE_URL`, `TOWNLIGHT_RUNTIME_PORT`, `PORTAL_MODE` and the runtime-managed secret files. Treat database URLs and native session proofs as secrets. The installed native domain runtime explicitly refuses non-loopback binding. `PORTAL_MODE=private` is the accepted posture; changing it does not by itself commission an internet portal, authentication provider or reverse proxy.
 
 The isolated documentation exporter sets a fictional profile and unusable synthetic database origin only to read schemas; those values are not deployment configuration. Keep deployment values in the intended process/account scope. An already-running process does not automatically inherit later environment edits.
 
@@ -183,10 +181,10 @@ Use the corresponding source for the candidate rather than assuming the public d
 
 Relevant source contracts:
 
-- `civicclerk/meeting_lifecycle.py`
-- `civicclerk/packet_assembly.py`
-- `civicclerk/minutes.py`
-- `civicsuite_runtime/meetings_bridge.py`
+- `townlight_meetings/meeting_lifecycle.py`
+- `townlight_meetings/packet_assembly.py`
+- `townlight_meetings/minutes.py`
+- `townlight_runtime/meetings_bridge.py`
 
 The desktop package defines `npm run build`, `npm test`, `npm run test:browser` and its Tauri command. Python products retain their own `pyproject.toml`, tests and migrations; use the matching checkout’s declared dependencies and test configuration. Do not run a sample server against a production profile. This documentation build validates documentation only and reuses the separately identified installed acceptance; it does not claim a new complete application CI run.
 

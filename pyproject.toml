@@ -3,17 +3,17 @@ requires = ["hatchling>=1.27.0"]
 build-backend = "hatchling.build"
 
 [project]
-name = "civicclerk"
-version = "1.0.4"
+name = "townlight-meetings"
+version = "1.0.5"
 description = "Townlight Meetings runtime foundation for municipal meeting, agenda, packet, and minutes workflows."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "AGPL-3.0-only" }
 authors = [
-  { name = "CivicSuite contributors" }
+  { name = "Townlight contributors" }
 ]
 dependencies = [
-  "civiccore @ https://github.com/townlight/core/releases/download/v1.2.1/civiccore-1.2.1-py3-none-any.whl#sha256=8dde29408e206048bde63ec14156a8e6329382af4d16b12710d12aa5c27f3f59",
+  "townlight-core==1.3.0.dev2",
   "celery[redis]>=5.4.0,<6.0.0",
   "fastapi>=0.115.0,<1.0.0",
   "httpx>=0.27.0,<1.0.0",
@@ -33,19 +33,19 @@ dev = [
 asyncio_mode = "auto"
 testpaths = ["tests"]
 markers = [
-  "uses_civicclerk_default_staff_mode: run without the legacy open-mode test harness override",
+  "uses_townlight_meetings_default_staff_mode: run without the legacy open-mode test harness override",
 ]
 
 [tool.hatch.metadata]
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["civicclerk"]
+packages = ["townlight_meetings"]
 force-include = { "prompts" = "prompts" }
 
 [tool.hatch.build.targets.sdist]
 include = [
-  "civicclerk",
+  "townlight_meetings",
   "prompts",
   "scripts",
   "tests",

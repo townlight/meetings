@@ -2,20 +2,20 @@ from __future__ import annotations
 
 from fastapi.testclient import TestClient
 
-from civicclerk.integration_contracts import (
+from townlight_meetings.integration_contracts import (
     integration_contracts,
     integration_readiness_payload,
     run_integration_adversarial_checks,
 )
-from civicclerk.main import app
+from townlight_meetings.main import app
 
 
 def test_integration_contracts_cover_unified_spec_depth_boundaries() -> None:
     contracts = {contract.id: contract for contract in integration_contracts()}
 
     assert set(contracts) == {
-        "civicrecords-search",
-        "civiccode-handoff",
+        "townlight_records-search",
+        "townlight_code-handoff",
         "codification-export",
         "cms-posting",
         "vendor-live-api-adapters",
@@ -37,8 +37,8 @@ def test_supplemental_regression_checks_are_actionable_and_skip_network() -> Non
     assert all(check.ok for check in checks)
     assert {check.contract_id for check in checks}.issuperset(
         {
-            "civicrecords-search",
-            "civiccode-handoff",
+            "townlight_records-search",
+            "townlight_code-handoff",
             "codification-export",
             "cms-posting",
             "vendor-live-api-adapters",
