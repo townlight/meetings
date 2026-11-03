@@ -3,16 +3,16 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from pathlib import Path
 
-from civicclerk.agenda_intake import AgendaIntakeRepository
-from civicclerk.agenda_lifecycle import AgendaItemRepository
-from civicclerk.demo_seed import DEMO_CITY, seed_demo_data
-from civicclerk.meeting_body import MeetingBodyRepository
-from civicclerk.meeting_lifecycle import MeetingStore
-from civicclerk.minutes import MinutesDraftStore
-from civicclerk.motion_vote import MotionVoteStore
-from civicclerk.notice_checklist import NoticeChecklistRepository
-from civicclerk.packet_assembly import PacketAssemblyRepository
-from civicclerk.public_archive import PublicArchiveStore
+from townlight_meetings.agenda_intake import AgendaIntakeRepository
+from townlight_meetings.agenda_lifecycle import AgendaItemRepository
+from townlight_meetings.demo_seed import DEMO_CITY, seed_demo_data
+from townlight_meetings.meeting_body import MeetingBodyRepository
+from townlight_meetings.meeting_lifecycle import MeetingStore
+from townlight_meetings.minutes import MinutesDraftStore
+from townlight_meetings.motion_vote import MotionVoteStore
+from townlight_meetings.notice_checklist import NoticeChecklistRepository
+from townlight_meetings.packet_assembly import PacketAssemblyRepository
+from townlight_meetings.public_archive import PublicArchiveStore
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -61,8 +61,8 @@ def test_compose_enables_demo_seed_but_documents_empty_database_escape_hatch() -
         encoding="utf-8"
     )
 
-    assert "CIVICCLERK_DEMO_SEED: ${CIVICCLERK_DEMO_SEED:-1}" in compose
-    assert "CIVICCLERK_DEMO_SEED=1" in env_example
+    assert "TOWNLIGHT_MEETINGS_DEMO_SEED: ${TOWNLIGHT_MEETINGS_DEMO_SEED:-1}" in compose
+    assert "TOWNLIGHT_MEETINGS_DEMO_SEED=1" in env_example
     assert "Set to 0 for an empty local rehearsal database." in env_example
 
 
@@ -71,8 +71,8 @@ def test_demo_seed_skips_public_archive_on_migrated_meetings_table(tmp_path) -> 
     id-only referent insert with IntegrityError; the seed skips, never crashes."""
     import sqlalchemy as sa
 
-    from civicclerk.demo_seed import _ensure_public_archive_record
-    from civicclerk.public_archive import PublicArchiveRepository
+    from townlight_meetings.demo_seed import _ensure_public_archive_record
+    from townlight_meetings.public_archive import PublicArchiveRepository
 
     db_url = f"sqlite:///{tmp_path / 'migrated.db'}"
     engine = sa.create_engine(db_url)

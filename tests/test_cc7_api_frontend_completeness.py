@@ -10,9 +10,9 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-import civicclerk.main as main_module
-from civicclerk.cc7_completeness import CC7_API_CATEGORIES, CC7_FRONTEND_PAGES, REQUIRED_VIEW_STATES
-from civicclerk.main import _is_staff_protected_path, app
+import townlight_meetings.main as main_module
+from townlight_meetings.cc7_completeness import CC7_API_CATEGORIES, CC7_FRONTEND_PAGES, REQUIRED_VIEW_STATES
+from townlight_meetings.main import _is_staff_protected_path, app
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -39,7 +39,7 @@ def _reset_cc7_runtime_state() -> None:
 
 def test_new_cc7_api_surfaces_execute_with_actionable_payloads(tmp_path, monkeypatch) -> None:
     monkeypatch.setenv(
-        "CIVICCLERK_AGENDA_INTAKE_DB_URL",
+        "TOWNLIGHT_MEETINGS_AGENDA_INTAKE_DB_URL",
         f"sqlite+pysqlite:///{(tmp_path / 'agenda-intake.db').as_posix()}",
     )
     main_module._agenda_intake_repository = None
@@ -183,8 +183,8 @@ def test_protected_cc7_paths_are_behind_staff_auth_middleware() -> None:
         assert _is_staff_protected_path(concrete), f"{path} is not covered by staff auth middleware"
 
 
-def test_staff_auth_enforcement_uses_civiccore_helpers() -> None:
-    source = (ROOT / "civicclerk" / "main.py").read_text(encoding="utf-8")
+def test_staff_auth_enforcement_uses_townlight_core_helpers() -> None:
+    source = (ROOT / "townlight_meetings" / "main.py").read_text(encoding="utf-8")
 
     for helper in (
         "authorize_bearer_roles",
@@ -192,7 +192,7 @@ def test_staff_auth_enforcement_uses_civiccore_helpers() -> None:
         "enforce_trusted_proxy_source",
         "resolve_optional_bearer_roles",
     ):
-        assert f"from civiccore.auth import" in source
+        assert f"from townlight_core.auth import" in source
         assert helper in source
 
 

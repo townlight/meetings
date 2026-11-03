@@ -13,7 +13,7 @@ from httpx import ASGITransport, AsyncClient
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "1.0.4"
+VERSION = "1.0.5"
 
 
 def load_pyproject() -> dict:
@@ -24,32 +24,28 @@ def load_pyproject() -> dict:
 
 def load_app_module():
     try:
-        spec = importlib.util.find_spec("civicclerk.main")
+        spec = importlib.util.find_spec("townlight_meetings.main")
     except ModuleNotFoundError:
         spec = None
-    assert spec is not None, "civicclerk.main must be importable."
-    return importlib.import_module("civicclerk.main")
+    assert spec is not None, "townlight_meetings.main must be importable."
+    return importlib.import_module("townlight_meetings.main")
 
 
 def test_pyproject_declares_runtime_package_and_version() -> None:
     data = load_pyproject()
 
-    assert data["project"]["name"] == "civicclerk"
+    assert data["project"]["name"] == "townlight-meetings"
     assert data["project"]["version"] == VERSION
     assert "Townlight Meetings" in data["project"]["description"]
 
 
-def test_pyproject_targets_published_civiccore_freeze_release_wheel() -> None:
+def test_pyproject_targets_published_townlight_core_freeze_release_wheel() -> None:
     data = load_pyproject()
     dependencies = data["project"]["dependencies"]
 
-    assert (
-        "civiccore @ https://github.com/townlight/core/releases/download/v1.2.1/"
-        "civiccore-1.2.1-py3-none-any.whl"
-        "#sha256=8dde29408e206048bde63ec14156a8e6329382af4d16b12710d12aa5c27f3f59"
-    ) in dependencies
+    assert "townlight-core==1.3.0.dev2" in dependencies
     assert not any(
-        "civiccore>=" in dep or "civiccore~=" in dep or dep == "civiccore==0.12.0"
+        "townlight_core>=" in dep or "townlight_core~=" in dep or dep == "townlight_core==0.12.0"
         for dep in dependencies
     )
 
@@ -67,8 +63,8 @@ def test_pyproject_declares_foundation_runtime_and_test_dependencies() -> None:
 
 def test_runtime_package_layout_exists() -> None:
     expected_paths = [
-        ROOT / "civicclerk" / "__init__.py",
-        ROOT / "civicclerk" / "main.py",
+        ROOT / "townlight_meetings" / "__init__.py",
+        ROOT / "townlight_meetings" / "main.py",
     ]
 
     for path in expected_paths:
@@ -78,7 +74,7 @@ def test_runtime_package_layout_exists() -> None:
 def test_public_fastapi_app_import_path_exists() -> None:
     module = load_app_module()
     assert isinstance(module.app, FastAPI)
-    assert module.app.title == "CivicMeetings"
+    assert module.app.title == "Townlight Meetings"
 
 
 @pytest.mark.asyncio
@@ -92,7 +88,7 @@ async def test_root_endpoint_explains_current_user_experience() -> None:
 
     assert response.status_code == 200
     payload = response.json()
-    assert payload["name"] == "CivicMeetings"
+    assert payload["name"] == "Townlight Meetings"
     assert payload["status"] == f"v{VERSION} runtime foundation release"
     assert "integrated React clerk console and public portal are now present" in payload["message"]
     assert "notice compliance" in payload["message"]
@@ -103,7 +99,7 @@ async def test_root_endpoint_explains_current_user_experience() -> None:
     assert "prompt YAML" in payload["message"]
     assert "Granicus" in payload["message"]
     assert "keyboard" in payload["message"]
-    assert "shared CivicCore notice compliance helper" in payload["message"]
+    assert "shared TownlightCore notice compliance helper" in payload["message"]
     assert f"v{VERSION}" in payload["message"]
     assert "trusted-header reverse-proxy mode" in payload["message"]
     assert "trusted-proxy CIDR allowlist" in payload["message"]
@@ -136,9 +132,9 @@ async def test_health_endpoint_is_actionable_for_it_staff() -> None:
     payload = response.json()
     assert payload == {
         "status": "ok",
-        "service": "civicclerk",
+        "service": "townlight_meetings",
         "version": VERSION,
-        "civiccore": module.CIVICCORE_VERSION,
+        "townlight_core": module.TOWNLIGHT_CORE_VERSION,
     }
 
 
@@ -148,12 +144,12 @@ def test_ci_runs_pytest_docs_and_placeholder_gates() -> None:
 
     assert "python -m pytest" in text
     assert "bash scripts/verify-docs.sh" in text
-    assert "python scripts/check-civiccore-placeholder-imports.py" in text
+    assert "python scripts/check-townlight_core-placeholder-imports.py" in text
 
 
 def test_placeholder_import_gate_passes_for_runtime_source() -> None:
     result = subprocess.run(
-        [sys.executable, "scripts/check-civiccore-placeholder-imports.py"],
+        [sys.executable, "scripts/check-townlight_core-placeholder-imports.py"],
         cwd=ROOT,
         text=True,
         capture_output=True,
@@ -169,6 +165,6 @@ def test_current_facing_docs_describe_runtime_foundation_honestly() -> None:
         text = (ROOT / relative).read_text(encoding="utf-8")
         assert "Townlight Beta 1" in text
         assert "AGPL-3.0-only" in text
-        assert "1.0.4" in text
+        assert "1.0.5" in text
         for claim in ("scaffold only", "not installable yet", "legal advice is available", "automatic ordinance codification is available"):
             assert claim not in text.lower()

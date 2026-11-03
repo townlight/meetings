@@ -1,4 +1,4 @@
-name: civicclerk cleanroom
+name: townlight_meetings cleanroom
 
 on:
   pull_request:
@@ -7,12 +7,14 @@ on:
       - ".github/workflows/cleanroom.yml"
       - "cleanroom/**"
       - "scripts/cleanroom/**"
-      - "scripts/run-civicclerk-cleanroom.sh"
-      - "scripts/check-civiccore-placeholder-imports.py"
+      - "scripts/run-townlight_meetings-cleanroom.sh"
+      - "scripts/check-townlight_core-placeholder-imports.py"
+      - "scripts/install-core-candidate.py"
+      - "config/core-source.json"
       - "pyproject.toml"
       - "tests/test_cc1_cleanroom_harness.py"
       - "docs/ops/cc-1-cleanroom-harness.md"
-      - "docs/evidence/cc1-civicclerk-cleanroom/**"
+      - "docs/evidence/cc1-townlight_meetings-cleanroom/**"
   workflow_dispatch:
     inputs:
       commit:
@@ -28,11 +30,11 @@ jobs:
       contents: read
     defaults:
       run:
-        working-directory: civicclerk-cleanroom-${{ github.run_id }}
+        working-directory: townlight_meetings-cleanroom-${{ github.run_id }}
     env:
       CC1_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || inputs.commit || github.sha }}
       CLEANROOM_RUN_COUNT: "2"
-      CIVICCORE_FREEZE_REF: v1.2.1
+      TOWNLIGHT_CORE_FREEZE_REF: v1.2.1
       GITHUB_TOKEN: ${{ github.token }}
     steps:
       - name: Check out harness
@@ -41,13 +43,14 @@ jobs:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
           clean: false
-          path: civicclerk-cleanroom-${{ github.run_id }}
+          path: townlight_meetings-cleanroom-${{ github.run_id }}
       - name: Verify Docker is available
         run: docker version
-      - name: Run CivicMeetings cleanroom harness
-        run: bash scripts/run-civicclerk-cleanroom.sh "$CC1_SHA" "docs/evidence/cc1-ci-${CC1_SHA}"
+      - name: Run Townlight Meetings cleanroom harness
+        run: bash scripts/run-townlight_meetings-cleanroom.sh "$CC1_SHA" "docs/evidence/cc1-ci-${CC1_SHA}"
       - name: Upload cleanroom evidence
         uses: actions/upload-artifact@v7
         with:
-          name: civicclerk-cc1-cleanroom-${{ env.CC1_SHA }}
-          path: civicclerk-cleanroom-${{ github.run_id }}/docs/evidence/cc1-ci-${{ env.CC1_SHA }}/
+          name: townlight_meetings-cc1-cleanroom-${{ env.CC1_SHA }}
+          path: townlight_meetings-cleanroom-${{ github.run_id }}/docs/evidence/cc1-ci-${{ env.CC1_SHA }}/
+          retention-days: 7

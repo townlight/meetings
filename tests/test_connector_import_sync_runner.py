@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import sys
+
 import json
 from pathlib import Path
 import subprocess
 
-from civicclerk.worker import (
+from townlight_meetings.worker import (
     CONNECTOR_SYNC_CONNECTORS_ENV_VAR,
     CONNECTOR_SYNC_ENABLED_ENV_VAR,
     CONNECTOR_SYNC_LEDGER_PATH_ENV_VAR,
@@ -34,7 +36,7 @@ def test_connector_import_sync_runner_writes_normalized_ledger(tmp_path: Path) -
 
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/run_connector_import_sync.py",
             "--payload-dir",
             str(payload_dir),
@@ -72,7 +74,7 @@ def test_connector_import_sync_runner_reports_actionable_failures(tmp_path: Path
 
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/run_connector_import_sync.py",
             "--payload-dir",
             str(payload_dir),
@@ -109,7 +111,7 @@ def test_connector_import_sync_runner_accepts_windows_utf8_bom_exports(tmp_path:
 
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/run_connector_import_sync.py",
             "--payload-dir",
             str(payload_dir),
@@ -130,7 +132,7 @@ def test_connector_import_sync_runner_accepts_windows_utf8_bom_exports(tmp_path:
 def test_connector_import_sync_runner_print_only_is_honest(tmp_path: Path) -> None:
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/run_connector_import_sync.py",
             "--payload-dir",
             str(tmp_path),

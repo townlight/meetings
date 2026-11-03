@@ -1,22 +1,22 @@
-# ADR-0001: CivicClerk MVP Boundary
+# ADR-0001: Townlight Meetings MVP Boundary
 
 Status: Accepted  
 Date: 2026-04-26
 
 ## Decision
 
-CivicClerk starts with meeting administration: meeting bodies, meetings,
+Townlight Meetings starts with meeting administration: meeting bodies, meetings,
 agenda intake, packet assembly, notice tracking, motions/votes, minutes,
 and public meeting archives.
 
 It does not start with livestream hosting, electronic voting, full
-transcription packaging, CivicCode integration, or broad boards and
+transcription packaging, Townlight Code integration, or broad boards and
 commissions management.
 
 ## Rationale
 
 The legal record of meetings is high-value, clerk-owned, and close to
-the existing CivicRecords AI architecture. A narrow vertical slice gives
+the existing Townlight Records architecture. A narrow vertical slice gives
 the team something usable and auditable before expanding into adjacent
 modules.
 

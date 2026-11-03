@@ -61,7 +61,7 @@ echo "Rehearsal root: $rehearsal_root"
 echo "Run id: $run_id"
 echo "Python verifier: python scripts/check_backup_restore_rehearsal.py"
 echo "Source stores: source-data/agenda-intake.db, source-data/agenda-items.db, source-data/meetings.db, source-data/packet-assembly.db, source-data/notice-checklist.db"
-echo "Backup manifest: backup/civicclerk-backup-manifest.json"
+echo "Backup manifest: backup/townlight_meetings-backup-manifest.json"
 echo "Restored stores: restored-data/*.db"
 echo "Restored export root: restored-exports"
 echo "Verification: database checksums, export checksums, restored agenda intake, agenda item, meeting, packet assembly, and notice checklist records"
@@ -81,8 +81,8 @@ fi
 
 cd "$repo_root"
 
-if [[ -n "${CIVICCLERK_REHEARSAL_PYTHON:-}" ]]; then
-  python_cmd=("${CIVICCLERK_REHEARSAL_PYTHON}")
+if [[ -n "${TOWNLIGHT_MEETINGS_REHEARSAL_PYTHON:-}" ]]; then
+  python_cmd=("${TOWNLIGHT_MEETINGS_REHEARSAL_PYTHON}")
 elif [[ "$(uname -s)" == MINGW* || "$(uname -s)" == MSYS* || "$(uname -s)" == CYGWIN* ]] && command -v py >/dev/null 2>&1; then
   python_cmd=(py -3)
 elif command -v python3 >/dev/null 2>&1; then
@@ -106,13 +106,13 @@ export PYTHONPATH="$pythonpath_repo_root${PYTHONPATH:+$pythonpath_separator$PYTH
 
 if [[ "$print_only" -ne 1 ]]; then
   if ! "${python_cmd[@]}" - <<'PY' >/dev/null 2>&1
-import civicclerk
-import civiccore
+import townlight_meetings
+import townlight_core
 import sqlalchemy
 PY
   then
-    echo "The selected Python cannot import CivicMeetings runtime dependencies." >&2
-    echo "Fix: install this checkout first with 'python -m pip install -e .', set CIVICCLERK_REHEARSAL_PYTHON to the prepared Python executable, or run the Windows PowerShell wrapper instead." >&2
+    echo "The selected Python cannot import Townlight Meetings runtime dependencies." >&2
+    echo "Fix: install this checkout first with 'python -m pip install -e .', set TOWNLIGHT_MEETINGS_REHEARSAL_PYTHON to the prepared Python executable, or run the Windows PowerShell wrapper instead." >&2
     exit 1
   fi
 fi

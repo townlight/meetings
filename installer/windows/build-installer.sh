@@ -2,10 +2,10 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-ISS="$ROOT/installer/windows/civicclerk.iss"
+ISS="$ROOT/installer/windows/townlight_meetings.iss"
 OUTPUT_DIR="$ROOT/installer/windows/build"
 
-APP_VERSION="${CIVICCLERK_VERSION:-}"
+APP_VERSION="${TOWNLIGHT_MEETINGS_VERSION:-}"
 if [[ -z "$APP_VERSION" ]]; then
   PYTHON_CMD=()
   if command -v python3 >/dev/null 2>&1; then
@@ -15,7 +15,7 @@ if [[ -z "$APP_VERSION" ]]; then
   elif command -v py >/dev/null 2>&1; then
     PYTHON_CMD=(py -3)
   else
-    echo "Python 3 was not found. Install Python 3 or set CIVICCLERK_VERSION=<semver> before building the installer." >&2
+    echo "Python 3 was not found. Install Python 3 or set TOWNLIGHT_MEETINGS_VERSION=<semver> before building the installer." >&2
     exit 1
   fi
   APP_VERSION="$(
@@ -36,7 +36,7 @@ required=(
   "docker/nginx.conf"
   "docs/examples/docker.env.example"
   "frontend/package.json"
-  "civicclerk/main.py"
+  "townlight_meetings/main.py"
   "README.md"
   "USER-MANUAL.md"
   "CHANGELOG.md"
@@ -77,7 +77,7 @@ if command -v wslpath >/dev/null 2>&1 && [[ "$ISS" == /mnt/* ]]; then
 fi
 "$ISCC" "$ISS_ARG" "/DMyAppVersion=$APP_VERSION"
 
-artifact="$OUTPUT_DIR/CivicMeetings-$APP_VERSION-Setup.exe"
+artifact="$OUTPUT_DIR/Townlight Meetings-$APP_VERSION-Setup.exe"
 if [[ ! -f "$artifact" ]]; then
   echo "Expected installer artifact was not produced: $artifact" >&2
   exit 1
@@ -85,11 +85,11 @@ fi
 
 echo "Built $artifact"
 
-sign_requested="${CIVICCLERK_SIGN_INSTALLER:-false}"
+sign_requested="${TOWNLIGHT_MEETINGS_SIGN_INSTALLER:-false}"
 normalized_sign_requested="$(printf '%s' "$sign_requested" | tr '[:upper:]' '[:lower:]')"
 case "$normalized_sign_requested" in
   1|true|yes|on)
-    SIGNTOOL_PATH="${CIVICCLERK_SIGNTOOL_PATH:-${SIGNTOOL:-signtool}}"
+    SIGNTOOL_PATH="${TOWNLIGHT_MEETINGS_SIGNTOOL_PATH:-${SIGNTOOL:-signtool}}"
     if ! command -v "$SIGNTOOL_PATH" >/dev/null 2>&1 && [[ ! -x "$SIGNTOOL_PATH" ]]; then
       for candidate in \
         "/mnt/c/Program Files (x86)/Windows Kits/10/bin/"*/x64/signtool.exe \
@@ -101,34 +101,34 @@ case "$normalized_sign_requested" in
       done
     fi
     if ! command -v "$SIGNTOOL_PATH" >/dev/null 2>&1 && [[ ! -x "$SIGNTOOL_PATH" ]]; then
-      echo "Installer signing was requested, but SignTool was not found. Set CIVICCLERK_SIGNTOOL_PATH=/path/to/signtool.exe." >&2
+      echo "Installer signing was requested, but SignTool was not found. Set TOWNLIGHT_MEETINGS_SIGNTOOL_PATH=/path/to/signtool.exe." >&2
       exit 1
     fi
-    timestamp_url="${CIVICCLERK_SIGNING_TIMESTAMP_URL:-}"
+    timestamp_url="${TOWNLIGHT_MEETINGS_SIGNING_TIMESTAMP_URL:-}"
     if [[ -z "$timestamp_url" ]]; then
-      echo "Installer signing requires CIVICCLERK_SIGNING_TIMESTAMP_URL=<enterprise RFC 3161 timestamp URL>." >&2
+      echo "Installer signing requires TOWNLIGHT_MEETINGS_SIGNING_TIMESTAMP_URL=<enterprise RFC 3161 timestamp URL>." >&2
       exit 1
     fi
     sign_args=(sign /fd sha256 /td sha256 /tr "$timestamp_url")
-    if [[ -n "${CIVICCLERK_SIGNING_CERT_SHA1:-}" ]]; then
-      sign_args+=(/sha1 "$CIVICCLERK_SIGNING_CERT_SHA1")
-    elif [[ -n "${CIVICCLERK_SIGNING_PFX:-}" ]]; then
-      sign_args+=(/f "$CIVICCLERK_SIGNING_PFX")
-      password_env_name="${CIVICCLERK_SIGNING_PFX_PASSWORD_ENV:-}"
+    if [[ -n "${TOWNLIGHT_MEETINGS_SIGNING_CERT_SHA1:-}" ]]; then
+      sign_args+=(/sha1 "$TOWNLIGHT_MEETINGS_SIGNING_CERT_SHA1")
+    elif [[ -n "${TOWNLIGHT_MEETINGS_SIGNING_PFX:-}" ]]; then
+      sign_args+=(/f "$TOWNLIGHT_MEETINGS_SIGNING_PFX")
+      password_env_name="${TOWNLIGHT_MEETINGS_SIGNING_PFX_PASSWORD_ENV:-}"
       if [[ -z "$password_env_name" || -z "${!password_env_name:-}" ]]; then
-        echo "PFX signing requires CIVICCLERK_SIGNING_PFX_PASSWORD_ENV to name a populated password env var." >&2
+        echo "PFX signing requires TOWNLIGHT_MEETINGS_SIGNING_PFX_PASSWORD_ENV to name a populated password env var." >&2
         exit 1
       fi
       sign_args+=(/p "${!password_env_name}")
     else
-      echo "Installer signing requires CIVICCLERK_SIGNING_CERT_SHA1 or CIVICCLERK_SIGNING_PFX." >&2
+      echo "Installer signing requires TOWNLIGHT_MEETINGS_SIGNING_CERT_SHA1 or TOWNLIGHT_MEETINGS_SIGNING_PFX." >&2
       exit 1
     fi
     "$SIGNTOOL_PATH" "${sign_args[@]}" "$artifact"
     echo "Signed $artifact"
     ;;
   *)
-    echo "Installer signing skipped. CivicSuite public Windows installers are unsigned; downstream organizations may set CIVICCLERK_SIGN_INSTALLER=true after configuring SignTool, a certificate identity, and timestamp URL for an internal build."
+    echo "Installer signing skipped. Townlight public Windows installers are unsigned; downstream organizations may set TOWNLIGHT_MEETINGS_SIGN_INSTALLER=true after configuring SignTool, a certificate identity, and timestamp URL for an internal build."
     ;;
 esac
 

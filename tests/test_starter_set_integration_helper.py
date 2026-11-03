@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import sys
+
 import json
 from pathlib import Path
 import subprocess
@@ -20,23 +22,23 @@ def _write_umbrella_fixture(root: Path) -> None:
                 "profiles": [
                     {
                         "id": "clerk-core",
-                        "modules": ["civiccore", "civicrecords-ai", "civicclerk"],
+                        "modules": ["townlight_core", "townlight_records", "townlight_meetings"],
                     }
                 ],
                 "modules": [
-                    {"id": "civiccore", "current_version": "1.1.0", "selectable": False},
+                    {"id": "townlight_core", "current_version": "1.3.0.dev2", "selectable": False},
                     {
-                        "id": "civicrecords-ai",
-                        "current_version": "1.6.1",
+                        "id": "townlight_records",
+                        "current_version": "1.8.0.dev2",
                         "selectable": True,
-                        "dependencies": ["civiccore"],
+                        "dependencies": ["townlight_core"],
                     },
                     {
-                        "id": "civicclerk",
-                        "current_version": "1.0.4",
+                        "id": "townlight_meetings",
+                        "current_version": "1.0.5",
                         "selectable": True,
-                        "civiccore_requirement": "1.2.1",
-                        "dependencies": ["civiccore"],
+                        "townlight_core_requirement": "1.3.0.dev2",
+                        "dependencies": ["townlight_core"],
                     },
                 ],
             }
@@ -46,20 +48,21 @@ def _write_umbrella_fixture(root: Path) -> None:
     (docs / "starter-set-release-contract.md").write_text(
         "\n".join(
             [
-                "CivicCore installs first",
-                "CivicRecords AI and CivicMeetings are selectable",
-                "CivicMeetings reports v1.0.4 with CivicCore v1.2.1",
+                "Townlight Core installs first",
+                "Townlight Records and Townlight Meetings are selectable",
+                "Townlight Meetings reports version 1.0.5 with Townlight Core 1.3.0.dev2",
                 "--staff-mode bearer --workflow-proof",
                 "Package Cleanroom Contract",
                 "workflow_proof_requested=true",
-                "civicclerk_staff_mode=bearer",
-                "not yet a claim that CivicRecords AI and CivicMeetings exchange workflow records",
+                "townlight_meetings_staff_mode=bearer",
+                "exact signed Windows installed acceptance remains pending",
+                "source-only checks do not certify an installer",
             ]
         ),
         encoding="utf-8",
     )
-    (dist / "CivicSuite-clerk-core-linux-0.1.0.tar.gz").write_text("linux\n", encoding="utf-8")
-    (dist / "CivicSuite-clerk-core-windows-0.1.0.zip").write_text("windows\n", encoding="utf-8")
+    (dist / "Townlight-clerk-core-linux-0.1.0.tar.gz").write_text("linux\n", encoding="utf-8")
+    (dist / "Townlight-clerk-core-windows-0.1.0.zip").write_text("windows\n", encoding="utf-8")
 
 
 def test_starter_set_integration_passes_with_umbrella_contract(tmp_path: Path) -> None:
@@ -68,7 +71,7 @@ def test_starter_set_integration_passes_with_umbrella_contract(tmp_path: Path) -
 
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/check_starter_set_integration.py",
             "--umbrella-root",
             str(tmp_path),
@@ -96,7 +99,7 @@ def test_starter_set_integration_passes_with_umbrella_contract(tmp_path: Path) -
 
 def test_starter_set_integration_print_only_documents_contract() -> None:
     result = subprocess.run(
-        ["python", "scripts/check_starter_set_integration.py", "--print-only"],
+        [sys.executable, "scripts/check_starter_set_integration.py", "--print-only"],
         cwd=ROOT,
         check=False,
         capture_output=True,
@@ -112,7 +115,7 @@ def test_starter_set_integration_print_only_documents_contract() -> None:
 def test_starter_set_integration_fails_when_manifest_is_missing(tmp_path: Path) -> None:
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/check_starter_set_integration.py",
             "--umbrella-root",
             str(tmp_path),

@@ -1,5 +1,6 @@
 param(
-    [string]$WheelPath = "dist/civicclerk-1.0.4-py3-none-any.whl",
+    [string]$WheelPath = "dist/townlight_meetings-1.0.5-py3-none-any.whl",
+    [string]$CoreWheelPath = "../candidate-wheels/townlight_core-1.3.0.dev2-py3-none-any.whl",
     [string]$RehearsalRoot = ".fresh-install-rehearsal",
     [int]$AppPort = 8776,
     [switch]$KeepServer,
@@ -29,6 +30,7 @@ function Write-FreshInstallPlan {
     param(
         [string]$RepoRoot,
         [string]$ResolvedWheelPath,
+        [string]$ResolvedCoreWheelPath,
         [string]$ResolvedRehearsalRoot,
         [string]$PythonPath,
         [string]$AppUrl
@@ -41,13 +43,14 @@ function Write-FreshInstallPlan {
     Write-Output "Virtual environment: $ResolvedRehearsalRoot\.venv"
     Write-Output "Create venv: python -m venv $ResolvedRehearsalRoot\.venv"
     Write-Output "Upgrade pip: $PythonPath -m pip install --upgrade pip"
+    Write-Output "Install exact Core wheel first: $PythonPath -m pip install $resolvedCoreWheelPath"
     Write-Output "Install wheel: $PythonPath -m pip install $ResolvedWheelPath"
-    Write-Output "Set CIVICCLERK_STAFF_AUTH_MODE=protected"
-    Write-Output "App command: $PythonPath -m uvicorn civicclerk.main:app --host 127.0.0.1 --port $AppPort"
+    Write-Output "Set TOWNLIGHT_MEETINGS_STAFF_AUTH_MODE=protected"
+    Write-Output "App command: $PythonPath -m uvicorn townlight_meetings.main:app --host 127.0.0.1 --port $AppPort"
     Write-Output "Smoke check: GET $AppUrl/health"
     Write-Output "Readiness check: GET $AppUrl/staff/auth-readiness"
     Write-Output "Browser check: open $AppUrl/staff"
-    Write-Output "Expected health: {`"status`":`"ok`",`"service`":`"civicclerk`",`"version`":`"1.0.4`",`"civiccore`":`"1.2.1`"}"
+    Write-Output "Expected health: {`"status`":`"ok`",`"service`":`"townlight_meetings`",`"version`":`"1.0.5`",`"townlight_core`":`"1.3.0.dev2`"}"
     Write-Output "Expected auth readiness: mode=protected and anonymous staff writes denied"
     Write-Output "If the wheel is missing, build it first with: python -m build"
     Write-Output "If port $AppPort is already in use, stop the existing process or rerun with -AppPort set to an available port."
@@ -84,6 +87,7 @@ function Test-LoopbackPortAvailable {
 
 $repoRoot = Get-RepoRoot
 $resolvedWheelPath = Resolve-RehearsalPath -RepoRoot $repoRoot -PathValue $WheelPath
+$resolvedCoreWheelPath = Resolve-RehearsalPath -RepoRoot $repoRoot -PathValue $CoreWheelPath
 $resolvedRehearsalRoot = Resolve-RehearsalPath -RepoRoot $repoRoot -PathValue $RehearsalRoot
 $venvPath = Join-Path $resolvedRehearsalRoot ".venv"
 $pythonPath = Join-Path $venvPath "Scripts\python.exe"
@@ -92,6 +96,7 @@ $appUrl = "http://127.0.0.1:$AppPort"
 Write-FreshInstallPlan `
     -RepoRoot $repoRoot `
     -ResolvedWheelPath $resolvedWheelPath `
+    -ResolvedCoreWheelPath $resolvedCoreWheelPath `
     -ResolvedRehearsalRoot $resolvedRehearsalRoot `
     -PythonPath $pythonPath `
     -AppUrl $appUrl
@@ -103,6 +108,9 @@ if ($PrintOnly) {
 if (-not (Test-Path -LiteralPath $resolvedWheelPath -PathType Leaf)) {
     throw "Fresh install rehearsal cannot find the wheel at '$resolvedWheelPath'. Build the release artifact first with 'python -m build', then rerun this helper."
 }
+if (-not (Test-Path -LiteralPath $resolvedCoreWheelPath -PathType Leaf)) {
+    throw "Missing exact local townlight-core 1.3.0.dev2 wheel. Build it from the matching Core checkout and pass -CoreWheelPath. This renamed candidate is not yet on a package index."
+}
 
 if (-not (Test-LoopbackPortAvailable -Port $AppPort)) {
     throw "Fresh install rehearsal cannot use 127.0.0.1:$AppPort because the port is already in use. Stop the existing local process or rerun this helper with -AppPort set to an available port."
@@ -111,11 +119,15 @@ if (-not (Test-LoopbackPortAvailable -Port $AppPort)) {
 New-Item -ItemType Directory -Force -Path $resolvedRehearsalRoot | Out-Null
 python -m venv $venvPath
 & $pythonPath -m pip install --upgrade pip
+if ($LASTEXITCODE -ne 0) { throw "pip upgrade failed" }
+& $pythonPath -m pip install $resolvedCoreWheelPath
+if ($LASTEXITCODE -ne 0) { throw "Exact Core wheel installation failed" }
 & $pythonPath -m pip install $resolvedWheelPath
+if ($LASTEXITCODE -ne 0) { throw "Meetings wheel installation failed" }
 
-$env:CIVICCLERK_STAFF_AUTH_MODE = "protected"
+$env:TOWNLIGHT_MEETINGS_STAFF_AUTH_MODE = "protected"
 $appProcess = Start-Process $pythonPath `
-    -ArgumentList "-m", "uvicorn", "civicclerk.main:app", "--host", "127.0.0.1", "--port", "$AppPort" `
+    -ArgumentList "-m", "uvicorn", "townlight_meetings.main:app", "--host", "127.0.0.1", "--port", "$AppPort" `
     -WorkingDirectory $resolvedRehearsalRoot `
     -WindowStyle Hidden `
     -PassThru
@@ -135,8 +147,8 @@ try {
         throw "The installed Townlight Meetings app did not answer $appUrl/health within 20 seconds. Check the app process output and whether port $AppPort is already in use."
     }
 
-    if ($health.status -ne "ok" -or $health.service -ne "civicclerk" -or $health.version -ne "1.0.4" -or $health.civiccore -ne "1.2.1") {
-        throw "Unexpected /health response: $($health | ConvertTo-Json -Compress). Expected Townlight Meetings 1.0.4 with Townlight Core 1.2.1."
+    if ($health.status -ne "ok" -or $health.service -ne "townlight_meetings" -or $health.version -ne "1.0.5" -or $health.townlight_core -ne "1.3.0.dev2") {
+        throw "Unexpected /health response: $($health | ConvertTo-Json -Compress). Expected Townlight Meetings 1.0.5 with Townlight Core 1.3.0.dev2."
     }
 
     $readiness = Invoke-JsonGet -Url "$appUrl/staff/auth-readiness"
@@ -145,7 +157,7 @@ try {
     }
 
     $staffResponse = Invoke-WebRequest -Uri "$appUrl/staff" -UseBasicParsing -TimeoutSec 10
-    if ($staffResponse.StatusCode -ne 200 -or $staffResponse.Content -notmatch "CivicMeetings") {
+    if ($staffResponse.StatusCode -ne 200 -or $staffResponse.Content -notmatch "Townlight Meetings") {
         throw "Unexpected /staff response. Expected HTTP 200 with the Townlight Meetings staff workflow shell."
     }
 

@@ -5,15 +5,20 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     curl \
+    git \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
 COPY pyproject.toml README.md ./
-COPY civicclerk ./civicclerk
+COPY townlight_meetings ./townlight_meetings
 COPY prompts ./prompts
 
-RUN pip install --no-cache-dir .
+COPY config/core-source.json ./config/core-source.json
+COPY scripts/install-core-candidate.py ./scripts/install-core-candidate.py
+RUN python -m pip install --no-cache-dir build \
+    && python scripts/install-core-candidate.py \
+    && python -m pip install --no-cache-dir .
 
 EXPOSE 8776
 
-CMD ["uvicorn", "civicclerk.main:app", "--host", "0.0.0.0", "--port", "8776"]
+CMD ["uvicorn", "townlight_meetings.main:app", "--host", "0.0.0.0", "--port", "8776"]

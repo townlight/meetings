@@ -1,7 +1,7 @@
 ﻿# Release Signing and Provenance
 
 Townlight Meetings consumes the canonical Townlight release-provenance gate from
-`civiccore.release_provenance`. The local `scripts/verify-release-provenance.py`
+`townlight_core.release_provenance`. The local `scripts/verify-release-provenance.py`
 wrapper exists only so repo workflows have a stable command.
 
 GitHub release pages can show a "Verified" badge for the target commit even
@@ -25,12 +25,12 @@ tag identity:
 ```bash
 cosign verify-blob release-attestation.json \
   --bundle release-attestation.json.bundle \
-  --certificate-identity "https://github.com/CivicSuite/civicclerk/.github/workflows/release.yml@refs/tags/<tag>" \
+  --certificate-identity "https://github.com/Townlight/townlight_meetings/.github/workflows/release.yml@refs/tags/<tag>" \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
 
 sha256sum -c SHA256SUMS.txt
 python scripts/verify-release-provenance.py <tag> \
-  --repo CivicSuite/civicclerk \
+  --repo Townlight/townlight_meetings \
   --attestation release-attestation.json \
   --bundle release-attestation.json.bundle \
   --artifacts-dir .
@@ -54,7 +54,7 @@ Defect an outside auditor can verify:
 Reproducer:
 
 ```bash
-python scripts/verify-release-provenance.py v0.1.20 --repo CivicSuite/civicclerk
+python scripts/verify-release-provenance.py v0.1.20 --repo Townlight/townlight_meetings
 ```
 
 Expected output:

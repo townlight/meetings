@@ -1,4 +1,4 @@
-"""Non-mutating CivicMeetings deployment readiness preflight."""
+"""Non-mutating Townlight Meetings deployment readiness preflight."""
 
 from __future__ import annotations
 
@@ -17,23 +17,23 @@ if str(ROOT) not in sys.path:
 
 from fastapi import HTTPException
 
-from civicclerk import __version__
-from civicclerk.main import (
+from townlight_meetings import __version__
+from townlight_meetings.main import (
     STAFF_AUTH_MODE_ENV_VAR,
     STAFF_AUTH_SSO_TRUSTED_PROXIES_ENV_VAR,
     STAFF_AUTH_TOKEN_ROLES_ENV_VAR,
     staff_auth_readiness,
 )
-from civiccore import __version__ as CIVICCORE_VERSION
+from townlight_core import __version__ as TOWNLIGHT_CORE_VERSION
 
 
-DIST_ROOT_ENV_VAR = "CIVICCLERK_DEPLOYMENT_PREFLIGHT_DIST_ROOT"
+DIST_ROOT_ENV_VAR = "TOWNLIGHT_MEETINGS_DEPLOYMENT_PREFLIGHT_DIST_ROOT"
 DATABASE_ENV_VARS = (
-    "CIVICCLERK_AGENDA_INTAKE_DB_URL",
-    "CIVICCLERK_AGENDA_ITEM_DB_URL",
-    "CIVICCLERK_MEETING_DB_URL",
-    "CIVICCLERK_PACKET_ASSEMBLY_DB_URL",
-    "CIVICCLERK_NOTICE_CHECKLIST_DB_URL",
+    "TOWNLIGHT_MEETINGS_AGENDA_INTAKE_DB_URL",
+    "TOWNLIGHT_MEETINGS_AGENDA_ITEM_DB_URL",
+    "TOWNLIGHT_MEETINGS_MEETING_DB_URL",
+    "TOWNLIGHT_MEETINGS_PACKET_ASSEMBLY_DB_URL",
+    "TOWNLIGHT_MEETINGS_NOTICE_CHECKLIST_DB_URL",
 )
 DOC_ARTIFACTS = (
     "README.md",
@@ -98,7 +98,7 @@ def print_report(
     checks = list(checks)
     counts = {status: sum(1 for check in checks if check.status == status) for status in ("PASS", "WARN", "FAIL")}
     print("Townlight Meetings deployment readiness preflight")
-    print(f"Version: civicclerk {__version__}; civiccore {CIVICCORE_VERSION}")
+    print(f"Version: townlight_meetings {__version__}; townlight_core {TOWNLIGHT_CORE_VERSION}")
     if loaded_env_file is not None:
         print(f"env_file={_display_path(loaded_env_file)}")
     print(f"deployment_ready={str(deployment_ready).lower()}")
@@ -183,15 +183,15 @@ def _database_checks() -> list[Check]:
 
 
 def _export_root_checks() -> list[Check]:
-    raw_export_root = os.environ.get("CIVICCLERK_EXPORT_ROOT", "exports")
+    raw_export_root = os.environ.get("TOWNLIGHT_MEETINGS_EXPORT_ROOT", "exports")
     export_root = Path(raw_export_root)
-    if not os.environ.get("CIVICCLERK_EXPORT_ROOT"):
+    if not os.environ.get("TOWNLIGHT_MEETINGS_EXPORT_ROOT"):
         return [
             Check(
                 status="WARN",
                 name="packet export root",
-                message="CIVICCLERK_EXPORT_ROOT is not set, so exports will use the local default ./exports.",
-                fix="Set CIVICCLERK_EXPORT_ROOT to the deployment packet-export directory and ensure the service account can write there.",
+                message="TOWNLIGHT_MEETINGS_EXPORT_ROOT is not set, so exports will use the local default ./exports.",
+                fix="Set TOWNLIGHT_MEETINGS_EXPORT_ROOT to the deployment packet-export directory and ensure the service account can write there.",
             )
         ]
     if export_root.exists() and not export_root.is_dir():
@@ -199,15 +199,15 @@ def _export_root_checks() -> list[Check]:
             Check(
                 status="FAIL",
                 name="packet export root",
-                message="CIVICCLERK_EXPORT_ROOT points to a file, not a directory.",
-                fix="Set CIVICCLERK_EXPORT_ROOT to an existing directory or create the directory before packet export smoke checks.",
+                message="TOWNLIGHT_MEETINGS_EXPORT_ROOT points to a file, not a directory.",
+                fix="Set TOWNLIGHT_MEETINGS_EXPORT_ROOT to an existing directory or create the directory before packet export smoke checks.",
             )
         ]
     return [
         Check(
             status="PASS",
             name="packet export root",
-            message="CIVICCLERK_EXPORT_ROOT is configured; path value is intentionally not printed.",
+            message="TOWNLIGHT_MEETINGS_EXPORT_ROOT is configured; path value is intentionally not printed.",
             fix="Run a packet export smoke check and confirm the generated manifest plus checksums land under that directory.",
         )
     ]
@@ -217,7 +217,7 @@ def _placeholder_checks() -> list[Check]:
     env_names = (
         STAFF_AUTH_TOKEN_ROLES_ENV_VAR,
         *DATABASE_ENV_VARS,
-        "CIVICCLERK_EXPORT_ROOT",
+        "TOWNLIGHT_MEETINGS_EXPORT_ROOT",
         DIST_ROOT_ENV_VAR,
     )
     placeholder_names = [
@@ -247,8 +247,8 @@ def _placeholder_checks() -> list[Check]:
 def _release_artifact_checks() -> list[Check]:
     dist_root = Path(os.environ.get(DIST_ROOT_ENV_VAR, ROOT / "dist"))
     required = (
-        dist_root / f"civicclerk-{__version__}-py3-none-any.whl",
-        dist_root / f"civicclerk-{__version__}.tar.gz",
+        dist_root / f"townlight_meetings-{__version__}-py3-none-any.whl",
+        dist_root / f"townlight_meetings-{__version__}.tar.gz",
         dist_root / "SHA256SUMS.txt",
     )
     missing = [_display_path(path) for path in required if not path.exists()]
@@ -372,8 +372,8 @@ def _looks_like_placeholder(value: str) -> bool:
             "replace-with",
             "replace_me",
             "placeholder",
-            "civicclerk-data",
-            "civicclerk-exports",
+            "townlight_meetings-data",
+            "townlight_meetings-exports",
         )
     )
 

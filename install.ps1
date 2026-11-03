@@ -90,17 +90,17 @@ if (-not (Test-Path $TemplatePath)) {
 if (-not (Test-Path $EnvPath)) {
     $secret = New-HexSecret
     $content = Get-Content $TemplatePath -Raw
-    $content = $content -replace "CIVICCLERK_POSTGRES_PASSWORD=change-this-before-shared-use", "CIVICCLERK_POSTGRES_PASSWORD=$secret"
+    $content = $content -replace "TOWNLIGHT_MEETINGS_POSTGRES_PASSWORD=change-this-before-shared-use", "TOWNLIGHT_MEETINGS_POSTGRES_PASSWORD=$secret"
     Set-Content -Path $EnvPath -Value $content -Encoding UTF8
     Write-Host "Created .env from docs\examples\docker.env.example with a generated database password."
 } else {
     Write-Host ".env already exists; preserving local settings."
 }
 
-$apiPort = Read-EnvValue -Name "CIVICCLERK_API_PORT" -Default "8776"
-$webPort = Read-EnvValue -Name "CIVICCLERK_WEB_PORT" -Default "8080"
-$seedMode = Read-EnvValue -Name "CIVICCLERK_DEMO_SEED" -Default "1"
-$authMode = Read-EnvValue -Name "CIVICCLERK_STAFF_AUTH_MODE" -Default "protected"
+$apiPort = Read-EnvValue -Name "TOWNLIGHT_MEETINGS_API_PORT" -Default "8776"
+$webPort = Read-EnvValue -Name "TOWNLIGHT_MEETINGS_WEB_PORT" -Default "8080"
+$seedMode = Read-EnvValue -Name "TOWNLIGHT_MEETINGS_DEMO_SEED" -Default "1"
+$authMode = Read-EnvValue -Name "TOWNLIGHT_MEETINGS_STAFF_AUTH_MODE" -Default "protected"
 
 Write-Host "Staff auth mode: $authMode"
 if ($authMode -eq "open") {
@@ -127,8 +127,8 @@ foreach ($requiredService in @("api", "frontend")) {
 }
 
 Write-Step "Checking health endpoints"
-Wait-Http -Url "http://127.0.0.1:$apiPort/health" -Name "CivicMeetings API"
-Wait-Http -Url "http://127.0.0.1:$webPort/" -Name "CivicMeetings staff app"
+Wait-Http -Url "http://127.0.0.1:$apiPort/health" -Name "Townlight Meetings API"
+Wait-Http -Url "http://127.0.0.1:$webPort/" -Name "Townlight Meetings staff app"
 
 Write-Host ""
 Write-Host "Townlight Meetings is running."

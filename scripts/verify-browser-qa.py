@@ -1,4 +1,4 @@
-"""Verify CivicMeetings browser QA artifacts and accessibility fixtures."""
+"""Verify Townlight Meetings browser QA artifacts and accessibility fixtures."""
 
 from __future__ import annotations
 
@@ -11,8 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from civiccore.verification import validate_release_browser_evidence
-from civicclerk.cc7_completeness import CC7_FRONTEND_PAGES, REQUIRED_VIEW_STATES
+from townlight_core.verification import validate_release_browser_evidence
+from townlight_meetings.cc7_completeness import CC7_FRONTEND_PAGES, REQUIRED_VIEW_STATES
 
 
 REQUIRED_STATES = ("loading", "success", "empty", "error", "partial")
@@ -22,7 +22,7 @@ REQUIRED_CHECKS = ("keyboard", "focus", "contrast", "console")
 def main() -> int:
     failures: list[str] = []
     checklist = ROOT / "docs" / "browser-qa" / "milestone11-checklist.md"
-    release_evidence = ROOT / "docs" / "browser-qa" / "beta-1-publication-evidence.json"
+    release_evidence = ROOT / "docs" / "browser-qa" / "naming-candidate-evidence.json"
     states = ROOT / "docs" / "browser-qa" / "states.html"
     version = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
     screenshots = [

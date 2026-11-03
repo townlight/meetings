@@ -11,8 +11,8 @@ from uuid import uuid4
 import pytest
 import sqlalchemy as sa
 
-from civicclerk import motion_vote as motion_vote_module
-from civicclerk.motion_vote import MotionVoteRepository
+from townlight_meetings import motion_vote as motion_vote_module
+from townlight_meetings.motion_vote import MotionVoteRepository
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -315,18 +315,18 @@ def test_same_timestamp_captures_preserve_insertion_order(tmp_path, monkeypatch)
 def test_migration_0015_adds_capture_seq_with_legacy_backfill() -> None:
     path = (
         ROOT
-        / "civicclerk"
+        / "townlight_meetings"
         / "migrations"
         / "versions"
-        / "civicclerk_0015_capture_seq.py"
+        / "townlight_meetings_0015_capture_seq.py"
     )
-    assert path.exists(), "Missing migration: civicclerk_0015_capture_seq.py"
-    spec = importlib.util.spec_from_file_location("civicclerk_0015_capture_seq", path)
+    assert path.exists(), "Missing migration: townlight_meetings_0015_capture_seq.py"
+    spec = importlib.util.spec_from_file_location("townlight_meetings_0015", path)
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    assert module.revision == "civicclerk_0015_capture_seq"
-    assert module.down_revision == "civicclerk_0014_public_records"
+    assert module.revision == "townlight_meetings_0015"
+    assert module.down_revision == "townlight_meetings_0014"
     assert callable(module.upgrade)
     assert callable(module.downgrade)
 
@@ -348,17 +348,17 @@ def test_migration_0015_adds_capture_seq_with_legacy_backfill() -> None:
 def test_migration_0012_adds_action_item_actor_and_extends_chain() -> None:
     path = (
         ROOT
-        / "civicclerk"
+        / "townlight_meetings"
         / "migrations"
         / "versions"
-        / "civicclerk_0012_action_item_actor.py"
+        / "townlight_meetings_0012_action_item_actor.py"
     )
-    assert path.exists(), "Missing migration: civicclerk_0012_action_item_actor.py"
-    spec = importlib.util.spec_from_file_location("civicclerk_0012_action_item_actor", path)
+    assert path.exists(), "Missing migration: townlight_meetings_0012_action_item_actor.py"
+    spec = importlib.util.spec_from_file_location("townlight_meetings_0012_action_item_actor", path)
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    assert module.revision == "civicclerk_0012_action_actor"
-    assert module.down_revision == "civicclerk_0011_data_model"
+    assert module.revision == "townlight_meetings_0012"
+    assert module.down_revision == "townlight_meetings_0011"
     assert callable(module.upgrade)
     assert callable(module.downgrade)

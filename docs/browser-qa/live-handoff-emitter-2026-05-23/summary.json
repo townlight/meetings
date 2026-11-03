@@ -3,7 +3,7 @@
   "results": [
     {
       "viewport": "desktop",
-      "screenshot": "C:\\Users\\scott\\OneDrive\\Desktop\\Claude\\civicclerk\\docs\\browser-qa\\live-handoff-emitter-2026-05-23\\desktop.png",
+      "screenshot": "C:\\Users\\scott\\OneDrive\\Desktop\\Claude\\townlight_meetings\\docs\\browser-qa\\live-handoff-emitter-2026-05-23\\desktop.png",
       "hasLiveMode": true,
       "hasUrlKnob": true,
       "hasSkippedState": true,
@@ -11,7 +11,7 @@
     },
     {
       "viewport": "mobile",
-      "screenshot": "C:\\Users\\scott\\OneDrive\\Desktop\\Claude\\civicclerk\\docs\\browser-qa\\live-handoff-emitter-2026-05-23\\mobile.png",
+      "screenshot": "C:\\Users\\scott\\OneDrive\\Desktop\\Claude\\townlight_meetings\\docs\\browser-qa\\live-handoff-emitter-2026-05-23\\mobile.png",
       "hasLiveMode": true,
       "hasUrlKnob": true,
       "hasSkippedState": true,

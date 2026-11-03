@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-wheel_path="dist/civicclerk-1.0.4-py3-none-any.whl"
+wheel_path="dist/townlight_meetings-1.0.5-py3-none-any.whl"
+core_wheel_path="../candidate-wheels/townlight_core-1.3.0.dev2-py3-none-any.whl"
 rehearsal_root=".fresh-install-rehearsal"
 app_port=8776
 keep_server=0
@@ -9,6 +10,10 @@ print_only=0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --core-wheel-path)
+      core_wheel_path="$2"
+      shift 2
+      ;;
     --wheel-path)
       wheel_path="$2"
       shift 2
@@ -61,6 +66,7 @@ resolve_path() {
 }
 
 resolved_wheel_path="$(resolve_path "${wheel_path}")"
+resolved_core_wheel_path="$(resolve_path "${core_wheel_path}")"
 resolved_rehearsal_root="$(resolve_path "${rehearsal_root}")"
 venv_path="${resolved_rehearsal_root}/.venv"
 python_path="${venv_path}/${venv_python_relative}"
@@ -75,13 +81,14 @@ write_plan() {
   echo "Host Python: ${host_python:-not found}"
   echo "Create venv: ${host_python:-python3} -m venv ${venv_path}"
   echo "Upgrade pip: ${python_path} -m pip install --upgrade pip"
+  echo "Install exact Core wheel first: ${python_path} -m pip install ${resolved_core_wheel_path}"
   echo "Install wheel: ${python_path} -m pip install ${resolved_wheel_path}"
-  echo "Export CIVICCLERK_STAFF_AUTH_MODE=protected"
-  echo "App command: ${python_path} -m uvicorn civicclerk.main:app --host 127.0.0.1 --port ${app_port}"
+  echo "Export TOWNLIGHT_MEETINGS_STAFF_AUTH_MODE=protected"
+  echo "App command: ${python_path} -m uvicorn townlight_meetings.main:app --host 127.0.0.1 --port ${app_port}"
   echo "Smoke check: GET ${app_url}/health"
   echo "Readiness check: GET ${app_url}/staff/auth-readiness"
   echo "Browser check: open ${app_url}/staff"
-  echo 'Expected health: {"status":"ok","service":"civicclerk","version":"1.0.4","civiccore":"1.2.1"}'
+  echo 'Expected health: {"status":"ok","service":"townlight_meetings","version":"1.0.5","townlight_core":"1.3.0.dev2"}'
   echo "Expected auth readiness: mode=protected and anonymous staff writes denied"
   echo "If the wheel is missing, build it first with: python -m build"
   echo "If port ${app_port} is already in use, stop the existing process or rerun with --app-port set to an available port."
@@ -133,6 +140,10 @@ if ! port_available; then
   echo "Fresh install rehearsal cannot use 127.0.0.1:${app_port} because the port is already in use. Stop the existing local process or rerun this helper with --app-port set to an available port." >&2
   exit 1
 fi
+if [[ ! -f "${resolved_core_wheel_path}" ]]; then
+  echo "Missing exact local townlight-core 1.3.0.dev2 wheel. Build it from the matching Core checkout and pass --core-wheel-path. This renamed candidate is not yet on a package index." >&2
+  exit 1
+fi
 
 mkdir -p "${resolved_rehearsal_root}"
 if ! venv_output="$("${host_python}" -m venv "${venv_path}" 2>&1)"; then
@@ -141,11 +152,12 @@ if ! venv_output="$("${host_python}" -m venv "${venv_path}" 2>&1)"; then
   exit 1
 fi
 "${python_path}" -m pip install --upgrade pip
+"${python_path}" -m pip install "${resolved_core_wheel_path}"
 "${python_path}" -m pip install "${resolved_wheel_path}"
 
-export CIVICCLERK_STAFF_AUTH_MODE="protected"
+export TOWNLIGHT_MEETINGS_STAFF_AUTH_MODE="protected"
 cd "${resolved_rehearsal_root}"
-"${python_path}" -m uvicorn civicclerk.main:app --host 127.0.0.1 --port "${app_port}" &
+"${python_path}" -m uvicorn townlight_meetings.main:app --host 127.0.0.1 --port "${app_port}" &
 app_pid=$!
 
 cleanup() {
@@ -165,13 +177,13 @@ for _ in {1..20}; do
   sleep 1
 done
 
-expected='{"civiccore": "1.2.1", "service": "civicclerk", "status": "ok", "version": "1.0.4"}'
+expected='{"townlight_core": "1.3.0.dev2", "service": "townlight_meetings", "status": "ok", "version": "1.0.5"}'
 if [[ -z "${health}" ]]; then
-  echo "The installed CivicMeetings app did not answer ${app_url}/health within 20 seconds. Check the app process output and whether port ${app_port} is already in use." >&2
+  echo "The installed Townlight Meetings app did not answer ${app_url}/health within 20 seconds. Check the app process output and whether port ${app_port} is already in use." >&2
   exit 1
 fi
 if [[ "${health}" != "${expected}" ]]; then
-  echo "Unexpected /health response: ${health}. Expected CivicMeetings 1.0.4 with CivicCore 1.2.1." >&2
+  echo "Unexpected /health response: ${health}. Expected Townlight Meetings 1.0.5 with Townlight Core 1.3.0.dev2." >&2
   exit 1
 fi
 
@@ -187,8 +199,8 @@ from urllib.request import urlopen
 
 with urlopen(sys.argv[1], timeout=10) as response:
     body = response.read().decode("utf-8")
-    if response.status != 200 or "CivicMeetings" not in body:
-        raise SystemExit("Unexpected /staff response. Expected HTTP 200 with the CivicMeetings staff workflow shell.")
+    if response.status != 200 or "Townlight Meetings" not in body:
+        raise SystemExit("Unexpected /staff response. Expected HTTP 200 with the Townlight Meetings staff workflow shell.")
 PY
 
 echo "Fresh install smoke checks passed."

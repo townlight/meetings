@@ -5,8 +5,8 @@ from pathlib import Path
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk.main import app
-from civicclerk.motion_vote import MotionVoteStore
+from townlight_meetings.main import app
+from townlight_meetings.motion_vote import MotionVoteStore
 
 ROOT = Path(__file__).resolve().parents[1]
 

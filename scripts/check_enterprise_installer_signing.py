@@ -7,16 +7,17 @@ from dataclasses import dataclass
 import os
 from pathlib import Path
 import shutil
+import tomllib
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_VERSION = "1.0.4"
-DEFAULT_ARTIFACT = Path("installer/windows/build") / f"CivicMeetings-{DEFAULT_VERSION}-Setup.exe"
-SIGNTOOL_ENV_VARS = ("CIVICCLERK_SIGNTOOL_PATH", "SIGNTOOL")
-SHA1_ENV_VAR = "CIVICCLERK_SIGNING_CERT_SHA1"
-PFX_ENV_VAR = "CIVICCLERK_SIGNING_PFX"
-PFX_PASSWORD_ENV_VAR = "CIVICCLERK_SIGNING_PFX_PASSWORD_ENV"
-TIMESTAMP_ENV_VAR = "CIVICCLERK_SIGNING_TIMESTAMP_URL"
+DEFAULT_VERSION = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
+DEFAULT_ARTIFACT = Path("installer/windows/build") / f"Townlight Meetings-{DEFAULT_VERSION}-Setup.exe"
+SIGNTOOL_ENV_VARS = ("TOWNLIGHT_MEETINGS_SIGNTOOL_PATH", "SIGNTOOL")
+SHA1_ENV_VAR = "TOWNLIGHT_MEETINGS_SIGNING_CERT_SHA1"
+PFX_ENV_VAR = "TOWNLIGHT_MEETINGS_SIGNING_PFX"
+PFX_PASSWORD_ENV_VAR = "TOWNLIGHT_MEETINGS_SIGNING_PFX_PASSWORD_ENV"
+TIMESTAMP_ENV_VAR = "TOWNLIGHT_MEETINGS_SIGNING_TIMESTAMP_URL"
 WINDOWS_KITS_BIN = Path("C:/Program Files (x86)/Windows Kits/10/bin")
 
 
@@ -90,7 +91,7 @@ def build_checks(*, artifact: Path) -> list[Check]:
                 status="FAIL",
                 name="signtool",
                 message="Microsoft SignTool was not found.",
-                fix="Install the Windows SDK or set CIVICCLERK_SIGNTOOL_PATH to signtool.exe.",
+                fix="Install the Windows SDK or set TOWNLIGHT_MEETINGS_SIGNTOOL_PATH to signtool.exe.",
             )
         )
 

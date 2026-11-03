@@ -124,11 +124,11 @@ mockup's browser-global JSX bundle.
 
 ## Docker Demo Data
 
-The Docker Compose profile sets `CIVICCLERK_DEMO_SEED=1` by default. When the
+The Docker Compose profile sets `TOWNLIGHT_MEETINGS_DEMO_SEED=1` by default. When the
 API process starts, it seeds Brookfield meeting bodies, three meetings across
 the lifecycle, promoted agenda intake, a finalized packet, a legally explicit
 posted notice checklist, captured outcomes, cited minutes, and a public archive
-record. Set `CIVICCLERK_DEMO_SEED=0` for an empty local rehearsal database.
+record. Set `TOWNLIGHT_MEETINGS_DEMO_SEED=0` for an empty local rehearsal database.
 
 ## Local Frontend Commands
 
@@ -144,7 +144,7 @@ npm run build
 
 The Vite dev proxy sends `/api/*` to `http://127.0.0.1:8776` by default so it
 matches the documented Windows-first Townlight Meetings app command. Set
-`CIVICCLERK_API_PROXY_TARGET=http://host:port` before `npm run dev` when the
+`TOWNLIGHT_MEETINGS_API_PROXY_TARGET=http://host:port` before `npm run dev` when the
 FastAPI app is listening somewhere else.
 
 Before any commit that touches this frontend, capture browser evidence for:

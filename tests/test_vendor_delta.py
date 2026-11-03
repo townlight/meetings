@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import UTC, datetime, timezone, timedelta
 
-from civicclerk.vendor_delta import plan_vendor_delta_request
+from townlight_meetings.vendor_delta import plan_vendor_delta_request
 
 
 def test_legistar_delta_request_uses_last_modified_date() -> None:

@@ -1,4 +1,4 @@
-"""Verify CivicMeetings release handoff inputs are ready for installer packaging."""
+"""Verify Townlight Meetings release handoff inputs are ready for installer packaging."""
 
 from __future__ import annotations
 
@@ -6,11 +6,12 @@ import argparse
 from dataclasses import dataclass
 from hashlib import sha256
 from pathlib import Path
+import tomllib
 import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_VERSION = "1.0.4"
+DEFAULT_VERSION = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
 
 
 def _bundle_entries(version: str) -> tuple[str, ...]:
@@ -41,8 +42,8 @@ def _bundle_entries(version: str) -> tuple[str, ...]:
         "scripts/start_protected_demo_rehearsal.ps1",
         "scripts/start_protected_demo_rehearsal.sh",
         "scripts/local_trusted_header_proxy.py",
-        f"dist/civicclerk-{version}-py3-none-any.whl",
-        f"dist/civicclerk-{version}.tar.gz",
+        f"dist/townlight_meetings-{version}-py3-none-any.whl",
+        f"dist/townlight_meetings-{version}.tar.gz",
         "dist/SHA256SUMS.txt",
     )
 
@@ -75,8 +76,8 @@ def _read_checksum_file(path: Path) -> dict[str, str]:
 
 
 def _checksum_checks(dist_root: Path, version: str) -> list[Check]:
-    wheel = dist_root / f"civicclerk-{version}-py3-none-any.whl"
-    sdist = dist_root / f"civicclerk-{version}.tar.gz"
+    wheel = dist_root / f"townlight_meetings-{version}-py3-none-any.whl"
+    sdist = dist_root / f"townlight_meetings-{version}.tar.gz"
     checksum_file = dist_root / "SHA256SUMS.txt"
     missing = [path for path in (wheel, sdist, checksum_file) if not path.exists()]
     if missing:
@@ -206,7 +207,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--bundle",
         default="",
-        help="Release handoff zip to verify. Defaults to dist/civicclerk-<version>-release-handoff.zip.",
+        help="Release handoff zip to verify. Defaults to dist/townlight_meetings-<version>-release-handoff.zip.",
     )
     parser.add_argument("--print-only", action="store_true", help="Print the installer readiness plan without checking files.")
     return parser.parse_args()
@@ -215,7 +216,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     dist_root = Path(args.dist_root)
-    bundle_path = Path(args.bundle) if args.bundle else dist_root / f"civicclerk-{args.version}-release-handoff.zip"
+    bundle_path = Path(args.bundle) if args.bundle else dist_root / f"townlight_meetings-{args.version}-release-handoff.zip"
     if args.print_only:
         _print_plan(args.version, bundle_path, dist_root)
         return 0

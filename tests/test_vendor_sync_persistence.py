@@ -6,9 +6,9 @@ from datetime import UTC, datetime
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk.main import app
-from civicclerk.vendor_live_sync import VendorSyncRunResult
-from civicclerk.vendor_sync_persistence import VendorSyncConfigError, VendorSyncRepository
+from townlight_meetings.main import app
+from townlight_meetings.vendor_live_sync import VendorSyncRunResult
+from townlight_meetings.vendor_sync_persistence import VendorSyncConfigError, VendorSyncRepository
 
 
 def _db_url(path: Path) -> str:
@@ -181,7 +181,7 @@ async def test_vendor_live_sync_source_api_records_run_outcomes(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setenv("CIVICCLERK_VENDOR_SYNC_DB_URL", _db_url(tmp_path / "vendor-sync-api.db"))
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_VENDOR_SYNC_DB_URL", _db_url(tmp_path / "vendor-sync-api.db"))
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         created = await client.post(
             "/vendor-live-sync/sources",
@@ -224,7 +224,7 @@ async def test_vendor_live_sync_cursor_reset_api_is_actionable_and_network_safe(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setenv("CIVICCLERK_VENDOR_SYNC_DB_URL", _db_url(tmp_path / "vendor-sync-api.db"))
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_VENDOR_SYNC_DB_URL", _db_url(tmp_path / "vendor-sync-api.db"))
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         created = await client.post(
             "/vendor-live-sync/sources",
@@ -257,7 +257,7 @@ async def test_vendor_live_sync_source_api_returns_actionable_config_errors(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setenv("CIVICCLERK_VENDOR_SYNC_DB_URL", _db_url(tmp_path / "vendor-sync-api.db"))
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_VENDOR_SYNC_DB_URL", _db_url(tmp_path / "vendor-sync-api.db"))
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         response = await client.post(
             "/vendor-live-sync/sources",
@@ -280,7 +280,7 @@ async def test_vendor_live_sync_run_log_missing_source_is_actionable(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setenv("CIVICCLERK_VENDOR_SYNC_DB_URL", _db_url(tmp_path / "vendor-sync-api.db"))
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_VENDOR_SYNC_DB_URL", _db_url(tmp_path / "vendor-sync-api.db"))
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         response = await client.post(
             "/vendor-live-sync/sources/missing/run-log",

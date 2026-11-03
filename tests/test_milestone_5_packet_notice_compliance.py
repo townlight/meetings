@@ -6,13 +6,13 @@ from pathlib import Path
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk.main import app
+from townlight_meetings.main import app
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_packet_snapshots_are_versioned_and_immutable() -> None:
-    from civicclerk.packet_notice import PacketStore
+    from townlight_meetings.packet_notice import PacketStore
 
     store = PacketStore()
     first = store.create_snapshot(
@@ -34,7 +34,7 @@ def test_packet_snapshots_are_versioned_and_immutable() -> None:
 
 
 def test_notice_deadline_check_returns_actionable_warning_when_late() -> None:
-    from civicclerk.packet_notice import evaluate_notice_compliance
+    from townlight_meetings.packet_notice import evaluate_notice_compliance
 
     scheduled_start = datetime(2026, 5, 5, 19, 0, tzinfo=UTC)
     posted_at = scheduled_start - timedelta(hours=12)
@@ -63,7 +63,7 @@ def test_notice_deadline_check_returns_actionable_warning_when_late() -> None:
 
 @pytest.mark.parametrize("notice_type", ["special", "emergency"])
 def test_special_and_emergency_notices_require_statutory_basis(notice_type: str) -> None:
-    from civicclerk.packet_notice import evaluate_notice_compliance
+    from townlight_meetings.packet_notice import evaluate_notice_compliance
 
     scheduled_start = datetime(2026, 5, 5, 19, 0, tzinfo=UTC)
     posted_at = scheduled_start - timedelta(hours=24)
@@ -85,7 +85,7 @@ def test_special_and_emergency_notices_require_statutory_basis(notice_type: str)
 
 
 def test_public_notice_posting_requires_human_approval() -> None:
-    from civicclerk.packet_notice import evaluate_notice_compliance
+    from townlight_meetings.packet_notice import evaluate_notice_compliance
 
     scheduled_start = datetime(2026, 5, 5, 19, 0, tzinfo=UTC)
     posted_at = scheduled_start - timedelta(hours=96)

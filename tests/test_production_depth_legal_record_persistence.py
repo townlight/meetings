@@ -8,8 +8,8 @@ import pytest
 import sqlalchemy as sa
 from httpx import ASGITransport, AsyncClient
 
-import civicclerk.main as main_module
-from civicclerk import public_archive as public_archive_module
+import townlight_meetings.main as main_module
+from townlight_meetings import public_archive as public_archive_module
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -79,10 +79,10 @@ async def test_legal_record_survives_api_restart_when_db_env_vars_set(
     monkeypatch, tmp_path
 ) -> None:
     archive_db_url = f"sqlite:///{tmp_path / 'archive.db'}"
-    monkeypatch.setenv("CIVICCLERK_MEETING_DB_URL", archive_db_url)
-    monkeypatch.setenv("CIVICCLERK_MOTION_VOTE_DB_URL", archive_db_url)
-    monkeypatch.setenv("CIVICCLERK_MINUTES_DB_URL", archive_db_url)
-    monkeypatch.setenv("CIVICCLERK_PUBLIC_ARCHIVE_DB_URL", archive_db_url)
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_MEETING_DB_URL", archive_db_url)
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_MOTION_VOTE_DB_URL", archive_db_url)
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_MINUTES_DB_URL", archive_db_url)
+    monkeypatch.setenv("TOWNLIGHT_MEETINGS_PUBLIC_ARCHIVE_DB_URL", archive_db_url)
     _simulate_process_restart()
 
     transport = ASGITransport(app=main_module.app)
@@ -208,7 +208,7 @@ async def test_legal_record_survives_api_restart_when_db_env_vars_set(
 
 def test_readme_recovery_notice_documents_persisted_legal_record_historical_edition() -> None:
     readme = (ROOT / "docs" / "history" / "pre-townlight-beta-1" / "README.md").read_text(encoding="utf-8")
-    assert "CIVICCLERK_MOTION_VOTE_DB_URL" in readme
+    assert "CIVICCLERK_MOTION_VOTE_DB_URL" in readme  # Historical manual identities.
     assert "CIVICCLERK_MINUTES_DB_URL" in readme
     assert "CIVICCLERK_PUBLIC_ARCHIVE_DB_URL" in readme
     assert "does not survive a restart" in readme

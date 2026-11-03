@@ -1,4 +1,4 @@
-"""Run protected CivicMeetings deployment smoke probes from an env profile."""
+"""Run protected Townlight Meetings deployment smoke probes from an env profile."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ if str(ROOT) not in sys.path:
 
 import httpx
 
-from civicclerk.main import STAFF_AUTH_TOKEN_ROLES_ENV_VAR, app
+from townlight_meetings.main import STAFF_AUTH_TOKEN_ROLES_ENV_VAR, app
 from scripts.check_deployment_readiness import _load_env_file, build_checks
 
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# CivicMeetings documentation gate.
+# Townlight Meetings documentation gate.
 # 1) Required artifacts exist.
 # 2) Current-facing docs do not contain known stale drift markers.
 set -u
@@ -28,15 +28,15 @@ required=(
   docs/MILESTONES.md
   docs/roadmap/mvp-plan.md
   prompts/minutes_draft.yaml
-  cleanroom/civicclerk.Dockerfile
+  cleanroom/townlight_meetings.Dockerfile
   docs/evidence/cc1-civicclerk-cleanroom/README.md
   docs/ops/cc-1-cleanroom-harness.md
   docs/ops/starter-set-integration.md
   scripts/run-prompt-evals.py
   scripts/verify-release.sh
   scripts/verify-browser-qa.py
-  scripts/cleanroom/civicclerk-cleanroom-runner.sh
-  scripts/run-civicclerk-cleanroom.sh
+  scripts/cleanroom/townlight_meetings-cleanroom-runner.sh
+  scripts/run-townlight_meetings-cleanroom.sh
   scripts/check_installer_readiness.py
   scripts/check_starter_set_integration.py
   scripts/check_pilot_readiness.py
@@ -70,7 +70,7 @@ for file in "${required[@]}"; do
 done
 
 echo "==> Stale current-facing strings check"
-pattern='(^|[^[:alpha:]])MIT([^[:alpha:]]|$)|26 modules across 6 tiers|~=0\.2|civicclerk shipping|scottconverse/civicrecords-ai|v1\.3\.0|civiccore 0\.1\.0|Phase 0 scaffold'
+pattern='(^|[^[:alpha:]])MIT([^[:alpha:]]|$)|26 modules across 6 tiers|~=0\.2|townlight_meetings shipping|scottconverse/townlight_records|v1\.3\.0|townlight_core 0\.1\.0|Phase 0 scaffold'
 hits=$(grep -RInE "$pattern" \
   -- README.md README.txt USER-MANUAL.md USER-MANUAL.txt docs/index.html CHANGELOG.md CONTRIBUTING.md SECURITY.md SUPPORT.md .github 2>/dev/null \
   || true)

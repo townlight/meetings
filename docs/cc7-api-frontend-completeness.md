@@ -12,8 +12,8 @@ python scripts/generate-openapi-spec.py
 ```
 
 `tests/test_cc7_api_frontend_completeness.py` verifies the artifact matches
-`civicclerk.main.app.openapi()` exactly and that every CC-7 API category in
-`civicclerk/cc7_completeness.py` appears in the published schema.
+`townlight_meetings.main.app.openapi()` exactly and that every CC-7 API category in
+`townlight_meetings/cc7_completeness.py` appears in the published schema.
 
 New CC-7 coverage includes staff report normalization,
 meeting transcript capture, ordinance/resolution handoff, public comment review

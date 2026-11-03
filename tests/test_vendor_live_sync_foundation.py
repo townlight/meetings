@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import sys
+
 from pathlib import Path
 import subprocess
 
-from civicclerk.vendor_live_sync import (
+from townlight_meetings.vendor_live_sync import (
     VendorLiveSyncConfig,
     VendorSyncRunResult,
     VendorSyncState,
@@ -18,7 +20,7 @@ from civicclerk.vendor_live_sync import (
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_live_sync_config_validation_uses_civiccore_url_guards_without_network() -> None:
+def test_live_sync_config_validation_uses_townlight_core_url_guards_without_network() -> None:
     checks = validate_live_sync_config(
         VendorLiveSyncConfig(
             connector="legistar",
@@ -64,7 +66,7 @@ def test_circuit_opens_after_five_consecutive_full_run_failures() -> None:
     assert "unpause" in operator_status(state)["fix"]
 
 
-def test_source_status_uses_shared_civiccore_projection_for_source_lists() -> None:
+def test_source_status_uses_shared_townlight_core_projection_for_source_lists() -> None:
     state = VendorSyncState(
         connector="legistar",
         source_name="Legistar production",
@@ -145,7 +147,7 @@ def test_zero_work_run_does_not_increment_failure_count() -> None:
 def test_vendor_live_sync_readiness_script_reports_circuit_open_without_network() -> None:
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/check_vendor_live_sync_readiness.py",
             "--connector",
             "legistar",
@@ -173,7 +175,7 @@ def test_vendor_live_sync_readiness_script_reports_circuit_open_without_network(
 def test_vendor_live_sync_readiness_script_blocks_private_source_url() -> None:
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/check_vendor_live_sync_readiness.py",
             "--connector",
             "legistar",
@@ -194,7 +196,7 @@ def test_vendor_live_sync_readiness_script_blocks_private_source_url() -> None:
 
 def test_vendor_live_sync_readiness_print_only_is_honest() -> None:
     result = subprocess.run(
-        ["python", "scripts/check_vendor_live_sync_readiness.py", "--print-only"],
+        [sys.executable, "scripts/check_vendor_live_sync_readiness.py", "--print-only"],
         cwd=ROOT,
         check=False,
         capture_output=True,

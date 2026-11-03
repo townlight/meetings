@@ -1,4 +1,4 @@
-"""Verify CivicMeetings recovery gates that prevent release-status overclaiming."""
+"""Verify Townlight Meetings recovery gates that prevent release-status overclaiming."""
 
 from __future__ import annotations
 
@@ -30,16 +30,16 @@ def main() -> int:
     # requiring it to claim "not product-ready" would misdescribe that candidate.
     for path, text in public_docs.items():
         lowered = text.lower()
-        for phrase in ("townlight beta 1", "1.0.4", "agpl-3.0-only"):
+        for phrase in ("townlight beta 1", "townlight-meetings", "1.0.5", "agpl-3.0-only"):
             if phrase not in lowered:
                 failures.append(f"{path} missing current candidate identity: {phrase}")
         if path != "docs/index.html":
             for phrase in (
-                "98bcdef11ebdf5c767f620c904ff49f85115fde3b5c23f62703b111e645aaf86",
+                "1.7.0.1",
                 "fresh install",
             ):
                 if phrase not in lowered:
-                    failures.append(f"{path} missing accepted candidate boundary: {phrase}")
+                    failures.append(f"{path} missing naming candidate boundary: {phrase}")
 
     required_truth = [
         "provisional",

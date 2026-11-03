@@ -10,14 +10,14 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from civicclerk.vendor_network_sync import NETWORK_ENABLED_ENV_VAR, run_vendor_network_sync
-from civicclerk.vendor_sync_persistence import VendorSyncRepository
+from townlight_meetings.vendor_network_sync import NETWORK_ENABLED_ENV_VAR, run_vendor_network_sync
+from townlight_meetings.vendor_sync_persistence import VendorSyncRepository
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run one approved vendor-network live sync source.")
     parser.add_argument("--source-id", required=True, help="Vendor sync source id from /vendor-live-sync/sources.")
-    parser.add_argument("--db-url", help="Vendor sync ledger URL. Defaults to CIVICCLERK_VENDOR_SYNC_DB_URL.")
+    parser.add_argument("--db-url", help="Vendor sync ledger URL. Defaults to TOWNLIGHT_MEETINGS_VENDOR_SYNC_DB_URL.")
     parser.add_argument(
         "--auth-secret-env",
         help="Name of the environment variable containing the source credential.",

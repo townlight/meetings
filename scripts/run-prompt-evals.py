@@ -1,4 +1,4 @@
-"""Run CivicMeetings prompt evaluations in deterministic offline mode."""
+"""Run Townlight Meetings prompt evaluations in deterministic offline mode."""
 
 from __future__ import annotations
 
@@ -8,12 +8,12 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from civicclerk.prompt_evals import run_prompt_evaluations
+from townlight_meetings.prompt_evals import run_prompt_evaluations
 
 
 def main() -> int:
-    provider = os.environ.get("CIVICCORE_LLM_PROVIDER", "")
-    offline = os.environ.get("CIVICCLERK_EVAL_OFFLINE") == "1"
+    provider = os.environ.get("TOWNLIGHT_CORE_LLM_PROVIDER", "")
+    offline = os.environ.get("TOWNLIGHT_MEETINGS_EVAL_OFFLINE") == "1"
     results = run_prompt_evaluations(provider=provider, offline=offline)
 
     failures = [result for result in results if not result.passed]

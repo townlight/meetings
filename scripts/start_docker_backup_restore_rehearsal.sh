@@ -67,11 +67,11 @@ echo "Townlight Meetings Docker/PostgreSQL backup/restore rehearsal profile"
 echo "Rehearsal root: $rehearsal_root"
 echo "Run id: $run_id"
 echo "Python verifier: python scripts/check_docker_backup_restore_rehearsal.py"
-echo "Backup dump: backup/civicclerk-postgres.dump"
-echo "Backup manifest: backup/civicclerk-docker-backup-manifest.json"
-echo "Restore target: temporary PostgreSQL database civicclerk_restore_${restore_suffix}"
+echo "Backup dump: backup/townlight_meetings-postgres.dump"
+echo "Backup manifest: backup/townlight_meetings-docker-backup-manifest.json"
+echo "Restore target: temporary PostgreSQL database townlight_meetings_restore_${restore_suffix}"
 echo "Verification: pg_dump, pg_restore, restored application table list, manifest checksum"
-echo "Safety: the source civicclerk database is not dropped or overwritten."
+echo "Safety: the source townlight_meetings database is not dropped or overwritten."
 echo "Fix path: if the run fails, confirm Docker Desktop is running, start the stack with docker compose up -d, inspect docker compose logs postgres api, then rerun with a new --run-id."
 
 args=(
@@ -91,8 +91,8 @@ fi
 
 cd "$repo_root"
 
-if [[ -n "${CIVICCLERK_REHEARSAL_PYTHON:-}" ]]; then
-  python_cmd=("${CIVICCLERK_REHEARSAL_PYTHON}")
+if [[ -n "${TOWNLIGHT_MEETINGS_REHEARSAL_PYTHON:-}" ]]; then
+  python_cmd=("${TOWNLIGHT_MEETINGS_REHEARSAL_PYTHON}")
 elif [[ "$(uname -s)" == MINGW* || "$(uname -s)" == MSYS* || "$(uname -s)" == CYGWIN* ]] && command -v py >/dev/null 2>&1; then
   python_cmd=(py -3)
 elif command -v python3 >/dev/null 2>&1; then

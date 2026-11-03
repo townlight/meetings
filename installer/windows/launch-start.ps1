@@ -21,9 +21,9 @@ function Read-EnvValue {
 
 Set-Location $AppRoot
 if (-not (Test-Path $EnvPath)) {
-    throw "Townlight Meetings has not been installed yet. Run the 'Install or Repair CivicMeetings' shortcut first so .env and Docker volumes are prepared."
+    throw "Townlight Meetings has not been installed yet. Run the 'Install or Repair Townlight Meetings' shortcut first so .env and Docker volumes are prepared."
 }
 
 docker compose up -d
-$webPort = Read-EnvValue -Name "CIVICCLERK_WEB_PORT" -Default "8080"
+$webPort = Read-EnvValue -Name "TOWNLIGHT_MEETINGS_WEB_PORT" -Default "8080"
 Start-Process "http://127.0.0.1:$webPort/"

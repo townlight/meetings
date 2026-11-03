@@ -1,0 +1,45 @@
+{
+  "page": "docs/index.html",
+  "page_sha256": "dbb0120b9a92341927669d0520574e23a4d1de537e052356621a93ad9e5567bf",
+  "reviewed_at": "2026-11-03T01:22:04.358Z",
+  "screenshots": {
+    "desktop": "docs/browser-qa-v1.0.5-release-desktop.png",
+    "mobile": "docs/browser-qa-v1.0.5-release-mobile.png"
+  },
+  "version": "1.0.5",
+  "scope": "New actual current candidate landing checks only. Historical application/state evidence remains unchanged. This is not installed Windows acceptance.",
+  "checks": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "title": "Townlight Meetings | Townlight Beta 1",
+      "h1": "Keep the agenda, decisions and evidence connected.",
+      "overflow": false,
+      "skip": true,
+      "main": true,
+      "imageReady": true,
+      "candidate": true,
+      "skipFocused": true,
+      "focusVisible": true,
+      "skipWorks": true,
+      "console_errors": 0,
+      "critical_or_serious_axe": 0
+    },
+    {
+      "label": "mobile",
+      "width": 390,
+      "title": "Townlight Meetings | Townlight Beta 1",
+      "h1": "Keep the agenda, decisions and evidence connected.",
+      "overflow": false,
+      "skip": true,
+      "main": true,
+      "imageReady": true,
+      "candidate": true,
+      "skipFocused": true,
+      "focusVisible": true,
+      "skipWorks": true,
+      "console_errors": 0,
+      "critical_or_serious_axe": 0
+    }
+  ]
+}

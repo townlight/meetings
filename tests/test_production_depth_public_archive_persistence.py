@@ -12,9 +12,9 @@ from uuid import uuid4
 import sqlalchemy as sa
 from httpx import ASGITransport, AsyncClient
 
-from civicclerk import public_archive as public_archive_module
-from civicclerk.main import app
-from civicclerk.public_archive import (
+from townlight_meetings import public_archive as public_archive_module
+from townlight_meetings.main import app
+from townlight_meetings.public_archive import (
     PublicArchiveRepository,
     PublicCommentRepository,
 )
@@ -23,12 +23,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def seed_meeting(db_url: str) -> str:
-    """Insert a minimal civicclerk.meetings parent row so publishes pass the FK pre-check."""
+    """Insert a minimal townlight_meetings.meetings parent row so publishes pass the FK pre-check."""
 
     meeting_id = str(uuid4())
     engine = sa.create_engine(db_url, future=True)
     if engine.dialect.name == "sqlite":
-        engine = engine.execution_options(schema_translate_map={"civicclerk": None})
+        engine = engine.execution_options(schema_translate_map={"townlight_meetings": None})
     public_archive_module.metadata.create_all(engine)
     with engine.begin() as connection:
         connection.execute(
@@ -423,7 +423,7 @@ def test_comment_meeting_id_written_from_database_row(tmp_path) -> None:
     assert comment is not None
 
     engine = sa.create_engine(db_url, future=True).execution_options(
-        schema_translate_map={"civicclerk": None}
+        schema_translate_map={"townlight_meetings": None}
     )
     with engine.begin() as connection:
         stored_meeting_id = connection.execute(
@@ -484,8 +484,8 @@ def test_blank_or_oversized_comment_inputs_rejected_before_write(tmp_path) -> No
 async def test_api_comment_model_enforces_name_bounds(monkeypatch) -> None:
     """The HTTP model must 422 oversized names; whitespace-only names never persist."""
 
-    from civicclerk import main as main_module
-    from civicclerk.public_archive import PublicArchiveStore, PublicCommentStore
+    from townlight_meetings import main as main_module
+    from townlight_meetings.public_archive import PublicArchiveStore, PublicCommentStore
 
     # Fresh in-memory stores so this test never leaks records into the
     # module-level state shared with the milestone-8 HTTP tests.
@@ -538,18 +538,18 @@ async def test_api_comment_model_enforces_name_bounds(monkeypatch) -> None:
 def test_migration_0016_creates_archive_indexes() -> None:
     path = (
         ROOT
-        / "civicclerk"
+        / "townlight_meetings"
         / "migrations"
         / "versions"
-        / "civicclerk_0016_archive_indexes.py"
+        / "townlight_meetings_0016_archive_indexes.py"
     )
-    assert path.exists(), "Missing migration: civicclerk_0016_archive_indexes.py"
-    spec = importlib.util.spec_from_file_location("civicclerk_0016_archive_indexes", path)
+    assert path.exists(), "Missing migration: townlight_meetings_0016_archive_indexes.py"
+    spec = importlib.util.spec_from_file_location("townlight_meetings_0016", path)
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    assert module.revision == "civicclerk_0016_archive_indexes"
-    assert module.down_revision == "civicclerk_0015_capture_seq"
+    assert module.revision == "townlight_meetings_0016"
+    assert module.down_revision == "townlight_meetings_0015"
     assert callable(module.upgrade)
     assert callable(module.downgrade)
     # Spec review: the migration must actually target the comment listing
@@ -571,18 +571,18 @@ def test_migration_0016_creates_archive_indexes() -> None:
 def test_migration_0014_creates_public_meeting_records_and_extends_chain() -> None:
     path = (
         ROOT
-        / "civicclerk"
+        / "townlight_meetings"
         / "migrations"
         / "versions"
-        / "civicclerk_0014_public_meeting_records.py"
+        / "townlight_meetings_0014_public_meeting_records.py"
     )
-    assert path.exists(), "Missing migration: civicclerk_0014_public_meeting_records.py"
-    spec = importlib.util.spec_from_file_location("civicclerk_0014_public_meeting_records", path)
+    assert path.exists(), "Missing migration: townlight_meetings_0014_public_meeting_records.py"
+    spec = importlib.util.spec_from_file_location("townlight_meetings_0014_public_meeting_records", path)
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    assert module.revision == "civicclerk_0014_public_records"
-    assert module.down_revision == "civicclerk_0013_minutes_model"
+    assert module.revision == "townlight_meetings_0014"
+    assert module.down_revision == "townlight_meetings_0013"
     assert callable(module.upgrade)
     assert callable(module.downgrade)
     # Spec review: the upgrade must actually target the public_meeting_records

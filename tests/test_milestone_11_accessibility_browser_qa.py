@@ -17,7 +17,7 @@ def _project_version() -> str:
 
 def test_browser_qa_artifacts_cover_required_states_and_accessibility_checks() -> None:
     checklist = ROOT / "docs" / "browser-qa" / "milestone11-checklist.md"
-    release_evidence = ROOT / "docs" / "browser-qa" / "release-evidence.json"
+    release_evidence = ROOT / "docs" / "browser-qa" / "naming-candidate-evidence.json"
     states = ROOT / "docs" / "browser-qa" / "states.html"
     desktop = ROOT / "docs" / "screenshots" / "milestone11-browser-qa-desktop.png"
     mobile = ROOT / "docs" / "screenshots" / "milestone11-browser-qa-mobile.png"

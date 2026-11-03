@@ -1,4 +1,4 @@
-"""Rehearse CivicMeetings backup/restore using local SQLite stores.
+"""Rehearse Townlight Meetings backup/restore using local SQLite stores.
 
 The helper creates deterministic source data, copies database and export files
 into a backup directory, restores them to a separate directory, and verifies the
@@ -21,11 +21,11 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 DEFAULT_REHEARSAL_ROOT = ROOT / ".backup-restore-rehearsal"
 STORE_FILES = {
-    "CIVICCLERK_AGENDA_INTAKE_DB_URL": "agenda-intake.db",
-    "CIVICCLERK_AGENDA_ITEM_DB_URL": "agenda-items.db",
-    "CIVICCLERK_MEETING_DB_URL": "meetings.db",
-    "CIVICCLERK_PACKET_ASSEMBLY_DB_URL": "packet-assembly.db",
-    "CIVICCLERK_NOTICE_CHECKLIST_DB_URL": "notice-checklist.db",
+    "TOWNLIGHT_MEETINGS_AGENDA_INTAKE_DB_URL": "agenda-intake.db",
+    "TOWNLIGHT_MEETINGS_AGENDA_ITEM_DB_URL": "agenda-items.db",
+    "TOWNLIGHT_MEETINGS_MEETING_DB_URL": "meetings.db",
+    "TOWNLIGHT_MEETINGS_PACKET_ASSEMBLY_DB_URL": "packet-assembly.db",
+    "TOWNLIGHT_MEETINGS_NOTICE_CHECKLIST_DB_URL": "notice-checklist.db",
 }
 
 
@@ -65,24 +65,24 @@ def _copy_tree(source: Path, destination: Path) -> None:
 
 
 def _seed_source_data(source_data: Path, source_exports: Path) -> SeededIds:
-    from civicclerk.agenda_intake import AgendaIntakeRepository
-    from civicclerk.agenda_lifecycle import AgendaItemRepository
-    from civicclerk.meeting_lifecycle import MeetingStore
-    from civicclerk.notice_checklist import NoticeChecklistRepository
-    from civicclerk.packet_assembly import PacketAssemblyRepository
+    from townlight_meetings.agenda_intake import AgendaIntakeRepository
+    from townlight_meetings.agenda_lifecycle import AgendaItemRepository
+    from townlight_meetings.meeting_lifecycle import MeetingStore
+    from townlight_meetings.notice_checklist import NoticeChecklistRepository
+    from townlight_meetings.packet_assembly import PacketAssemblyRepository
 
     source_data.mkdir(parents=True, exist_ok=True)
     source_exports.mkdir(parents=True, exist_ok=True)
 
     agenda_intake = AgendaIntakeRepository(
-        db_url=_sqlite_url(source_data / STORE_FILES["CIVICCLERK_AGENDA_INTAKE_DB_URL"])
+        db_url=_sqlite_url(source_data / STORE_FILES["TOWNLIGHT_MEETINGS_AGENDA_INTAKE_DB_URL"])
     )
     intake_item = agenda_intake.submit(
         title="Backup rehearsal zoning update",
         department_name="Planning",
         submitted_by="planner@example.gov",
         summary="Seeded agenda intake record for backup/restore rehearsal.",
-        source_references=[{"system": "civicclerk-rehearsal", "id": "INTAKE-001"}],
+        source_references=[{"system": "townlight_meetings-rehearsal", "id": "INTAKE-001"}],
     )
     agenda_intake.review(
         item_id=intake_item.id,
@@ -92,7 +92,7 @@ def _seed_source_data(source_data: Path, source_exports: Path) -> SeededIds:
     )
 
     agenda_items = AgendaItemRepository(
-        db_url=_sqlite_url(source_data / STORE_FILES["CIVICCLERK_AGENDA_ITEM_DB_URL"])
+        db_url=_sqlite_url(source_data / STORE_FILES["TOWNLIGHT_MEETINGS_AGENDA_ITEM_DB_URL"])
     )
     agenda_item = agenda_items.create(
         title="Backup rehearsal action item",
@@ -104,7 +104,7 @@ def _seed_source_data(source_data: Path, source_exports: Path) -> SeededIds:
         actor="clerk@example.gov",
     )
 
-    meetings = MeetingStore(db_url=_sqlite_url(source_data / STORE_FILES["CIVICCLERK_MEETING_DB_URL"]))
+    meetings = MeetingStore(db_url=_sqlite_url(source_data / STORE_FILES["TOWNLIGHT_MEETINGS_MEETING_DB_URL"]))
     meeting = meetings.create(
         title="Backup Restore Rehearsal Council Meeting",
         meeting_type="regular",
@@ -112,7 +112,7 @@ def _seed_source_data(source_data: Path, source_exports: Path) -> SeededIds:
     )
 
     packets = PacketAssemblyRepository(
-        db_url=_sqlite_url(source_data / STORE_FILES["CIVICCLERK_PACKET_ASSEMBLY_DB_URL"])
+        db_url=_sqlite_url(source_data / STORE_FILES["TOWNLIGHT_MEETINGS_PACKET_ASSEMBLY_DB_URL"])
     )
     packet = packets.create_draft(
         meeting_id=meeting.id,
@@ -121,13 +121,13 @@ def _seed_source_data(source_data: Path, source_exports: Path) -> SeededIds:
         title="Backup restore rehearsal packet",
         actor="clerk@example.gov",
         agenda_item_ids=[agenda_item.id],
-        source_references=[{"system": "civicclerk-rehearsal", "id": agenda_item.id}],
+        source_references=[{"system": "townlight_meetings-rehearsal", "id": agenda_item.id}],
         citations=[{"label": "Agenda item", "source": "seeded rehearsal data"}],
     )
     packets.finalize(record_id=packet.id, actor="clerk@example.gov")
 
     notices = NoticeChecklistRepository(
-        db_url=_sqlite_url(source_data / STORE_FILES["CIVICCLERK_NOTICE_CHECKLIST_DB_URL"])
+        db_url=_sqlite_url(source_data / STORE_FILES["TOWNLIGHT_MEETINGS_NOTICE_CHECKLIST_DB_URL"])
     )
     notice = notices.record_check(
         meeting_id=meeting.id,
@@ -210,13 +210,13 @@ def _build_backup(run_root: Path, source_data: Path, source_exports: Path, seede
         )
 
     manifest = {
-        "service": "civicclerk",
+        "service": "townlight_meetings",
         "created_at": datetime.now(UTC).isoformat(),
         "stores": STORE_FILES,
         "seeded_ids": seeded.__dict__,
         "files": files,
     }
-    manifest_path = backup_root / "civicclerk-backup-manifest.json"
+    manifest_path = backup_root / "townlight_meetings-backup-manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8")
     return manifest_path
 
@@ -241,11 +241,11 @@ def _verify_restored_data(
     restored_exports: Path,
     seeded: SeededIds,
 ) -> list[str]:
-    from civicclerk.agenda_intake import AgendaIntakeRepository
-    from civicclerk.agenda_lifecycle import AgendaItemRepository
-    from civicclerk.meeting_lifecycle import MeetingStore
-    from civicclerk.notice_checklist import NoticeChecklistRepository
-    from civicclerk.packet_assembly import PacketAssemblyRepository
+    from townlight_meetings.agenda_intake import AgendaIntakeRepository
+    from townlight_meetings.agenda_lifecycle import AgendaItemRepository
+    from townlight_meetings.meeting_lifecycle import MeetingStore
+    from townlight_meetings.notice_checklist import NoticeChecklistRepository
+    from townlight_meetings.packet_assembly import PacketAssemblyRepository
 
     failures: list[str] = []
     for filename in STORE_FILES.values():
@@ -267,31 +267,31 @@ def _verify_restored_data(
             failures.append(f"export checksum mismatch after restore: {relative_path.as_posix()}")
 
     agenda_intake = AgendaIntakeRepository(
-        db_url=_sqlite_url(restored_data / STORE_FILES["CIVICCLERK_AGENDA_INTAKE_DB_URL"])
+        db_url=_sqlite_url(restored_data / STORE_FILES["TOWNLIGHT_MEETINGS_AGENDA_INTAKE_DB_URL"])
     )
     if agenda_intake.get(seeded.agenda_intake_id) is None:
         failures.append("restored agenda intake record is unreadable")
 
     agenda_items = AgendaItemRepository(
-        db_url=_sqlite_url(restored_data / STORE_FILES["CIVICCLERK_AGENDA_ITEM_DB_URL"])
+        db_url=_sqlite_url(restored_data / STORE_FILES["TOWNLIGHT_MEETINGS_AGENDA_ITEM_DB_URL"])
     )
     agenda_item = agenda_items.get(seeded.agenda_item_id)
     if agenda_item is None or agenda_item.status != "SUBMITTED":
         failures.append("restored agenda item status is not SUBMITTED")
 
-    meetings = MeetingStore(db_url=_sqlite_url(restored_data / STORE_FILES["CIVICCLERK_MEETING_DB_URL"]))
+    meetings = MeetingStore(db_url=_sqlite_url(restored_data / STORE_FILES["TOWNLIGHT_MEETINGS_MEETING_DB_URL"]))
     if meetings.get(seeded.meeting_id) is None:
         failures.append("restored meeting record is unreadable")
 
     packets = PacketAssemblyRepository(
-        db_url=_sqlite_url(restored_data / STORE_FILES["CIVICCLERK_PACKET_ASSEMBLY_DB_URL"])
+        db_url=_sqlite_url(restored_data / STORE_FILES["TOWNLIGHT_MEETINGS_PACKET_ASSEMBLY_DB_URL"])
     )
     packet = packets.get(seeded.packet_assembly_id)
     if packet is None or packet.status != "FINALIZED":
         failures.append("restored packet assembly record is not FINALIZED")
 
     notices = NoticeChecklistRepository(
-        db_url=_sqlite_url(restored_data / STORE_FILES["CIVICCLERK_NOTICE_CHECKLIST_DB_URL"])
+        db_url=_sqlite_url(restored_data / STORE_FILES["TOWNLIGHT_MEETINGS_NOTICE_CHECKLIST_DB_URL"])
     )
     notice = notices.get(seeded.notice_checklist_id)
     if notice is None or not notice.posting_proof:
@@ -309,13 +309,13 @@ def _print_plan(run_root: Path, *, strict: bool) -> None:
     print("Townlight Meetings backup/restore rehearsal")
     print(f"Rehearsal root: {run_root}")
     print("Source stores: source-data/*.db")
-    print("Backup manifest: backup/civicclerk-backup-manifest.json")
+    print("Backup manifest: backup/townlight_meetings-backup-manifest.json")
     print("Restored stores: restored-data/*.db")
     print(f"Strict mode: {'on' if strict else 'off'}")
     print("Environment to run restored app after rehearsal:")
     for env_var, filename in STORE_FILES.items():
         print(f"  {env_var}={_sqlite_url(restored_data / filename)}")
-    print(f"  CIVICCLERK_EXPORT_ROOT={restored_exports}")
+    print(f"  TOWNLIGHT_MEETINGS_EXPORT_ROOT={restored_exports}")
     print("Verification: checks database checksums, export checksums, and readable restored workflow records.")
     print("If a check fails: keep the run directory, inspect the named file, fix the backup source, then rerun with a new --run-id.")
 

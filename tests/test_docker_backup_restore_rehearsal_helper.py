@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import sys
+
 import shutil
 import subprocess
 from pathlib import Path
@@ -15,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_docker_backup_restore_rehearsal_prints_non_destructive_plan(tmp_path: Path) -> None:
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/check_docker_backup_restore_rehearsal.py",
             "--rehearsal-root",
             str(tmp_path),
@@ -35,9 +37,9 @@ def test_docker_backup_restore_rehearsal_prints_non_destructive_plan(tmp_path: P
         "Townlight Meetings Docker/PostgreSQL backup/restore rehearsal",
         "pg_dump",
         "pg_restore",
-        "civicclerk_restore_print_plan",
-        "civicclerk-postgres.dump",
-        "civicclerk-docker-backup-manifest.json",
+        "townlight_meetings_restore_print_plan",
+        "townlight_meetings-postgres.dump",
+        "townlight_meetings-docker-backup-manifest.json",
         "Drop the temporary restore database",
         "Fix path:",
         "DOCKER-BACKUP-RESTORE-REHEARSAL: PRINT-ONLY",
@@ -54,7 +56,7 @@ def test_docker_backup_restore_rehearsal_helper_has_safe_restore_contract() -> N
     assert "createdb" in script
     assert "table_schema NOT IN ('pg_catalog', 'information_schema')" in script
     assert "keep_restore_database" in script
-    assert "The source civicclerk database is not dropped or overwritten" not in script
+    assert "The source townlight_meetings database is not dropped or overwritten" not in script
     assert "restore_database_dropped" in script
 
 
@@ -85,8 +87,8 @@ def test_docker_backup_restore_rehearsal_powershell_wrapper_prints_expected_plan
         "Townlight Meetings Docker/PostgreSQL backup/restore rehearsal profile",
         "Run id: print-plan",
         "Python verifier: python scripts/check_docker_backup_restore_rehearsal.py",
-        "Backup dump: backup\\civicclerk-postgres.dump",
-        "Safety: the source civicclerk database is not dropped or overwritten.",
+        "Backup dump: backup\\townlight_meetings-postgres.dump",
+        "Safety: the source townlight_meetings database is not dropped or overwritten.",
         "Fix path:",
     ]:
         assert expected in result.stdout
@@ -116,8 +118,8 @@ def test_docker_backup_restore_rehearsal_bash_wrapper_prints_expected_plan() -> 
         "Townlight Meetings Docker/PostgreSQL backup/restore rehearsal profile",
         "Run id: print-plan",
         "Python verifier: python scripts/check_docker_backup_restore_rehearsal.py",
-        "Backup dump: backup/civicclerk-postgres.dump",
-        "Safety: the source civicclerk database is not dropped or overwritten.",
+        "Backup dump: backup/townlight_meetings-postgres.dump",
+        "Safety: the source townlight_meetings database is not dropped or overwritten.",
         "Fix path:",
     ]:
         assert expected in result.stdout

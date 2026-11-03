@@ -5,8 +5,8 @@ from pathlib import Path
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-import civicclerk.main as main_module
-from civicclerk.main import app
+import townlight_meetings.main as main_module
+from townlight_meetings.main import app
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -38,12 +38,12 @@ def _minutes_payload() -> dict[str, object]:
 def test_minutes_generation_payload_uses_runtime_model_and_gemma_bounds(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setenv("LLM_MODEL", "civicsuite-gemma4-12b-qat:q4_0")
+    monkeypatch.setenv("LLM_MODEL", "townlight-gemma4-12b-qat:q4_0")
     payload = main_module.MinutesAiAssistCreate(**_minutes_payload())
 
     request = main_module._minutes_generation_payload(payload)
 
-    assert request["model"] == "civicsuite-gemma4-12b-qat:q4_0"
+    assert request["model"] == "townlight-gemma4-12b-qat:q4_0"
     assert request["raw"] is True
     assert request["stream"] is False
     assert request["prompt"].startswith("<start_of_turn>user\n")
@@ -57,7 +57,7 @@ def test_minutes_generation_payload_uses_runtime_model_and_gemma_bounds(
 def test_ollama_generate_parser_accepts_installed_runtime_variants() -> None:
     assert (
         main_module._parse_ollama_generate_text(
-            '{"model":"civicsuite-gemma4-12b-qat:q4_0","response":"Draft ready.","done":true}'
+            '{"model":"townlight-gemma4-12b-qat:q4_0","response":"Draft ready.","done":true}'
         )
         == "Draft ready."
     )
@@ -81,8 +81,8 @@ def test_compose_keeps_api_and_worker_bootable_without_ollama_health_gate() -> N
     api_service = _compose_service(compose, "api", "worker")
     worker_service = _compose_service(compose, "worker", "beat")
 
-    assert "CIVICCLERK_OLLAMA_BASE_URL: http://ollama:11434" in api_service
-    assert "CIVICCORE_LLM_PROVIDER: ollama" in api_service
+    assert "TOWNLIGHT_MEETINGS_OLLAMA_BASE_URL: http://ollama:11434" in api_service
+    assert "TOWNLIGHT_CORE_LLM_PROVIDER: ollama" in api_service
     assert "ollama/ollama:latest" in compose
     for service in (api_service, worker_service):
         assert "postgres:" in service
@@ -258,7 +258,7 @@ async def test_minutes_ai_assist_returns_structured_503_when_ollama_unavailable(
 
     assert response.status_code == 503
     detail = response.json()["detail"]
-    assert detail["message"] == "AI assist unavailable; CivicMeetings core workflow is still available."
+    assert detail["message"] == "AI assist unavailable; Townlight Meetings core workflow is still available."
     assert "Start Ollama" in detail["fix"]
     assert "Manual cited minutes drafting remains available" in detail["fix"]
     assert detail["reason"] == "Ollama request timed out."

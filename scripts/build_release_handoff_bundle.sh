@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-version="1.0.4"
+version="1.0.5"
 output_path=""
 print_only=0
 
@@ -53,7 +53,7 @@ repo_root="$(cd -- "$script_dir/.." && pwd)"
 dist_root="$repo_root/dist"
 
 if [[ -z "$output_path" ]]; then
-  output_path="$dist_root/civicclerk-$version-release-handoff.zip"
+  output_path="$dist_root/townlight_meetings-$version-release-handoff.zip"
 fi
 
 bundle_files=(
@@ -83,8 +83,8 @@ bundle_files=(
   "scripts/start_protected_demo_rehearsal.ps1"
   "scripts/start_protected_demo_rehearsal.sh"
   "scripts/local_trusted_header_proxy.py"
-  "dist/civicclerk-$version-py3-none-any.whl"
-  "dist/civicclerk-$version.tar.gz"
+  "dist/townlight_meetings-$version-py3-none-any.whl"
+  "dist/townlight_meetings-$version.tar.gz"
   "dist/SHA256SUMS.txt"
 )
 
@@ -103,8 +103,8 @@ if [[ "$print_only" -eq 1 ]]; then
 fi
 
 required_artifacts=(
-  "$dist_root/civicclerk-$version-py3-none-any.whl"
-  "$dist_root/civicclerk-$version.tar.gz"
+  "$dist_root/townlight_meetings-$version-py3-none-any.whl"
+  "$dist_root/townlight_meetings-$version.tar.gz"
   "$dist_root/SHA256SUMS.txt"
 )
 

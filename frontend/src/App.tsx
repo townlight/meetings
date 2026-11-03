@@ -878,7 +878,7 @@ const demoIntegrationReadiness: ApiIntegrationReadiness = {
   fix: "Use the listed boundary proof before claiming integration release depth.",
   contracts: [
     {
-      id: "civicrecords-search",
+      id: "townlight_records-search",
       label: "Townlight Records search bridge",
       status: "ready",
       mode: "suite-module-live-wire",
@@ -890,7 +890,7 @@ const demoIntegrationReadiness: ApiIntegrationReadiness = {
       operator_fix: "Configure Townlight Records, validate the boundary, then keep adversarial checks as regression coverage.",
     },
     {
-      id: "civiccode-handoff",
+      id: "townlight_code-handoff",
       label: "Townlight Code adopted-action handoff",
       status: "ready",
       mode: "live-when-configured",
@@ -899,7 +899,7 @@ const demoIntegrationReadiness: ApiIntegrationReadiness = {
       network_calls: true,
       supported_operations: ["ordinance/resolution payload export", "idempotent replay", "emit status visibility", "manual retry"],
       absent_dependency_behavior: "Adopted-action handoffs remain local with EMIT_SKIPPED_UNCONFIGURED until Townlight Code intake is configured.",
-      operator_fix: "Set CIVICCODE_INTAKE_URL and the suite bearer handoff value, verify Townlight Code health, then retry failed or unconfigured handoffs.",
+      operator_fix: "Set TOWNLIGHT_CODE_INTAKE_URL and the suite bearer handoff value, verify Townlight Code health, then retry failed or unconfigured handoffs.",
     },
     {
       id: "cms-posting",
@@ -1263,7 +1263,7 @@ export function App() {
         if (cancelled) return;
         setVendorSyncSources([]);
         setVendorSyncState("error");
-        setVendorSyncError(`${error.message} Confirm CIVICCLERK_VENDOR_SYNC_DB_URL is configured, staff auth is valid, and the backend has the vendor sync persistence migration.`);
+        setVendorSyncError(`${error.message} Confirm TOWNLIGHT_MEETINGS_VENDOR_SYNC_DB_URL is configured, staff auth is valid, and the backend has the vendor sync persistence migration.`);
       });
     return () => {
       cancelled = true;
@@ -4770,7 +4770,7 @@ function VendorSyncWorkspace({
       setSelectedSourceId(source.id);
       setMessage(`Source ${source.sourceName} saved to the vendor sync ledger. No vendor network call was made; run readiness checks before enabling scheduled pulls.`);
     } catch (error) {
-      setMessage(`${error instanceof Error ? error.message : "Vendor sync source create failed."} Confirm the URL is allowed by SSRF guards, credentials are stored in deployment secrets, and CIVICCLERK_VENDOR_SYNC_DB_URL is configured.`);
+      setMessage(`${error instanceof Error ? error.message : "Vendor sync source create failed."} Confirm the URL is allowed by SSRF guards, credentials are stored in deployment secrets, and TOWNLIGHT_MEETINGS_VENDOR_SYNC_DB_URL is configured.`);
     }
   }
 
@@ -5796,7 +5796,7 @@ function StateMessage({ state, context, apiError }: { state: ViewState; context:
   if (context === "vendor sync" && state === "error") {
     copy.body = apiError
       ? `${apiError} Do not rely on live vendor pulls until the ledger loads; confirm the backend, staff auth, and sync database, then retry.`
-      : "The vendor sync ledger did not load. Confirm the backend, staff auth, CIVICCLERK_VENDOR_SYNC_DB_URL, and migration state before enabling scheduled pulls.";
+      : "The vendor sync ledger did not load. Confirm the backend, staff auth, TOWNLIGHT_MEETINGS_VENDOR_SYNC_DB_URL, and migration state before enabling scheduled pulls.";
     copy.action = "Check sync setup";
   }
 

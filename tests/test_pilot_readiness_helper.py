@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import sys
+
 from hashlib import sha256
 from pathlib import Path
 import subprocess
@@ -7,7 +9,7 @@ import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "1.0.4"
+VERSION = "1.0.5"
 
 
 def _bundle_entries(version: str) -> tuple[str, ...]:
@@ -38,8 +40,8 @@ def _bundle_entries(version: str) -> tuple[str, ...]:
         "scripts/start_protected_demo_rehearsal.ps1",
         "scripts/start_protected_demo_rehearsal.sh",
         "scripts/local_trusted_header_proxy.py",
-        f"dist/civicclerk-{version}-py3-none-any.whl",
-        f"dist/civicclerk-{version}.tar.gz",
+        f"dist/townlight_meetings-{version}-py3-none-any.whl",
+        f"dist/townlight_meetings-{version}.tar.gz",
         "dist/SHA256SUMS.txt",
     )
 
@@ -47,8 +49,8 @@ def _bundle_entries(version: str) -> tuple[str, ...]:
 def _write_installer_inputs(tmp_path: Path) -> tuple[Path, Path]:
     dist_root = tmp_path / "dist"
     dist_root.mkdir()
-    wheel = dist_root / f"civicclerk-{VERSION}-py3-none-any.whl"
-    sdist = dist_root / f"civicclerk-{VERSION}.tar.gz"
+    wheel = dist_root / f"townlight_meetings-{VERSION}-py3-none-any.whl"
+    sdist = dist_root / f"townlight_meetings-{VERSION}.tar.gz"
     wheel.write_text("wheel\n", encoding="utf-8")
     sdist.write_text("sdist\n", encoding="utf-8")
     (dist_root / "SHA256SUMS.txt").write_text(
@@ -61,7 +63,7 @@ def _write_installer_inputs(tmp_path: Path) -> tuple[Path, Path]:
         + "\n",
         encoding="utf-8",
     )
-    bundle = dist_root / f"civicclerk-{VERSION}-release-handoff.zip"
+    bundle = dist_root / f"townlight_meetings-{VERSION}-release-handoff.zip"
     with zipfile.ZipFile(bundle, mode="w") as archive:
         for entry in _bundle_entries(VERSION):
             archive.writestr(entry, "test input\n")
@@ -74,7 +76,7 @@ def test_pilot_readiness_is_developer_ready_with_adversarial_mocks(tmp_path: Pat
 
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/check_pilot_readiness.py",
             "--dist-root",
             str(dist_root),
@@ -108,7 +110,7 @@ def test_pilot_readiness_strict_adversarial_mock_gate_passes_when_mocks_pass(tmp
 
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/check_pilot_readiness.py",
             "--dist-root",
             str(dist_root),
@@ -129,7 +131,7 @@ def test_pilot_readiness_strict_adversarial_mock_gate_passes_when_mocks_pass(tmp
 
 def test_pilot_readiness_print_only_documents_boundary_proof_model() -> None:
     result = subprocess.run(
-        ["python", "scripts/check_pilot_readiness.py", "--print-only"],
+        [sys.executable, "scripts/check_pilot_readiness.py", "--print-only"],
         cwd=ROOT,
         check=False,
         capture_output=True,
