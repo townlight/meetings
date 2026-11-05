@@ -35,7 +35,7 @@ def main() -> int:
                 failures.append(f"{path} missing current candidate identity: {phrase}")
         if path != "docs/index.html":
             for phrase in (
-                "1.7.0.1",
+                "1.7.1.1",
                 "fresh install",
             ):
                 if phrase not in lowered:

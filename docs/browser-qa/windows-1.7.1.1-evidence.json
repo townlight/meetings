@@ -1,0 +1,45 @@
+{
+  "page": "docs/index.html",
+  "page_sha256": "5194d0cedcff0e29bf8e9a7432d848b32626ae3007048edb09022644034fe243",
+  "reviewed_at": "2026-11-05T16:54:25.857Z",
+  "screenshots": {
+    "desktop": "docs/browser-qa/windows-1.7.1.1-release-desktop.png",
+    "mobile": "docs/browser-qa/windows-1.7.1.1-release-mobile.png"
+  },
+  "version": "1.0.5",
+  "scope": "Current Windows release documentation landing page only. Historical application and installed MSI evidence are unchanged.",
+  "checks": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "title": "Townlight Meetings | Townlight Beta 1",
+      "h1": "Keep the agenda, decisions and evidence connected.",
+      "overflow": false,
+      "skip": true,
+      "main": true,
+      "imageReady": true,
+      "release": true,
+      "skipFocused": true,
+      "focusVisible": true,
+      "skipWorks": true,
+      "console_errors": [],
+      "critical_or_serious_axe": []
+    },
+    {
+      "label": "mobile",
+      "width": 390,
+      "title": "Townlight Meetings | Townlight Beta 1",
+      "h1": "Keep the agenda, decisions and evidence connected.",
+      "overflow": false,
+      "skip": true,
+      "main": true,
+      "imageReady": true,
+      "release": true,
+      "skipFocused": true,
+      "focusVisible": true,
+      "skipWorks": true,
+      "console_errors": [],
+      "critical_or_serious_axe": []
+    }
+  ]
+}
