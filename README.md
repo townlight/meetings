@@ -70,7 +70,7 @@ Staff should begin with First run and Daily workflow. Administrators should also
 | Current owned software license | AGPL-3.0-only |
 | Supported acceptance profile | Windows x64 fresh install and upgrade from 1.7.2.1; full profile; separate Station configuration |
 
-Windows MSI 1.8.0.1 includes Townlight Meetings 1.0.5. Use a fresh profile and empty database. The approved profile path is `%LOCALAPPDATA%\CivicSuite`. Preserve existing profiles, data and backups.
+Windows MSI 1.8.0.1 includes Townlight Meetings 1.0.5. For a fresh install, use a fresh profile and empty database. When upgrading from 1.7.2.1, keep the existing profile and data. The approved profile path is `%LOCALAPPDATA%\CivicSuite`. Preserve existing profiles, data and backups.
 
 ## First run
 
@@ -337,11 +337,11 @@ On failure, record the time, selected composition, component/installer versions 
 |----|----|----|
 | Meetings | PASS | Meeting/agenda, packet assembly, motion/vote, supplied transcript, reviewed/adopted minutes, restricted local archive and proceedings readback; Code decision integration. |
 
-These results come from the identified signed candidate’s fresh normal-profile Sandbox exercise: real native IPC/HTTP/PostgreSQL and selected headless controls. All accounts, source bundles and media were synthetic. The guest install/uninstall and recovery passed, and the owned Sandbox stopped. No host installed application or standalone CivicCast was changed. This documentation task reuses those receipts; it does not claim a new software acceptance run.
+The workflow results above are historical Windows Sandbox evidence for their original MSI. Windows 1.8.0.1 has separate signed-MSI evidence for fresh setup, the three new staff workspaces, record persistence, and upgrade from 1.7.2.1.
 
 See the [Windows acceptance summary](https://github.com/townlight/townlight/releases/download/townlight-windows-v1.8.0.1/ACCEPTANCE-Windows-1.8.0.1.md) for this MSI. The historical [evidence index](https://townlight.github.io/reference/sandbox-evidence-index.json) applies to its original build.
 
-The limits remain: actual city field acceptance and equipment/network commissioning; Station automatic provisioning/SCM commissioning; every UI/role combination; field recognition accuracy; and historical in-place upgrades are not certified. They are not five invented feature requirements. Fresh-install controlled beta handoff remains the accepted scope. This package makes no city-deployment, publication or general-availability claim.
+Acceptance covers the stated synthetic Windows workflows. City deployment, equipment commissioning, and upgrades from versions older than 1.7.2.1 require separate validation.
 
 ## Terms of service and license
 
