@@ -1,6 +1,6 @@
-Windows x64 Beta 1 · MSI 1.7.2.1
+Windows x64 Beta 1 · MSI 1.8.0.1
 
-The signed Windows x64 beta 1.7.2.1 updates installer metadata while
+The signed Windows x64 beta 1.8.0.1 updates installer metadata while
 preserving the accepted signed application/runtime cabinet.
 
 - Townlight Meetings Manual
@@ -73,16 +73,16 @@ Beta identity
   Identity                         Value
   -------------------------------- --------------------------------------------------------------------------------
   Public documentation identity    Townlight Beta 1
-  Intended installer version       1.7.2.1
+  Windows MSI version       1.8.0.1
   Product component                townlight-meetings 1.0.5
   Principal import package         townlight_meetings
-  Native desktop source version    1.7.1-1
+  Native desktop source version    1.8.0-1
   Candidate MSI SHA256             Windows acceptance summary
   Corresponding-source SHA256      Corresponding source archive and checksums
   Current owned software license   AGPL-3.0-only
-  Supported acceptance profile     Windows x64 fresh install; inspections-preview; separate Station configuration
+  Supported acceptance profile     Windows x64 fresh install and upgrade from 1.7.2.1; full profile; separate Station configuration
 
-Windows MSI 1.7.2.1 includes Townlight Meetings 1.0.5. Use a fresh
+Windows MSI 1.8.0.1 includes Townlight Meetings 1.0.5. Use a fresh
 profile and empty database. The approved profile path is
 %LOCALAPPDATA%\CivicSuite. Preserve existing profiles, data and backups.
 
