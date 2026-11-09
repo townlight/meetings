@@ -1,0 +1,45 @@
+{
+  "page": "docs/index.html",
+  "page_sha256": "3fc0a1485b1a87d715d39382e07ca25bdba37189a2dc230d9e403c31159f4f03",
+  "reviewed_at": "2026-11-09T21:33:44.030Z",
+  "screenshots": {
+    "desktop": "docs/browser-qa/windows-1.8.0.1-release-desktop.png",
+    "mobile": "docs/browser-qa/windows-1.8.0.1-release-mobile.png"
+  },
+  "version": "1.0.5",
+  "scope": "Current Windows release documentation landing page only. Screenshots cover only this Meetings landing page.",
+  "checks": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "title": "Townlight Meetings | Townlight Beta 1",
+      "h1": "Keep the agenda, decisions and evidence connected.",
+      "overflow": false,
+      "skip": true,
+      "main": true,
+      "imageReady": true,
+      "release": true,
+      "skipFocused": true,
+      "focusVisible": true,
+      "skipWorks": true,
+      "console_errors": [],
+      "critical_or_serious_axe": []
+    },
+    {
+      "label": "mobile",
+      "width": 390,
+      "title": "Townlight Meetings | Townlight Beta 1",
+      "h1": "Keep the agenda, decisions and evidence connected.",
+      "overflow": false,
+      "skip": true,
+      "main": true,
+      "imageReady": true,
+      "release": true,
+      "skipFocused": true,
+      "focusVisible": true,
+      "skipWorks": true,
+      "console_errors": [],
+      "critical_or_serious_axe": []
+    }
+  ]
+}
