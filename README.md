@@ -2,7 +2,7 @@ Windows x64 Beta 1 · MSI 1.8.0.1
 
 The signed [Windows x64 beta 1.8.0.1](https://github.com/townlight/townlight/releases/tag/townlight-windows-v1.8.0.1) adds the three staff workspaces and automatically refreshes the bundled runtime when upgrading from 1.7.2.1.
 
-For the shared import implementation in development, see the
+The shared import implementation is in development in townlight-meetings 1.0.6. See the
 [Townlight meeting import guide](https://github.com/townlight/townlight/blob/main/docs/meeting-imports.md).
 
 - <a href="https://townlight.github.io/manuals/meetings.html#townlight-meetings-manual" id="toc-townlight-meetings-manual">Townlight Meetings Manual</a>

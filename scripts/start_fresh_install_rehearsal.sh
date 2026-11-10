@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-wheel_path="dist/townlight_meetings-1.0.5-py3-none-any.whl"
+wheel_path="dist/townlight_meetings-1.0.6-py3-none-any.whl"
 core_wheel_path="../candidate-wheels/townlight_core-1.3.0.dev2-py3-none-any.whl"
 rehearsal_root=".fresh-install-rehearsal"
 app_port=8776
@@ -88,7 +88,7 @@ write_plan() {
   echo "Smoke check: GET ${app_url}/health"
   echo "Readiness check: GET ${app_url}/staff/auth-readiness"
   echo "Browser check: open ${app_url}/staff"
-  echo 'Expected health: {"status":"ok","service":"townlight_meetings","version":"1.0.5","townlight_core":"1.3.0.dev2"}'
+  echo 'Expected health: {"status":"ok","service":"townlight_meetings","version":"1.0.6","townlight_core":"1.3.0.dev2"}'
   echo "Expected auth readiness: mode=protected and anonymous staff writes denied"
   echo "If the wheel is missing, build it first with: python -m build"
   echo "If port ${app_port} is already in use, stop the existing process or rerun with --app-port set to an available port."
@@ -177,13 +177,13 @@ for _ in {1..20}; do
   sleep 1
 done
 
-expected='{"townlight_core": "1.3.0.dev2", "service": "townlight_meetings", "status": "ok", "version": "1.0.5"}'
+expected='{"townlight_core": "1.3.0.dev2", "service": "townlight_meetings", "status": "ok", "version": "1.0.6"}'
 if [[ -z "${health}" ]]; then
   echo "The installed Townlight Meetings app did not answer ${app_url}/health within 20 seconds. Check the app process output and whether port ${app_port} is already in use." >&2
   exit 1
 fi
 if [[ "${health}" != "${expected}" ]]; then
-  echo "Unexpected /health response: ${health}. Expected Townlight Meetings 1.0.5 with Townlight Core 1.3.0.dev2." >&2
+  echo "Unexpected /health response: ${health}. Expected Townlight Meetings 1.0.6 with Townlight Core 1.3.0.dev2." >&2
   exit 1
 fi
 

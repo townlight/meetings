@@ -547,7 +547,7 @@ def test_alembic_command_upgrades_real_pgvector_database(
                     )
                 ).scalars()
             )
-        assert reupgraded_revision == "townlight_meetings_0021"
+        assert reupgraded_revision == "townlight_meetings_0022"
         assert {"agenda_item_ids", "snapshot_hash", "actor"} <= reupgraded_packet_columns
 
         with pytest.raises(RuntimeError, match="recover forward"):
@@ -557,7 +557,7 @@ def test_alembic_command_upgrades_real_pgvector_database(
             post_refusal_revision = conn.execute(
                 text("SELECT version_num FROM alembic_version_townlight_meetings")
             ).scalar_one()
-        assert post_refusal_revision == "townlight_meetings_0021"
+        assert post_refusal_revision == "townlight_meetings_0022"
     finally:
         if not external_url:
             subprocess.run(["docker", "rm", "-f", name], check=False, capture_output=True, text=True)

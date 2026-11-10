@@ -148,7 +148,7 @@ import townlight_meetings
 from townlight_meetings.main import app
 
 assert townlight_core.__version__ == "1.3.0.dev2"
-assert townlight_meetings.__version__ == "1.0.5"
+assert townlight_meetings.__version__ == "1.0.6"
 assert app.title == "Townlight Meetings"
 assert callable(townlight_core.validate_manifest)
 assert callable(townlight_core.import_meeting_payload)
