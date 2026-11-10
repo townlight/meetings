@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "1.0.5"
+VERSION = "1.0.6"
 DEPLOYMENT_ENV_VARS = (
     "TOWNLIGHT_MEETINGS_STAFF_AUTH_MODE",
     "TOWNLIGHT_MEETINGS_STAFF_AUTH_TOKEN_ROLES",
