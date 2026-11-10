@@ -12,7 +12,7 @@ from townlight_meetings.main import app
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "1.0.5"
+VERSION = "1.0.6"
 
 
 async def test_staff_ui_endpoint_renders_accessible_workflow_foundation() -> None:

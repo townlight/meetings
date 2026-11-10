@@ -35,7 +35,7 @@ def _write_umbrella_fixture(root: Path) -> None:
                     },
                     {
                         "id": "townlight_meetings",
-                        "current_version": "1.0.5",
+                        "current_version": "1.0.6",
                         "selectable": True,
                         "townlight_core_requirement": "1.3.0.dev2",
                         "dependencies": ["townlight_core"],
@@ -50,7 +50,7 @@ def _write_umbrella_fixture(root: Path) -> None:
             [
                 "Townlight Core installs first",
                 "Townlight Records and Townlight Meetings are selectable",
-                "Townlight Meetings reports version 1.0.5 with Townlight Core 1.3.0.dev2",
+                "Townlight Meetings reports version 1.0.6 with Townlight Core 1.3.0.dev2",
                 "--staff-mode bearer --workflow-proof",
                 "Package Cleanroom Contract",
                 "workflow_proof_requested=true",

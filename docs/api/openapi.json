@@ -1496,7 +1496,7 @@
   "info": {
     "summary": "Runtime foundation for Townlight Meetings municipal meeting workflows.",
     "title": "Townlight Meetings",
-    "version": "1.0.5"
+    "version": "1.0.6"
   },
   "openapi": "3.1.0",
   "paths": {

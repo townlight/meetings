@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "townlight-meetings"
-version = "1.0.5"
+version = "1.0.6"
 description = "Townlight Meetings runtime foundation for municipal meeting, agenda, packet, and minutes workflows."
 readme = "README.md"
 requires-python = ">=3.11"

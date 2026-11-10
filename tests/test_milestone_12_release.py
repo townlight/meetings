@@ -31,9 +31,9 @@ def test_current_version_surfaces_are_synchronized() -> None:
     )
     changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
 
-    assert pyproject["project"]["version"] == "1.0.5"
-    assert __version__ == "1.0.5"
-    assert "townlight-meetings 1.0.5" in current_docs
+    assert pyproject["project"]["version"] == "1.0.6"
+    assert __version__ == "1.0.6"
+    assert "townlight-meetings 1.0.6" in current_docs
     assert "Townlight Beta 1" in current_docs
     assert "AGPL-3.0-only" in current_docs
     assert "0.1.0.dev0" not in current_docs
@@ -46,7 +46,7 @@ async def test_health_endpoint_reports_release_version() -> None:
         response = await client.get("/health")
 
     assert response.status_code == 200
-    assert response.json()["version"] == "1.0.5"
+    assert response.json()["version"] == "1.0.6"
 
 
 def test_verify_release_script_exists_and_mentions_all_release_gates() -> None:
@@ -229,7 +229,7 @@ def test_fresh_install_rehearsal_script_prints_expected_plan() -> None:
         "Smoke check: GET http://127.0.0.1:8776/health",
         "Readiness check: GET http://127.0.0.1:8776/staff/auth-readiness",
         "Browser check: open http://127.0.0.1:8776/staff",
-        "Expected health: {\"status\":\"ok\",\"service\":\"townlight_meetings\",\"version\":\"1.0.5\",\"townlight_core\":\"1.3.0.dev2\"}",
+        "Expected health: {\"status\":\"ok\",\"service\":\"townlight_meetings\",\"version\":\"1.0.6\",\"townlight_core\":\"1.3.0.dev2\"}",
         "If the wheel is missing, build it first with: python -m build",
         "If port 8776 is already in use, stop the existing process or rerun with -AppPort set to an available port.",
         "pass -KeepServer to keep it running",
@@ -284,7 +284,7 @@ def test_fresh_install_rehearsal_bash_script_prints_expected_plan() -> None:
         "Smoke check: GET http://127.0.0.1:8776/health",
         "Readiness check: GET http://127.0.0.1:8776/staff/auth-readiness",
         "Browser check: open http://127.0.0.1:8776/staff",
-        "Expected health: {\"status\":\"ok\",\"service\":\"townlight_meetings\",\"version\":\"1.0.5\",\"townlight_core\":\"1.3.0.dev2\"}",
+        "Expected health: {\"status\":\"ok\",\"service\":\"townlight_meetings\",\"version\":\"1.0.6\",\"townlight_core\":\"1.3.0.dev2\"}",
         "If the wheel is missing, build it first with: python -m build",
         "If port 8776 is already in use, stop the existing process or rerun with --app-port set to an available port.",
         "pass --keep-server to keep it running",
@@ -323,10 +323,10 @@ def test_release_handoff_bundle_script_prints_expected_plan() -> None:
     output = result.stdout
     for expected in [
         "Townlight Meetings release handoff bundle",
-        "Version: 1.0.5",
-        "townlight_meetings-1.0.5-release-handoff.zip",
-        "dist/townlight_meetings-1.0.5-py3-none-any.whl",
-        "dist/townlight_meetings-1.0.5.tar.gz",
+        "Version: 1.0.6",
+        "townlight_meetings-1.0.6-release-handoff.zip",
+        "dist/townlight_meetings-1.0.6-py3-none-any.whl",
+        "dist/townlight_meetings-1.0.6.tar.gz",
         "dist/SHA256SUMS.txt",
         "scripts/check_installer_readiness.py",
         "scripts/check_enterprise_installer_signing.py",
@@ -383,10 +383,10 @@ def test_release_handoff_bundle_bash_script_prints_expected_plan() -> None:
     output = result.stdout
     for expected in [
         "Townlight Meetings release handoff bundle",
-        "Version: 1.0.5",
-        "townlight_meetings-1.0.5-release-handoff.zip",
-        "dist/townlight_meetings-1.0.5-py3-none-any.whl",
-        "dist/townlight_meetings-1.0.5.tar.gz",
+        "Version: 1.0.6",
+        "townlight_meetings-1.0.6-release-handoff.zip",
+        "dist/townlight_meetings-1.0.6-py3-none-any.whl",
+        "dist/townlight_meetings-1.0.6.tar.gz",
         "dist/SHA256SUMS.txt",
         "scripts/check_installer_readiness.py",
         "scripts/check_enterprise_installer_signing.py",

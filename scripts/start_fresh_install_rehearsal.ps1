@@ -1,5 +1,5 @@
 param(
-    [string]$WheelPath = "dist/townlight_meetings-1.0.5-py3-none-any.whl",
+    [string]$WheelPath = "dist/townlight_meetings-1.0.6-py3-none-any.whl",
     [string]$CoreWheelPath = "../candidate-wheels/townlight_core-1.3.0.dev2-py3-none-any.whl",
     [string]$RehearsalRoot = ".fresh-install-rehearsal",
     [int]$AppPort = 8776,
@@ -50,7 +50,7 @@ function Write-FreshInstallPlan {
     Write-Output "Smoke check: GET $AppUrl/health"
     Write-Output "Readiness check: GET $AppUrl/staff/auth-readiness"
     Write-Output "Browser check: open $AppUrl/staff"
-    Write-Output "Expected health: {`"status`":`"ok`",`"service`":`"townlight_meetings`",`"version`":`"1.0.5`",`"townlight_core`":`"1.3.0.dev2`"}"
+    Write-Output "Expected health: {`"status`":`"ok`",`"service`":`"townlight_meetings`",`"version`":`"1.0.6`",`"townlight_core`":`"1.3.0.dev2`"}"
     Write-Output "Expected auth readiness: mode=protected and anonymous staff writes denied"
     Write-Output "If the wheel is missing, build it first with: python -m build"
     Write-Output "If port $AppPort is already in use, stop the existing process or rerun with -AppPort set to an available port."
@@ -147,8 +147,8 @@ try {
         throw "The installed Townlight Meetings app did not answer $appUrl/health within 20 seconds. Check the app process output and whether port $AppPort is already in use."
     }
 
-    if ($health.status -ne "ok" -or $health.service -ne "townlight_meetings" -or $health.version -ne "1.0.5" -or $health.townlight_core -ne "1.3.0.dev2") {
-        throw "Unexpected /health response: $($health | ConvertTo-Json -Compress). Expected Townlight Meetings 1.0.5 with Townlight Core 1.3.0.dev2."
+    if ($health.status -ne "ok" -or $health.service -ne "townlight_meetings" -or $health.version -ne "1.0.6" -or $health.townlight_core -ne "1.3.0.dev2") {
+        throw "Unexpected /health response: $($health | ConvertTo-Json -Compress). Expected Townlight Meetings 1.0.6 with Townlight Core 1.3.0.dev2."
     }
 
     $readiness = Invoke-JsonGet -Url "$appUrl/staff/auth-readiness"
