@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from contextlib import nullcontext
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
@@ -15,6 +16,7 @@ from townlight_core.audit import (
     verify_persisted_audit_chain,
 )
 from sqlalchemy import Engine, create_engine
+from sqlalchemy.engine import Connection
 
 
 AGENDA_ITEM_LIFECYCLE = (
@@ -137,20 +139,29 @@ class AgendaItemRepository:
                 connection.execute(sa.text("CREATE SCHEMA IF NOT EXISTS townlight_meetings"))
         metadata.create_all(self.engine)
 
-    def create(self, *, title: str, department_name: str, actor: str | None = None) -> AgendaItemRecord:
+    def create(
+        self, *, title: str, department_name: str, actor: str | None = None,
+        meeting_id: str | None = None, connection: Connection | None = None,
+    ) -> AgendaItemRecord:
         now = datetime.now(UTC)
-        item = AgendaItemRecord(id=str(uuid4()), title=title, department_name=department_name)
+        item = AgendaItemRecord(
+            id=str(uuid4()), title=title, department_name=department_name, meeting_id=meeting_id
+        )
         if actor is not None:
+            details = {"actor": actor, "agenda_item_id": item.id}
+            if meeting_id:
+                details["meeting_id"] = meeting_id
             item.audit_entries.append(_build_persisted_audit_entry(
                 previous_hash=ZERO_HASH, actor=actor, action="agenda_item.created",
-                details={"actor": actor, "agenda_item_id": item.id},
+                details=details,
             ))
-        with self.engine.begin() as connection:
-            connection.execute(
+        with nullcontext(connection) if connection is not None else self.engine.begin() as writer:
+            writer.execute(
                 agenda_item_lifecycle_records.insert().values(
                     id=item.id,
                     title=item.title,
                     department_name=item.department_name,
+                    meeting_id=item.meeting_id,
                     status=item.status,
                     audit_entries=item.audit_entries,
                     created_at=now,

@@ -7,6 +7,7 @@ later milestones.
 
 from __future__ import annotations
 
+from contextlib import nullcontext
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
@@ -20,6 +21,7 @@ from townlight_core.audit import (
     verify_persisted_audit_chain,
 )
 from sqlalchemy import Engine, create_engine
+from sqlalchemy.engine import Connection
 
 MEETING_LIFECYCLE = (
     "SCHEDULED",
@@ -131,6 +133,7 @@ class MeetingStore:
         meeting_body_id: str | None = None,
         location: str | None = None,
         actor: str | None = None,
+        connection: Connection | None = None,
     ) -> MeetingRecord:
         meeting = MeetingRecord(
             id=str(uuid4()),
@@ -145,10 +148,10 @@ class MeetingStore:
                 previous_hash=ZERO_HASH, actor=actor, action="meeting.created",
                 details={"actor": actor, "meeting_id": meeting.id},
             ))
-        if self.engine is not None:
+        if self.engine is not None or connection is not None:
             now = datetime.now(UTC)
-            with self.engine.begin() as connection:
-                connection.execute(
+            with nullcontext(connection) if connection is not None else self.engine.begin() as writer:
+                writer.execute(
                     meeting_records.insert().values(
                         id=meeting.id,
                         title=meeting.title,
@@ -162,7 +165,8 @@ class MeetingStore:
                         updated_at=now,
                     )
                 )
-        self._meetings[meeting.id] = meeting
+        if connection is None:
+            self._meetings[meeting.id] = meeting
         return meeting
 
     def update_schedule(
