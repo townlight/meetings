@@ -1,13 +1,13 @@
 {
   "page": "docs/index.html",
-  "page_sha256": "32e9dc0435618eaa1bf040666330ba56afc4f0c58424220943252e9a1b744052",
-  "reviewed_at": "2026-11-10T21:23:51.803Z",
+  "page_sha256": "743ed2caed62bdc41bc293acda421d2d0cf8af5565daf56bb98ef8ce24b21388",
+  "reviewed_at": "2026-11-11T06:52:08.118Z",
   "screenshots": {
     "desktop": "docs/browser-qa-v1.0.6-release-desktop.png",
     "mobile": "docs/browser-qa-v1.0.6-release-mobile.png"
   },
   "version": "1.0.6",
-  "scope": "Meetings 1.0.6 source checkout landing page only. The page describes the published Windows 1.8.0.1 and Meetings 1.0.5. Installed meeting import evidence is separate.",
+  "scope": "Meetings 1.0.6 source checkout landing page only. The page describes the published Windows 1.8.1.1 with Meetings distribution 1.0.6 and the disclosed stale health string. Installed meeting import evidence is separate.",
   "checks": [
     {
       "label": "desktop",
