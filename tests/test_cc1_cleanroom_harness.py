@@ -25,7 +25,7 @@ def test_townlight_core_dependency_is_pinned_to_candidate_source() -> None:
     for path in (
         ".github/workflows/ci.yml",
         ".github/workflows/release.yml",
-        ".github/workflows/release-preflight.yml",
+        "docs/history/retired-workflows-2026-11/release-preflight.yml",
     ):
         text = read(path)
         assert "python scripts/install-core-candidate.py" in text
