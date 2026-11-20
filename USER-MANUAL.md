@@ -83,8 +83,8 @@ Staff should begin with First run and Daily workflow. Administrators should also
 | Windows MSI version | 1.8.2.1 |
 | Product component | townlight-meetings 1.0.6 |
 | Principal import package | townlight_meetings |
-| Native desktop source version | 1.8.1-1 |
-| Candidate MSI SHA256 | [Windows acceptance summary](https://github.com/townlight/townlight/releases/download/townlight-windows-v1.8.1.1/ACCEPTANCE-Windows-1.8.1.1.md) |
+| Native desktop source version | 1.8.2-1 |
+| Candidate MSI SHA256 | [Windows acceptance summary](https://github.com/townlight/townlight/releases/download/townlight-windows-v1.8.2.1/ACCEPTANCE-Windows-1.8.2.1.md) |
 | Corresponding-source SHA256 | [Corresponding source archive and checksums](https://github.com/townlight/townlight/releases/tag/townlight-windows-v1.8.1.1) |
 | Current owned software license | AGPL-3.0-only |
 | Supported acceptance profile | Windows 1.8.2.1 fresh install and 1.8.1.1 → 1.8.2.1 upgrade; full profile; separate Station configuration |
@@ -100,7 +100,7 @@ Windows 1.8.2.1 has signed installed acceptance for fresh setup and an in-place 
 Run the signed Windows 1.8.2.1 MSI and use an empty database and a new Townlight profile for first run.
 
 1.  Download the signed MSI, matching source companion and checksums from the [public Windows release](https://github.com/townlight/townlight/releases/tag/townlight-windows-v1.8.1.1).
-2.  Verify the MSI hash and Authenticode publisher before installation. See the [Windows acceptance summary](https://github.com/townlight/townlight/releases/download/townlight-windows-v1.8.1.1/ACCEPTANCE-Windows-1.8.1.1.md) for the tested setup.
+2.  Verify the MSI hash and Authenticode publisher before installation. See the [Windows acceptance summary](https://github.com/townlight/townlight/releases/download/townlight-windows-v1.8.2.1/ACCEPTANCE-Windows-1.8.2.1.md) for the tested setup.
 3.  Launch Townlight under the intended named Windows account. Choose the storage folders. Select **Townlight Inspections candidate** (`inspections-preview`) for the bounded desktop composition, including Access and Notice. The full profile includes Boards & Commissions, Contracts, and Procurement.
 4.  Enter the city profile, time zone and contacts. Create the first named local administrator, sign in and choose protected backup storage. **Continue without local AI** is valid for the deterministic workflows.
 5.  Run Health Check and wait for readiness. Open Townlight. In System Health select **Finish Records Migration** to activate the canonical Python/PostgreSQL runtime. Do not fabricate migration receipts or seed accounts.
