@@ -165,6 +165,6 @@ def test_current_facing_docs_describe_runtime_foundation_honestly() -> None:
         text = (ROOT / relative).read_text(encoding="utf-8")
         assert "Townlight Beta 1" in text
         assert "AGPL-3.0-only" in text
-        assert "1.0.5" in text
+        assert VERSION in text
         for claim in ("scaffold only", "not installable yet", "legal advice is available", "automatic ordinance codification is available"):
             assert claim not in text.lower()
