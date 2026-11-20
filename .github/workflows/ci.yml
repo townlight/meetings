@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - ".github/workflows/ci.yml"
+      - ".github/workflows/windows-contracts.yml"
+      - ".github/scripts/prepare-windows-test-db.ps1"
       - "townlight_meetings/**"
       - "frontend/**"
       - "scripts/**"
