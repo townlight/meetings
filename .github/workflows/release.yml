@@ -25,7 +25,7 @@ jobs:
       group: scott-desktop-cleanroom-${{ github.repository }}
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Set up Python for direct-pip cleanroom
         uses: actions/setup-python@v6
@@ -111,7 +111,7 @@ jobs:
       run:
         working-directory: townlight_meetings-release-${{ github.run_id }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
           clean: false
@@ -120,7 +120,7 @@ jobs:
         with:
           python-version: "3.13"
       - name: Checkout pinned Core candidate and canonical provenance fixtures
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: townlight/core
           ref: 3021821bf9a92c790a399ad12aed821d65b09105
@@ -140,7 +140,7 @@ jobs:
       run:
         working-directory: townlight_meetings-release-${{ github.run_id }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
           clean: false
@@ -225,7 +225,7 @@ jobs:
       run:
         working-directory: townlight_meetings-release-${{ github.run_id }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
           clean: false
@@ -305,7 +305,7 @@ jobs:
       group: scott-desktop-cleanroom-${{ github.repository }}
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Set up Python for release-asset cleanroom
         uses: actions/setup-python@v6
