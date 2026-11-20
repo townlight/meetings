@@ -40,7 +40,7 @@ jobs:
         with:
           clean: false
           path: townlight_meetings-checkout-${{ github.run_id }}
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
       - uses: actions/setup-node@v5
