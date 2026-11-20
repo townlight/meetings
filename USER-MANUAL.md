@@ -73,15 +73,15 @@ Staff should begin with First run and Daily workflow. Administrators should also
 |----|----|
 | Public documentation identity | Townlight Beta 1 |
 | Windows MSI version | 1.8.1.1 |
-| Product component | townlight-meetings 1.0.5 |
+| Product component | townlight-meetings 1.0.6 |
 | Principal import package | townlight_meetings |
 | Native desktop source version | 1.8.1-1 |
 | Candidate MSI SHA256 | [Windows acceptance summary](https://github.com/townlight/townlight/releases/download/townlight-windows-v1.8.1.1/ACCEPTANCE-Windows-1.8.1.1.md) |
 | Corresponding-source SHA256 | [Corresponding source archive and checksums](https://github.com/townlight/townlight/releases/tag/townlight-windows-v1.8.1.1) |
 | Current owned software license | AGPL-3.0-only |
-| Supported acceptance profile | Windows x64 fresh install and upgrade from 1.7.2.1; full profile; separate Station configuration |
+| Supported acceptance profile | Windows 1.8.1.1 fresh install; 1.7.2.1 → 1.8.0.1 upgrade only; full profile; separate Station configuration |
 
-Windows MSI 1.8.1.1 includes Townlight Meetings 1.0.5. For a fresh install, use a fresh profile and empty database. When upgrading from 1.7.2.1, keep the existing profile and data. The approved profile path is `%LOCALAPPDATA%\CivicSuite`. Preserve existing profiles, data and backups.
+Windows MSI 1.8.1.1 includes the Townlight Meetings 1.0.6 distribution; its health display still says 1.0.5. For a fresh install, use a fresh profile and empty database. Upgrade to 1.8.1.1 was not exercised; preserve existing profiles and data for any upgrade evaluation. The approved profile path is `%LOCALAPPDATA%\CivicSuite`. Preserve existing profiles, data and backups.
 
 ## First run
 
@@ -356,7 +356,7 @@ The table records selected synthetic workflows from the original [Windows 1.6.0.
 |----|----|----|
 | Meetings | PASS | Meeting/agenda, packet assembly, motion/vote, supplied transcript, reviewed/adopted minutes, restricted local archive and proceedings readback; Code decision integration. |
 
-The workflow results above are historical Windows Sandbox evidence for their original MSI. Windows 1.8.1.1 has separate signed-MSI evidence for fresh setup, the three new staff workspaces, record persistence, and upgrade from 1.7.2.1.
+The workflow results above are historical Windows Sandbox evidence for their original MSI. Windows 1.8.1.1 has separate signed-MSI evidence for fresh setup, shared imports and documented handoffs. The three staff workspaces and upgrade from 1.7.2.1 were exercised on 1.8.0.1. [Current acceptance and limits](https://github.com/townlight/townlight/releases/download/townlight-windows-v1.8.1.1/ACCEPTANCE-Windows-1.8.1.1.md).
 
 Acceptance covers the stated synthetic Windows workflows. City deployment, equipment commissioning, and upgrades from versions older than 1.7.2.1 require separate validation.
 
