@@ -1,0 +1,45 @@
+{
+  "page": "docs/index.html",
+  "page_sha256": "0895c30fca252aece051e139df6cce1bb1b98300b8197d13644eeb54de7e7a7c",
+  "reviewed_at": "2026-11-21T16:34:48.688Z",
+  "version": "1.0.6",
+  "scope": "Current Windows 1.9.1.1 repository landing page only; desktop/mobile headless rendering, images, overflow, skip navigation and console. Installed acceptance is separate. Earlier browser evidence is preserved.",
+  "screenshots": {
+    "desktop": "docs/browser-qa-windows-1.9.1.1-desktop.png",
+    "mobile": "docs/browser-qa-windows-1.9.1.1-mobile.png"
+  },
+  "checks": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "title": "Townlight Meetings | Townlight Beta 1",
+      "h1": "Keep the agenda, decisions and evidence connected.",
+      "overflow": false,
+      "main": true,
+      "skip": true,
+      "release": true,
+      "imageReady": true,
+      "downloadCurrent": true,
+      "skipFocused": true,
+      "focusVisible": true,
+      "skipWorks": true,
+      "console_errors": []
+    },
+    {
+      "label": "mobile",
+      "width": 390,
+      "title": "Townlight Meetings | Townlight Beta 1",
+      "h1": "Keep the agenda, decisions and evidence connected.",
+      "overflow": false,
+      "main": true,
+      "skip": true,
+      "release": true,
+      "imageReady": true,
+      "downloadCurrent": true,
+      "skipFocused": true,
+      "focusVisible": true,
+      "skipWorks": true,
+      "console_errors": []
+    }
+  ]
+}
