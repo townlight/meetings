@@ -37,12 +37,12 @@ def main() -> int:
                 failures.append(f"{path} missing current candidate identity: {phrase}")
         if path != "docs/index.html":
             for phrase in (
-                "1.8.2.1",
-                "upgrade from windows 1.8.1.1",
+                "1.9.0.1",
+                "read the acceptance summary before upgrading",
                 "fresh install",
             ):
                 if phrase not in lowered:
-                    failures.append(f"{path} missing naming candidate boundary: {phrase}")
+                    failures.append(f"{path} missing current signed Windows acceptance boundary: {phrase}")
 
     required_truth = [
         "provisional",
