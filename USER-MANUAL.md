@@ -7,7 +7,7 @@ Windows 1.9.2.1 is the signed public Townlight beta. Set up Station during first
 
 [Release and downloads](https://github.com/townlight/townlight/releases/tag/townlight-windows-v1.9.2.1) · [Acceptance and limits](https://github.com/townlight/townlight/releases/download/townlight-windows-v1.9.2.1/ACCEPTANCE-Windows-1.9.2.1.md).
 
-Acceptance used synthetic data and a test portal on the physical Windows host with a clean Windows Sandbox guest on the same PC. It does not establish two physical PCs, recovery on another computer or account, production portal or city network operation, direct MSI upgrade from an earlier version, new hardware or broadcast acceptance, or PDF/UA and full assistive-technology review.
+Acceptance used synthetic data and a test portal on the physical Windows host with a clean Windows Sandbox guest on the same PC. It does not establish two physical PCs, recovery on another computer or account, production portal or city network operation, new hardware or broadcast acceptance, or PDF/UA and full assistive-technology review. Direct upgrades from earlier releases were not tested.
 
 In Meetings, select the saved meeting and use **Packet order** to arrange the agenda. Save the packet before choosing **Deliver saved packet files** for local staff delivery. Select **Open Station** to record the meeting. [Windows staff workflows](https://townlight.github.io/manuals/windows-staff-workflows.html).
 

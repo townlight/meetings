@@ -2,7 +2,7 @@
 
 The current Suite release lets named staff use Meetings from a Windows workstation through the city host, prepare and correct council packet revisions, and submit only separately approved revisions for portal delivery. This is a Suite integration, not a standalone Meetings release.
 
-Acceptance used synthetic data and a test portal on the physical Windows host with a clean Windows Sandbox guest on the same PC. It does not establish two physical PCs, recovery on another computer or account, production portal or city network operation, direct MSI upgrade from an earlier version, new hardware or broadcast acceptance, or PDF/UA and full assistive-technology review.
+Acceptance used synthetic data and a test portal on the physical Windows host with a clean Windows Sandbox guest on the same PC. It does not establish two physical PCs, recovery on another computer or account, production portal or city network operation, new hardware or broadcast acceptance, or PDF/UA and full assistive-technology review. Direct upgrades from earlier releases were not tested.
 
 [Release and downloads](https://github.com/townlight/townlight/releases/tag/townlight-windows-v1.9.2.1) · [Acceptance and limits](https://github.com/townlight/townlight/releases/download/townlight-windows-v1.9.2.1/ACCEPTANCE-Windows-1.9.2.1.md) · [Windows staff workflow guide](https://townlight.github.io/manuals/windows-staff-workflows.html)
 
