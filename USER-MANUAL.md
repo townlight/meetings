@@ -167,6 +167,10 @@ Drafting, review, approval, attachment, export, fulfillment and publication are 
 
 Provides evidence to Records, Code, Zoning and Planning, and meeting identity to Station. Code adoption and codification remain separate. Supporting Notice and Access do not replace clerk review.
 
+### Shared Windows staff candidate — 1.9.2.1
+
+The signed Suite 1.9.2.1 candidate lets named clerk staff use Meetings from a Windows workstation connected to the city host. Workstation packet files are copied to and verified by that host. A corrected packet is a new reviewed revision; publication requires separate approval of the exact revision. The public Windows 1.9.1.1 installer does not include this shared-host workflow. Read the [1.9.2.1 candidate guide](https://townlight.github.io/manuals/windows-1.9.2.1-candidate.html) and [shared staff guide at the signed source commit](https://github.com/townlight/townlight/blob/1bc45be5a14aa969e53b87b1cef1f278dadc79a4/docs/installer/windows-shared-staff.md). Acceptance used a clean Windows Sandbox guest on the same physical host, not two physically separate PCs.
+
 | Direction | Material |
 |----|----|
 | Input | A meeting schedule, staff agenda material, source documents, recorded clerk decisions and supplied transcript text. |

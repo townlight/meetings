@@ -6,6 +6,10 @@ Windows 1.9.1.1 is a signed public beta. See the acceptance summary for the veri
 
 [Release and downloads](https://github.com/townlight/townlight/releases/tag/townlight-windows-v1.9.1.1) · [Acceptance and limits](https://github.com/townlight/townlight/releases/download/townlight-windows-v1.9.1.1/ACCEPTANCE-Windows-1.9.1.1.md).
 
+## Windows 1.9.2.1 shared staff candidate
+
+The signed Suite candidate adds host-backed Meetings work from a Windows workstation, including council packet preparation and corrected packet revisions. This integration is in the Suite desktop/runtime; it is not a new standalone Meetings release. The public Windows installer remains 1.9.1.1. See the [1.9.2.1 candidate guide](https://townlight.github.io/manuals/windows-1.9.2.1-candidate.html) and [shared staff guide at the signed source commit](https://github.com/townlight/townlight/blob/1bc45be5a14aa969e53b87b1cef1f278dadc79a4/docs/installer/windows-shared-staff.md).
+
 In Meetings, select the saved meeting and use **Packet order** to arrange the agenda. Save the packet before choosing **Deliver saved packet files** for local staff delivery. Select **Open Station** to record the meeting. [Windows staff workflows](https://townlight.github.io/manuals/windows-staff-workflows.html).
 
 Windows x64 Beta 1 · MSI 1.9.1.1
