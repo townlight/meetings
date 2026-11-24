@@ -1,0 +1,45 @@
+{
+  "page": "docs/index.html",
+  "page_sha256": "a17fd61f7bf89b86831ea13ebdbf448b877dd3d302e2ccd871434eb1c494d449",
+  "reviewed_at": "2026-11-24T16:47:55.387Z",
+  "version": "1.0.6",
+  "scope": "Current Windows 1.9.3.2 repository landing page only; desktop/mobile headless rendering, images, overflow, skip navigation and console. Installed acceptance is separate. Earlier browser evidence is preserved.",
+  "screenshots": {
+    "desktop": "docs/browser-qa-windows-1.9.3.2-desktop.png",
+    "mobile": "docs/browser-qa-windows-1.9.3.2-mobile.png"
+  },
+  "checks": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "title": "Townlight Meetings",
+      "h1": "Keep the meeting and its record together.",
+      "overflow": false,
+      "main": true,
+      "skip": true,
+      "release": true,
+      "imageReady": true,
+      "downloadCurrent": true,
+      "skipFocused": true,
+      "focusVisible": true,
+      "skipWorks": true,
+      "console_errors": []
+    },
+    {
+      "label": "mobile",
+      "width": 390,
+      "title": "Townlight Meetings",
+      "h1": "Keep the meeting and its record together.",
+      "overflow": false,
+      "main": true,
+      "skip": true,
+      "release": true,
+      "imageReady": true,
+      "downloadCurrent": true,
+      "skipFocused": true,
+      "focusVisible": true,
+      "skipWorks": true,
+      "console_errors": []
+    }
+  ]
+}
