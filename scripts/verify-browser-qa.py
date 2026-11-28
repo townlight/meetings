@@ -22,7 +22,7 @@ REQUIRED_CHECKS = ("keyboard", "focus", "contrast", "console")
 def main() -> int:
     failures: list[str] = []
     checklist = ROOT / "docs" / "browser-qa" / "milestone11-checklist.md"
-    release_evidence = ROOT / "docs" / "browser-qa" / "windows-1.9.3.2-landing-evidence.json"
+    release_evidence = ROOT / "docs" / "browser-qa" / "windows-1.10.0.1-landing-evidence.json"
     states = ROOT / "docs" / "browser-qa" / "states.html"
     version = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
     screenshots = [
