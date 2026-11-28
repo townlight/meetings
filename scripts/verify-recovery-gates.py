@@ -37,8 +37,8 @@ def main() -> int:
                 failures.append(f"{path} missing current candidate identity: {phrase}")
         if path != "docs/index.html":
             for phrase in (
-                "townlight for windows 1.9.3.2 is the current signed public beta.",
-                "direct upgrade is tested from 1.9.3.1; earlier paths have separate prior evidence.",
+                "townlight for windows 1.10.0.1 is the current signed public beta.",
+                "direct upgrade is tested from 1.9.3.2; earlier paths have separate prior evidence.",
                 "### fresh installation",
             ):
                 if phrase not in lowered:
